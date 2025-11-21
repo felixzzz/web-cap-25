@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  chandra-asri:
+    container_name: chandra-asri
+    image: chandra-asri
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3045:3045"
+    restart: unless-stopped

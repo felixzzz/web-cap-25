@@ -1,0 +1,61 @@
+stages:
+  - deploy_to_stg
+  - deploy_to_prod
+  - sonarqube-check
+
+deploy_staging:
+  stage: deploy_to_stg
+  script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - echo "$STG_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+    - ssh -p $STG_PORT $STG_USER@$STG_HOST "cd $STG_PATH && sudo git reset --hard origin/release && exit"
+    - ssh -p $STG_PORT $STG_USER@$STG_HOST "cd $STG_PATH && sudo git pull && exit"
+    - ssh -p $STG_PORT $STG_USER@$STG_HOST "cd $STG_PATH && sudo rm -rf .next && exit"
+    - ssh -p $STG_PORT $STG_USER@$STG_HOST "cd $STG_PATH && sudo npm run build && exit"
+    - ssh -p $STG_PORT $STG_USER@$STG_HOST "cd $STG_PATH && sudo pm2 reload $PROJECT_NAME --update-env && exit"
+  environment:
+    name: staging
+  only:
+    - release
+
+deploy_prod:
+  stage: deploy_to_prod
+  script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY_PROD" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+    - ssh -p $PRD_PORT $PRD_USER@$PRD_HOST "cd $PRD_PATH && sudo git reset --hard origin/master && exit"
+    - ssh -p $PRD_PORT $PRD_USER@$PRD_HOST "cd $PRD_PATH && sudo git pull && exit"
+    - ssh -p $PRD_PORT $PRD_USER@$PRD_HOST "cd $PRD_PATH && sudo docker compose build"
+    - ssh -p $PRD_PORT $PRD_USER@$PRD_HOST "cd $PRD_PATH && sudo docker rm -f $CONTAINER"
+    - ssh -p $PRD_PORT $PRD_USER@$PRD_HOST "cd $PRD_PATH && sudo docker compose up -d && exit"
+    - ssh -p $PRD_PORT $PRD_USER@$PRD_HOST "cd $PRD_PATH && sudo docker image prune -af"
+  environment:
+    name: production
+  only:
+    - master
+
+sonarqube-check:
+  stage: sonarqube-check
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar" # Defines the location of the analysis task cache
+    GIT_DEPTH: "0" # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner
+  allow_failure: true
+  only:
+    - sonar
