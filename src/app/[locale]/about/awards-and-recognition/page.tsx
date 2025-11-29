@@ -37,6 +37,7 @@ export default async function AwardsAndRecognitionPage() {
   return (
     <>
       <Navbar />
+      <button>ulas</button>
       {data?.meta?.banner && <AwardsJumbotron {...data?.meta.banner} />}
       {data?.meta?.awards && data?.meta?.certification && (
         <AwardsAndRecognition
