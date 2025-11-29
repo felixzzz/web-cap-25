@@ -48,10 +48,10 @@ export default function AwardsJumbotron({
         )}
       >
         <JumbotronContent
-          label={"s" + getLocalizedContent(locale, small_title_en, small_title_id)!}
+          label={getLocalizedContent(locale, small_title_en, small_title_id)!}
           title={getLocalizedContent(locale, title_en, title_id)!}
           text={getLocalizedContent(locale, description_en, description_id)!}
-          shadowClassName="bg-black"
+          shadowClassName="bg-white"
         />
       </Jumbotron>
     </>
