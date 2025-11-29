@@ -46,7 +46,7 @@ export default async function WhoWeArePage() {
 
   return (
     <>
-
+      <Navbar />
       {data?.meta?.banner && <WhoWeAreJumbotron {...data?.meta?.banner} />}
       {data?.meta?.intro && <WhoWeAreChandraAsri {...data?.meta?.intro} />}
       {data?.meta?.in_numbers && <WhoWeAreStats {...data?.meta?.in_numbers} />}
