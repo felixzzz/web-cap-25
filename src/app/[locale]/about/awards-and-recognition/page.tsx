@@ -36,6 +36,7 @@ export default async function AwardsAndRecognitionPage() {
   )
   return (
     <>
+      <div className="text-[40px] font-bold leading-[125%]">500</div>
       <Navbar />
       {data?.meta?.banner && <AwardsJumbotron {...data?.meta.banner} />}
       {data?.meta?.awards && data?.meta?.certification && (
