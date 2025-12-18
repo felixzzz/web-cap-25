@@ -7,8 +7,8 @@ import {
 } from "@/lib/types"
 import { notFound } from "next/navigation"
 import { getLocalizedContent } from "@/lib/utils"
-// Use client component for Tabs
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { SubMenuGrid } from "../_components/SubMenuGrid"
+import PolicyTabs from "./PolicyTabs"
 
 export const revalidate = 60
 
@@ -48,35 +48,20 @@ export default async function PolicyAdvocacyPage({
     return (
         <>
             <Navbar />
-            {data?.meta?.banner && <BannerBlock {...data?.meta.banner} title="Policy Advocacy and Public Education" />}
+            {data?.meta?.banner && (
+                <BannerBlock
+                    {...data?.meta.banner}
+                    title_en="Advocacy & Education"
+                    title_id="Advokasi & Edukasi"
+                    description_en="Empowering society through environmental awareness and advocating for policy frameworks that accelerate Indonesia's transition to a circular economy."
+                    description_id="Memberdayakan masyarakat melalui kesadaran lingkungan dan mengadvokasi kerangka kebijakan yang mempercepat transisi Indonesia ke ekonomi sirkular."
+                />
+            )}
+
+            <SubMenuGrid />
 
             <div className="container py-10">
-                <Tabs defaultValue="markisa" className="w-full">
-                    <TabsList className="w-full justify-start mb-8 overflow-x-auto flex-nowrap">
-                        <TabsTrigger value="markisa" className="min-w-fit">MARKISA</TabsTrigger>
-                        <TabsTrigger value="other-education-and-advocacy" className="min-w-fit">Other Education and Advocacy</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="markisa">
-                        <div className="prose max-w-none">
-                            <h2 className="text-2xl font-bold mb-4">MARKISA</h2>
-                            <p>Content for MARKISA goes here.</p>
-                            <div className="bg-gray-100 p-8 rounded-lg mt-4 text-center text-gray-500">
-                                MARKISA Content Area
-                            </div>
-                        </div>
-                    </TabsContent>
-
-                    <TabsContent value="other-education-and-advocacy">
-                        <div className="prose max-w-none">
-                            <h2 className="text-2xl font-bold mb-4">Other Education and Advocacy</h2>
-                            <p>Content for Other Education and Advocacy goes here.</p>
-                            <div className="bg-gray-100 p-8 rounded-lg mt-4 text-center text-gray-500">
-                                Other Education and Advocacy Content Area
-                            </div>
-                        </div>
-                    </TabsContent>
-                </Tabs>
+                <PolicyTabs />
             </div>
         </>
     )

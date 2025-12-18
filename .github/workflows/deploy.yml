@@ -1,0 +1,71 @@
+name: Deployment and Code Analysis
+
+on:
+  push:
+    branches:
+      - release
+      - master
+      - main
+      - sonar
+  workflow_dispatch:
+
+jobs:
+  deploy_staging:
+    if: github.ref == 'refs/heads/release'
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Staging Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.STG_HOST }}
+          username: ${{ secrets.STG_USER }}
+          key: ${{ secrets.STG_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.STG_PORT }}
+          script: |
+            cd ${{ secrets.STG_PATH }}
+            sudo git fetch --all
+            sudo git reset --hard origin/release
+            sudo git pull
+            sudo rm -rf .next
+            sudo npm run build
+            sudo pm2 reload ${{ secrets.PROJECT_NAME }} --update-env
+
+  deploy_prod:
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Production Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PRD_HOST }}
+          username: ${{ secrets.PRD_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
+          port: ${{ secrets.PRD_PORT }}
+          script: |
+            cd ${{ secrets.PRD_PATH }}
+            sudo git fetch --all
+            BRANCH_NAME="${{ github.ref_name }}"
+            sudo git reset --hard origin/$BRANCH_NAME
+            sudo git pull
+            sudo docker compose build
+            sudo docker rm -f ${{ secrets.CONTAINER }} || true
+            sudo docker compose up -d
+            sudo docker image prune -af
+
+  sonarqube_check:
+    if: github.ref == 'refs/heads/sonar'
+    name: SonarQube Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

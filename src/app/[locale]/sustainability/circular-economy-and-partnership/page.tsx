@@ -2,13 +2,17 @@ import { BannerBlock } from "@/components/block/BannerBlock"
 import { ContentLeftRightBlock } from "@/components/block/ContentLeftRightBlock"
 import { IconListhorizontalBlock } from "@/components/block/IconListhorizontalBlock"
 import { SmallBannerBlock } from "@/components/block/SmallBannerBlock"
+import { CardItem } from "@/components/global/CardItem"
 import Navbar from "@/components/global/Navbar"
-import { Link } from "@/navigation"
 import { getPage } from "@/lib/api"
+import { SubMenuGrid } from "./_components/SubMenuGrid"
 import {
     BusinessSolutionsProp,
     HttpGeneralResponse,
 } from "@/lib/types"
+import {
+    SmallPopup,
+} from "@/lib/fragment"
 import { notFound } from "next/navigation"
 import { getLocalizedContent, isContentActive } from "@/lib/utils"
 // Importing ContentTab from our-business as requested to mirror the energy page structure
@@ -54,64 +58,26 @@ export default async function CircularEconomyPage({
     return (
         <>
             <Navbar />
-            {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
+            {data?.meta?.banner && (
+                <BannerBlock
+                    {...data?.meta.banner}
+                    title_en="Circular Economy & Partnership"
+                    title_id="Circular Economy & Partnership"
+                    description_en="Pioneering a sustainable future through closed-loop innovation. We transform waste into valuable resources, fostering a regenerative ecosystem where economic growth meets environmental stewardship."
+                    description_id="Pioneering a sustainable future through closed-loop innovation. We transform waste into valuable resources, fostering a regenerative ecosystem where economic growth meets environmental stewardship."
+                />
+            )}
             {data?.meta?.content_left_right && (
                 <ContentLeftRightBlock {...data?.meta.content_left_right} />
             )}
             {data?.meta?.icon_list_horizontal && (
                 <IconListhorizontalBlock {...data?.meta.icon_list_horizontal} />
             )}
-
-            {/* Sitemap Links for Development/Verification */}
-            <div className="container py-10">
-                <h2 className="text-2xl font-bold mb-6 text-primary">Sitemap Index (For Verification)</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Sitemap Links for Development/Verification */}
-                    <div className="container py-10">
-                        <h2 className="text-2xl font-bold mb-6 text-primary">Sitemap Index (For Verification)</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div>
-                                <Link href="/sustainability/circular-economy-and-partnership/policy-advocacy-and-public-education" className="text-xl font-bold text-patrick-blue hover:underline block mb-2">
-                                    Policy Advocacy and Public Education
-                                </Link>
-                                {/* Sub-pages are now tabs within the main page */}
-                            </div>
-
-                            <div>
-                                <Link href="/sustainability/circular-economy-and-partnership/end-to-end-waste-management-model" className="text-xl font-bold text-patrick-blue hover:underline block mb-2">
-                                    End-To-End Waste Management Model
-                                </Link>
-                                {/* Sub-pages are now tabs within the main page */}
-                            </div>
-
-                            <div>
-                                <Link href="/sustainability/circular-economy-and-partnership/technology-for-circular-products" className="text-xl font-bold text-patrick-blue hover:underline block mb-2">
-                                    Technology for Circular Products
-                                </Link>
-                                {/* Sub-pages are now tabs within the main page */}
-                            </div>
-
-                            <div>
-                                <Link href="/sustainability/circular-economy-and-partnership/stakeholders-partnership" className="text-xl font-bold text-patrick-blue hover:underline block mb-2">
-                                    Stakeholders Partnership
-                                </Link>
-                                {/* Sub-pages are now tabs within the main page */}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {/* Submenu Grid Section */}
+            <SubMenuGrid />
 
             {data?.meta?.content_left_right_2 && (
                 <ContentLeftRightBlock {...data?.meta.content_left_right_2} />
-            )}
-            {isContentActive(
-                params.locale,
-                data?.meta?.contant_tab?.status_en,
-                data?.meta?.contant_tab?.status_id
-            ) && <ContentTab {...data?.meta.contant_tab} />}
-            {data?.meta?.small_banner && (
-                <SmallBannerBlock {...data?.meta.small_banner} />
             )}
         </>
     )

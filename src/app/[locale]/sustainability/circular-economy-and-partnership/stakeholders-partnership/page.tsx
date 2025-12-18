@@ -7,8 +7,8 @@ import {
 } from "@/lib/types"
 import { notFound } from "next/navigation"
 import { getLocalizedContent } from "@/lib/utils"
-// Use client component for Tabs
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { SubMenuGrid } from "../_components/SubMenuGrid"
+import StakeholdersTabs from "./StakeholdersTabs"
 
 export const revalidate = 60
 
@@ -48,24 +48,20 @@ export default async function StakeholdersPartnershipPage({
     return (
         <>
             <Navbar />
-            {data?.meta?.banner && <BannerBlock {...data?.meta.banner} title="Stakeholders Partnership" />}
+            {data?.meta?.banner && (
+                <BannerBlock
+                    {...data?.meta.banner}
+                    title_en="Collaborative Ecosystems"
+                    title_id="Ekosistem Kolaboratif"
+                    description_en="We believe that sustainability is a shared responsibility. We partner with governments, industries, and communities to drive systemic change."
+                    description_id="Kami percaya bahwa keberlanjutan adalah tanggung jawab bersama. Kami bermitra dengan pemerintah, industri, dan masyarakat untuk mendorong perubahan sistemik."
+                />
+            )}
+
+            <SubMenuGrid />
 
             <div className="container py-10">
-                <Tabs defaultValue="kolase" className="w-full">
-                    <TabsList className="w-full justify-start mb-8 overflow-x-auto flex-nowrap">
-                        <TabsTrigger value="kolase" className="min-w-fit">KOLASE</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="kolase">
-                        <div className="prose max-w-none">
-                            <h2 className="text-2xl font-bold mb-4">KOLASE</h2>
-                            <p>Content for KOLASE (Kolaborasi Pengelolaan Sampah Ekonomi Sirkular di Sekolah Cilegon) goes here.</p>
-                            <div className="bg-gray-100 p-8 rounded-lg mt-4 text-center text-gray-500">
-                                KOLASE Content Area
-                            </div>
-                        </div>
-                    </TabsContent>
-                </Tabs>
+                <StakeholdersTabs />
             </div>
         </>
     )

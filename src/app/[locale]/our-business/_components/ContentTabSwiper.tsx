@@ -6,11 +6,13 @@ import { useRef } from "react"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
 
 export default function ContentTabSwiper({
+  hideOverflow,
   ...item
 }: {
   index: number
   status: string
   title: string
+  hideOverflow?: boolean
   list: {
     status: string
     image: string
@@ -60,7 +62,7 @@ export default function ContentTabSwiper({
           </button>
         </div>}
       </div>
-      <Swiper className="!overflow-visible mb-6 lg:mb-0" slidesPerView={1} ref={swiperRef} autoHeight>
+      <Swiper className={cn(hideOverflow ? "overflow-hidden" : "!overflow-visible", "mb-6 lg:mb-0")} slidesPerView={1} ref={swiperRef} autoHeight>
         {item.list.map((listImage, listImageIndex) => (
           <SwiperSlide key={listImageIndex}>
             <div className="container flex flex-col items-center justify-center gap-y-6 lg:flex-row lg:gap-x-24 lg:gap-y-0">
