@@ -165,6 +165,10 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
             href: "/sustainability/sustainability-in-action",
             label: tNavbar("esg_in_action"),
           },
+          {
+            href: "/sustainability/circular-economy-and-partnership",
+            label: tNavbar("circular_economy_and_partnership"),
+          },
           // {
           //   href: "/sustainability/product-responsibility",
           //   label: tNavbar("product_responsibility"),
