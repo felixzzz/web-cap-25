@@ -8,7 +8,7 @@ import {
 import { notFound } from "next/navigation"
 import { getLocalizedContent, isContentActive } from "@/lib/utils"
 import EndToEndTabs from "./EndToEndTabs"
-import { SubMenuGrid } from "../_components/SubMenuGrid"
+
 
 export const revalidate = 60
 
@@ -58,7 +58,7 @@ export default async function EndToEndWasteManagementPage({
                 />
             )}
 
-            <SubMenuGrid />
+
 
             <div className="container py-10">
                 <EndToEndTabs />

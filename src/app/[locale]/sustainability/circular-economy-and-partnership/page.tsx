@@ -5,7 +5,11 @@ import { SmallBannerBlock } from "@/components/block/SmallBannerBlock"
 import { CardItem } from "@/components/global/CardItem"
 import Navbar from "@/components/global/Navbar"
 import { getPage } from "@/lib/api"
-import { SubMenuGrid } from "./_components/SubMenuGrid"
+
+import Link from "next/link"
+import Image from "next/image"
+import { imgCircularEconomyMapLevel } from "@/data/images"
+import CircularEconomyTabs from "./_components/CircularEconomyTabs"
 import {
     BusinessSolutionsProp,
     HttpGeneralResponse,
@@ -74,7 +78,16 @@ export default async function CircularEconomyPage({
                 <IconListhorizontalBlock {...data?.meta.icon_list_horizontal} />
             )}
             {/* Submenu Grid Section */}
-            <SubMenuGrid />
+            <div className="container py-10">
+                <div className="mb-10 w-full">
+                    <Image
+                        src={imgCircularEconomyMapLevel}
+                        alt="Circular Economy Map"
+                        className="w-full rounded-3xl object-cover"
+                    />
+                </div>
+                <CircularEconomyTabs />
+            </div>
 
             {data?.meta?.content_left_right_2 && (
                 <ContentLeftRightBlock {...data?.meta.content_left_right_2} />

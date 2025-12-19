@@ -7,7 +7,7 @@ import {
 } from "@/lib/types"
 import { notFound } from "next/navigation"
 import { getLocalizedContent } from "@/lib/utils"
-import { SubMenuGrid } from "../_components/SubMenuGrid"
+
 import PolicyTabs from "./PolicyTabs"
 
 export const revalidate = 60
@@ -58,7 +58,7 @@ export default async function PolicyAdvocacyPage({
                 />
             )}
 
-            <SubMenuGrid />
+
 
             <div className="container py-10">
                 <PolicyTabs />
