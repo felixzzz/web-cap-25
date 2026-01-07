@@ -10,6 +10,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { imgCircularEconomyMapLevel } from "@/data/images"
 import CircularEconomyTabs from "./_components/CircularEconomyTabs"
+import { EnvironmentPerformance } from "../environment/_components/EnvironmentPerfornamce"
 import {
     BusinessSolutionsProp,
     HttpGeneralResponse,
@@ -19,7 +20,32 @@ import {
 } from "@/lib/fragment"
 import { notFound } from "next/navigation"
 import { getLocalizedContent, isContentActive } from "@/lib/utils"
-// Importing ContentTab from our-business as requested to mirror the energy page structure
+
+const ENVIROMENTAL_PERFORMANCE_DUMMY_DATA = {
+    title_en: "Environmental Performance for Sustainability",
+    title_id: "Kinerja Lingkungan untuk Keberlanjutan",
+    description_en: "<p>We are committed to reducing our environmental footprint through continuous improvement and innovation.</p>",
+    description_id: "<p>Kami berkomitmen untuk mengurangi jejak lingkungan kami melalui perbaikan terus-menerus dan inovasi.</p>",
+    status_en: "active",
+    status_id: "active",
+    numbers_en: [
+        {
+            icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
+            number: "25%",
+            title: "Reduction in Waste",
+            small_title: "Year 2024",
+        }
+    ],
+    numbers_id: [
+        {
+            icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
+            number: "25%",
+            title: "Pengurangan Limbah",
+            small_title: "Tahun 2024",
+        }
+    ],
+}
+
 import ContentTab from "@/app/[locale]/our-business/_components/ContentTab"
 
 export const revalidate = 60
@@ -77,9 +103,12 @@ export default async function CircularEconomyPage({
             {data?.meta?.icon_list_horizontal && (
                 <IconListhorizontalBlock {...data?.meta.icon_list_horizontal} />
             )}
-            {/* Submenu Grid Section */}
-            <div className="container py-10">
-                <div className="mb-10 w-full">
+            {/* Environmental Performance Section */}
+            <EnvironmentPerformance {...ENVIROMENTAL_PERFORMANCE_DUMMY_DATA} />
+
+            {/* Submenu Grid Section representation */}
+            <div className="py-10">
+                <div className="container mx-auto mb-10 w-full">
                     <Image
                         src={imgCircularEconomyMapLevel}
                         alt="Circular Economy Map"

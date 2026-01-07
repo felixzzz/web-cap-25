@@ -3,6 +3,156 @@
 import ContentTabSwiper from "@/app/[locale]/our-business/_components/ContentTabSwiper"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocale } from "next-intl"
+import { EnvironmentPerformance } from "../../environment/_components/EnvironmentPerfornamce"
+
+// --- Performance Dummy Data ---
+const POLICY_PERFORMANCE_DATA = {
+    title_en: "Policy Impact",
+    title_id: "Dampak Kebijakan",
+    description_en: "<p>Driving systemic change through advocacy and education.</p>",
+    description_id: "<p>Mendorong perubahan sistemik melalui advokasi dan edukasi.</p>",
+    status_en: "active",
+    status_id: "active",
+    numbers_en: [
+        {
+            icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
+            number: "50+",
+            title: "Policy Sessions",
+            small_title: "Year 2024",
+        },
+        {
+            icon: "images/post/kHXSynkVg600OWmFr1bUsuLfruIazSB7VDaQ3Ro1.png",
+            number: "10k+",
+            title: "Students Reached",
+            small_title: "Year 2024",
+        },
+    ],
+    numbers_id: [
+        {
+            icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
+            number: "50+",
+            title: "Sesi Kebijakan",
+            small_title: "Tahun 2024",
+        },
+        {
+            icon: "images/post/kHXSynkVg600OWmFr1bUsuLfruIazSB7VDaQ3Ro1.png",
+            number: "10rb+",
+            title: "Siswa Terjangkau",
+            small_title: "Tahun 2024",
+        }
+    ],
+}
+
+const END_TO_END_PERFORMANCE_DATA = {
+    title_en: "Waste Management Performance",
+    title_id: "Kinerja Pengelolaan Limbah",
+    description_en: "<p>Turning waste into resources through a full circular loop.</p>",
+    description_id: "<p>Mengubah limbah menjadi sumber daya melalui putaran sirkular penuh.</p>",
+    status_en: "active",
+    status_id: "active",
+    numbers_en: [
+        {
+            icon: "images/post/VN5h4GuCSuOR2XS9yN1ahuDDLqBx57Aiam5th1Fw.png",
+            number: "20k Tons",
+            title: "Waste Processed",
+            small_title: "Cumulative",
+        },
+        {
+            icon: "images/post/3PrIyoUnjgICFr5tJFkmMiBmLW66cCcJUgr5gdLQ.png",
+            number: "85%",
+            title: "Resource Recovery",
+            small_title: "Rate",
+        }
+    ],
+    numbers_id: [
+        {
+            icon: "images/post/VN5h4GuCSuOR2XS9yN1ahuDDLqBx57Aiam5th1Fw.png",
+            number: "20rb Ton",
+            title: "Limbah Diproses",
+            small_title: "Kumulatif",
+        },
+        {
+            icon: "images/post/3PrIyoUnjgICFr5tJFkmMiBmLW66cCcJUgr5gdLQ.png",
+            number: "85%",
+            title: "Pemulihan Sumber Daya",
+            small_title: "Tingkat",
+        }
+    ],
+}
+
+const TECHNOLOGY_PERFORMANCE_DATA = {
+    title_en: "Innovation Metrics",
+    title_id: "Metrik Inovasi",
+    description_en: "<p>Advanced technology driving plastic circularity.</p>",
+    description_id: "<p>Teknologi canggih mendorong sirkularitas plastik.</p>",
+    status_en: "active",
+    status_id: "active",
+    numbers_en: [
+        {
+            icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
+            number: "120 Km",
+            title: "Plastic Roads",
+            small_title: "Total Length",
+        },
+        {
+            icon: "images/post/kHXSynkVg600OWmFr1bUsuLfruIazSB7VDaQ3Ro1.png",
+            number: "15+",
+            title: "Eco Products",
+            small_title: "Developed",
+        }
+    ],
+    numbers_id: [
+        {
+            icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
+            number: "120 Km",
+            title: "Jalan Plastik",
+            small_title: "Total Panjang",
+        },
+        {
+            icon: "images/post/kHXSynkVg600OWmFr1bUsuLfruIazSB7VDaQ3Ro1.png",
+            number: "15+",
+            title: "Produk Eko",
+            small_title: "Dikembangkan",
+        }
+    ],
+}
+
+const STAKEHOLDERS_PERFORMANCE_DATA = {
+    title_en: "Partnership Growth",
+    title_id: "Pertumbuhan Kemitraan",
+    description_en: "<p>Collaborating for a sustainable ecosystem.</p>",
+    description_id: "<p>Berkolaborasi untuk ekosistem yang berkelanjutan.</p>",
+    status_en: "active",
+    status_id: "active",
+    numbers_en: [
+        {
+            icon: "images/post/VN5h4GuCSuOR2XS9yN1ahuDDLqBx57Aiam5th1Fw.png",
+            number: "100+",
+            title: "Active Partners",
+            small_title: "Institutional",
+        },
+        {
+            icon: "images/post/3PrIyoUnjgICFr5tJFkmMiBmLW66cCcJUgr5gdLQ.png",
+            number: "500+",
+            title: "Events Held",
+            small_title: "Year 2024",
+        }
+    ],
+    numbers_id: [
+        {
+            icon: "images/post/VN5h4GuCSuOR2XS9yN1ahuDDLqBx57Aiam5th1Fw.png",
+            number: "100+",
+            title: "Mitra Aktif",
+            small_title: "Institusi",
+        },
+        {
+            icon: "images/post/3PrIyoUnjgICFr5tJFkmMiBmLW66cCcJUgr5gdLQ.png",
+            number: "500+",
+            title: "Acara Diadakan",
+            small_title: "Tahun 2024",
+        }
+    ],
+}
 
 // --- End-To-End Items ---
 const RDF_ITEMS = [
@@ -235,71 +385,85 @@ export default function CircularEconomyTabs() {
     const POLICY_COMBINED = [...MARKISA_ITEMS, ...ADVOCACY_ITEMS]
 
     return (
-        <Tabs defaultValue="end-to-end" className="min-h-[25vh]">
-            <TabsList className="min-w-fit md:min-w-fit flex-nowrap overflow-x-auto overflow-y-hidden mb-6 flex w-full flex-row">
-                <TabsTrigger value="end-to-end" className="min-w-fit">End-To-End Waste Management</TabsTrigger>
-                <TabsTrigger value="technology" className="min-w-fit">Circular Product Innovation</TabsTrigger>
-                <TabsTrigger value="stakeholders" className="min-w-fit">Strategic Partnerships</TabsTrigger>
-                <TabsTrigger value="policy" className="min-w-fit">Policy Advocacy & Education</TabsTrigger>
-            </TabsList>
+        <Tabs defaultValue="policy" className="min-h-[25vh]">
+            <div className="container mx-auto">
+                <TabsList className="min-w-fit md:min-w-fit flex-nowrap overflow-x-auto overflow-y-hidden mb-6 flex w-full flex-row">
+                    <TabsTrigger value="policy" className="min-w-fit">Policy Advocacy & Education</TabsTrigger>
+                    <TabsTrigger value="end-to-end" className="min-w-fit">End-To-End Waste Management</TabsTrigger>
+                    <TabsTrigger value="technology" className="min-w-fit">Circular Product Innovation</TabsTrigger>
+                    <TabsTrigger value="stakeholders" className="min-w-fit">Strategic Partnerships</TabsTrigger>
+                </TabsList>
+            </div>
+
+            <TabsContent value="policy">
+                <EnvironmentPerformance {...POLICY_PERFORMANCE_DATA} />
+                <div className="container mx-auto mt-12">
+                    <ContentTabSwiper
+                        index={0}
+                        status="active"
+                        title="Policy Advocacy & Education"
+                        list={POLICY_COMBINED}
+                        hideOverflow={true}
+                    />
+                    <div className="mt-8 flex justify-center">
+                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            Discover our circular economy report
+                        </a>
+                    </div>
+                </div>
+            </TabsContent>
 
             <TabsContent value="end-to-end">
-                <ContentTabSwiper
-                    index={0}
-                    status="active"
-                    title="End-To-End Waste Management"
-                    list={END_TO_END_COMBINED}
-                    hideOverflow={true}
-                />
-                <div className="mt-8 flex justify-center">
-                    <a href={`/${locale}/sustainability/circular-economy-and-partnership/end-to-end-waste-management-model`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                        Discover End-To-End Model
-                    </a>
+                <EnvironmentPerformance {...END_TO_END_PERFORMANCE_DATA} />
+                <div className="container mx-auto mt-12">
+                    <ContentTabSwiper
+                        index={0}
+                        status="active"
+                        title="End-To-End Waste Management"
+                        list={END_TO_END_COMBINED}
+                        hideOverflow={true}
+                    />
+                    <div className="mt-8 flex justify-center">
+                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            Discover our circular economy report
+                        </a>
+                    </div>
                 </div>
             </TabsContent>
 
             <TabsContent value="technology">
-                <ContentTabSwiper
-                    index={0}
-                    status="active"
-                    title="Circular Product Innovation"
-                    list={TECHNOLOGY_COMBINED}
-                    hideOverflow={true}
-                />
-                <div className="mt-8 flex justify-center">
-                    <a href={`/${locale}/sustainability/circular-economy-and-partnership/technology-for-circular-products`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                        Explore Technology
-                    </a>
+                <EnvironmentPerformance {...TECHNOLOGY_PERFORMANCE_DATA} />
+                <div className="container mx-auto mt-12">
+                    <ContentTabSwiper
+                        index={0}
+                        status="active"
+                        title="Circular Product Innovation"
+                        list={TECHNOLOGY_COMBINED}
+                        hideOverflow={true}
+                    />
+                    <div className="mt-8 flex justify-center">
+                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            Discover our circular economy report
+                        </a>
+                    </div>
                 </div>
             </TabsContent>
 
             <TabsContent value="stakeholders">
-                <ContentTabSwiper
-                    index={0}
-                    status="active"
-                    title="Strategic Partnerships"
-                    list={STAKEHOLDERS_COMBINED}
-                    hideOverflow={true}
-                />
-                <div className="mt-8 flex justify-center">
-                    <a href={`/${locale}/sustainability/circular-economy-and-partnership/stakeholders-partnership`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                        See Partners
-                    </a>
-                </div>
-            </TabsContent>
-
-            <TabsContent value="policy">
-                <ContentTabSwiper
-                    index={0}
-                    status="active"
-                    title="Policy Advocacy & Education"
-                    list={POLICY_COMBINED}
-                    hideOverflow={true}
-                />
-                <div className="mt-8 flex justify-center">
-                    <a href={`/${locale}/sustainability/circular-economy-and-partnership/policy-advocacy-and-public-education`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                        Learn More
-                    </a>
+                <EnvironmentPerformance {...STAKEHOLDERS_PERFORMANCE_DATA} />
+                <div className="container mx-auto mt-12">
+                    <ContentTabSwiper
+                        index={0}
+                        status="active"
+                        title="Strategic Partnerships"
+                        list={STAKEHOLDERS_COMBINED}
+                        hideOverflow={true}
+                    />
+                    <div className="mt-8 flex justify-center">
+                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            Discover our circular economy report
+                        </a>
+                    </div>
                 </div>
             </TabsContent>
         </Tabs>
