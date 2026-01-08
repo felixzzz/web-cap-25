@@ -109,7 +109,13 @@ export default async function CircularEconomyPage({
 
             {/* Submenu Grid Section representation */}
             <div className="py-10">
-                <SubMenuGrid />
+                <div className="container mx-auto mb-10 w-full">
+                    <Image
+                        src={imgCircularEconomyMapLevel}
+                        alt="Circular Economy Map"
+                        className="w-full rounded-3xl object-cover"
+                    />
+                </div>
                 <CircularEconomyTabs />
             </div>
 
