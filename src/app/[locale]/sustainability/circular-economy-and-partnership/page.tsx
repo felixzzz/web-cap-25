@@ -32,16 +32,16 @@ const ENVIROMENTAL_PERFORMANCE_DUMMY_DATA = {
         {
             icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
             number: "25%",
-            title: "Reduction in Waste",
-            small_title: "Year 2024",
+            title: "Total Waste Managed",
+            small_title: "Year 2025",
         }
     ],
     numbers_id: [
         {
             icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
             number: "25%",
-            title: "Pengurangan Limbah",
-            small_title: "Tahun 2024",
+            title: "Total Limbah yang di Kelola",
+            small_title: "Tahun 2025",
         }
     ],
 }

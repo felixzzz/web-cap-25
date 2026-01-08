@@ -388,10 +388,10 @@ export default function CircularEconomyTabs() {
         <Tabs defaultValue="policy" className="min-h-[25vh]">
             <div className="container mx-auto">
                 <TabsList className="min-w-fit md:min-w-fit flex-nowrap overflow-x-auto overflow-y-hidden mb-6 flex w-full flex-row">
-                    <TabsTrigger value="policy" className="min-w-fit">Policy Advocacy & Education</TabsTrigger>
-                    <TabsTrigger value="end-to-end" className="min-w-fit">End-To-End Waste Management</TabsTrigger>
-                    <TabsTrigger value="technology" className="min-w-fit">Circular Product Innovation</TabsTrigger>
-                    <TabsTrigger value="stakeholders" className="min-w-fit">Strategic Partnerships</TabsTrigger>
+                    <TabsTrigger value="policy" className="min-w-fit font-bold">Policy Advocacy & Education</TabsTrigger>
+                    <TabsTrigger value="end-to-end" className="min-w-fit font-bold">End-To-End Waste Management</TabsTrigger>
+                    <TabsTrigger value="technology" className="min-w-fit font-bold">Circular Product Innovation</TabsTrigger>
+                    <TabsTrigger value="stakeholders" className="min-w-fit font-bold">Strategic Partnerships</TabsTrigger>
                 </TabsList>
             </div>
 
