@@ -9,7 +9,7 @@ import { getPage } from "@/lib/api"
 import Link from "next/link"
 import Image from "next/image"
 import { imgCircularEconomyMapLevel } from "@/data/images"
-import { SubMenuGrid } from "./_components/SubMenuGrid"
+
 import CircularEconomyTabs from "./_components/CircularEconomyTabs"
 import { EnvironmentPerformance } from "../environment/_components/EnvironmentPerfornamce"
 import {
