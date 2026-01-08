@@ -388,10 +388,9 @@ export default function CircularEconomyTabs() {
         <Tabs defaultValue="policy" className="min-h-[25vh]">
             <div className="container mx-auto">
                 <TabsList className="min-w-fit md:min-w-fit flex-nowrap overflow-x-auto overflow-y-hidden mb-6 flex w-full flex-row">
-                    <TabsTrigger value="policy" className="min-w-fit font-bold">Policy Advocacy & Education</TabsTrigger>
-                    <TabsTrigger value="end-to-end" className="min-w-fit font-bold">End-To-End Waste Management</TabsTrigger>
-                    <TabsTrigger value="technology" className="min-w-fit font-bold">Circular Product Innovation</TabsTrigger>
-                    <TabsTrigger value="stakeholders" className="min-w-fit font-bold">Strategic Partnerships</TabsTrigger>
+                    <TabsTrigger value="policy" className="min-w-fit font-bold">Public Education</TabsTrigger>
+                    <TabsTrigger value="end-to-end" className="min-w-fit font-bold">End-to-end Waste Management Model</TabsTrigger>
+                    <TabsTrigger value="technology" className="min-w-fit font-bold">Technology for Circular Products</TabsTrigger>
                 </TabsList>
             </div>
 
@@ -401,7 +400,7 @@ export default function CircularEconomyTabs() {
                     <ContentTabSwiper
                         index={0}
                         status="active"
-                        title="Policy Advocacy & Education"
+                        title="Public Education"
                         list={POLICY_COMBINED}
                         hideOverflow={true}
                     />
@@ -419,7 +418,7 @@ export default function CircularEconomyTabs() {
                     <ContentTabSwiper
                         index={0}
                         status="active"
-                        title="End-To-End Waste Management"
+                        title="End-to-end Waste Management Model"
                         list={END_TO_END_COMBINED}
                         hideOverflow={true}
                     />
@@ -437,7 +436,7 @@ export default function CircularEconomyTabs() {
                     <ContentTabSwiper
                         index={0}
                         status="active"
-                        title="Circular Product Innovation"
+                        title="Technology for Circular Products"
                         list={TECHNOLOGY_COMBINED}
                         hideOverflow={true}
                     />
@@ -449,23 +448,7 @@ export default function CircularEconomyTabs() {
                 </div>
             </TabsContent>
 
-            <TabsContent value="stakeholders">
-                <EnvironmentPerformance {...STAKEHOLDERS_PERFORMANCE_DATA} />
-                <div className="container mx-auto mt-12">
-                    <ContentTabSwiper
-                        index={0}
-                        status="active"
-                        title="Strategic Partnerships"
-                        list={STAKEHOLDERS_COMBINED}
-                        hideOverflow={true}
-                    />
-                    <div className="mt-8 flex justify-center">
-                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            Discover our circular economy report
-                        </a>
-                    </div>
-                </div>
-            </TabsContent>
+
         </Tabs>
     )
 }

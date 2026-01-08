@@ -9,6 +9,7 @@ import { getPage } from "@/lib/api"
 import Link from "next/link"
 import Image from "next/image"
 import { imgCircularEconomyMapLevel } from "@/data/images"
+import { SubMenuGrid } from "./_components/SubMenuGrid"
 import CircularEconomyTabs from "./_components/CircularEconomyTabs"
 import { EnvironmentPerformance } from "../environment/_components/EnvironmentPerfornamce"
 import {
@@ -108,13 +109,7 @@ export default async function CircularEconomyPage({
 
             {/* Submenu Grid Section representation */}
             <div className="py-10">
-                <div className="container mx-auto mb-10 w-full">
-                    <Image
-                        src={imgCircularEconomyMapLevel}
-                        alt="Circular Economy Map"
-                        className="w-full rounded-3xl object-cover"
-                    />
-                </div>
+                <SubMenuGrid />
                 <CircularEconomyTabs />
             </div>
 
