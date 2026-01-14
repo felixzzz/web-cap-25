@@ -9,7 +9,6 @@ import { getPage } from "@/lib/api"
 import Link from "next/link"
 import Image from "next/image"
 import { imgCircularEconomyMapLevel } from "@/data/images"
-
 import CircularEconomyTabs from "./_components/CircularEconomyTabs"
 import { EnvironmentPerformance } from "../environment/_components/EnvironmentPerfornamce"
 import {
@@ -56,9 +55,9 @@ export async function generateMetadata({
 }: {
     params: { locale: "en" | "id" }
 }) {
-    // Fetching "energy" data as a placeholder/template as requested
+    // Fetching actual data
     const data: HttpGeneralResponse<BusinessSolutionsProp> =
-        await getPage("energy")
+        await getPage("circular-economy-and-partnership")
     return {
         title: getLocalizedContent(
             locale,
@@ -78,9 +77,9 @@ export default async function CircularEconomyPage({
 }: {
     params: { locale: "en" | "id" }
 }) {
-    // Fetching "energy" data as a placeholder/template as requested
+    // Fetching actual data
     const data: HttpGeneralResponse<BusinessSolutionsProp> =
-        await getPage("energy")
+        await getPage("circular-economy-and-partnership")
 
     if (!data) {
         return notFound()
@@ -92,10 +91,6 @@ export default async function CircularEconomyPage({
             {data?.meta?.banner && (
                 <BannerBlock
                     {...data?.meta.banner}
-                    title_en="Circular Economy & Partnership"
-                    title_id="Circular Economy & Partnership"
-                    description_en="Pioneering a sustainable future through closed-loop innovation. We transform waste into valuable resources, fostering a regenerative ecosystem where economic growth meets environmental stewardship."
-                    description_id="Pioneering a sustainable future through closed-loop innovation. We transform waste into valuable resources, fostering a regenerative ecosystem where economic growth meets environmental stewardship."
                 />
             )}
             {data?.meta?.content_left_right && (
@@ -105,7 +100,12 @@ export default async function CircularEconomyPage({
                 <IconListhorizontalBlock {...data?.meta.icon_list_horizontal} />
             )}
             {/* Environmental Performance Section */}
-            <EnvironmentPerformance {...ENVIROMENTAL_PERFORMANCE_DUMMY_DATA} />
+            {data?.meta?.environmental_performance ? (
+                <EnvironmentPerformance {...data.meta.environmental_performance} />
+            ) : (
+                <EnvironmentPerformance {...ENVIROMENTAL_PERFORMANCE_DUMMY_DATA} />
+            )}
+
 
             {/* Submenu Grid Section representation */}
             <div className="py-10">
@@ -116,7 +116,38 @@ export default async function CircularEconomyPage({
                         className="w-full rounded-3xl object-cover"
                     />
                 </div>
-                <CircularEconomyTabs />
+                {/* Pass the tabs data from the API response */}
+                {/* Pass the tabs data from the API response */}
+                {data?.meta && (
+                    <CircularEconomyTabs
+                        tabsData={{
+                            policy: {
+                                performance: data.meta.policy_performance,
+                                // @ts-ignore
+                                items:
+                                    params.locale === "en"
+                                        ? data.meta.policy_items?.items_en
+                                        : data.meta.policy_items?.items_id,
+                            },
+                            "end-to-end": {
+                                performance: data.meta.end_to_end_performance,
+                                // @ts-ignore
+                                items:
+                                    params.locale === "en"
+                                        ? data.meta.end_to_end_items?.items_en
+                                        : data.meta.end_to_end_items?.items_id,
+                            },
+                            technology: {
+                                performance: data.meta.technology_performance,
+                                // @ts-ignore
+                                items:
+                                    params.locale === "en"
+                                        ? data.meta.technology_items?.items_en
+                                        : data.meta.technology_items?.items_id,
+                            },
+                        }}
+                    />
+                )}
             </div>
 
             {data?.meta?.content_left_right_2 && (

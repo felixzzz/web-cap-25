@@ -66,13 +66,15 @@ export default function ContentTabSwiper({
         {item.list.map((listImage, listImageIndex) => (
           <SwiperSlide key={listImageIndex}>
             <div className="container flex flex-col items-center justify-center gap-y-6 lg:flex-row lg:gap-x-24 lg:gap-y-0">
-              <Image
-                width={516}
-                height={516}
-                src={assetUrl(listImage.image) || ""}
-                alt={item.title}
-                className="size-80 object-cover xl:size-[516px] rounded-3xl"
-              />
+              {listImage.image && (
+                <Image
+                  width={516}
+                  height={516}
+                  src={assetUrl(listImage.image) || ""}
+                  alt={item.title}
+                  className="size-80 object-cover xl:size-[516px] rounded-3xl"
+                />
+              )}
               <div
                 className="[&>h2]:mb-4 [&>h2]:text-xl [&>p]:mb-4 [&>ul]:grid [&>ul]:grid-cols-1 [&>ul]:gap-y-6 [&>ul]:list-disc [&>ul]:ml-4 [&>ul>li::marker]:text-[#53C3D9]"
                 dangerouslySetInnerHTML={{

@@ -56,12 +56,14 @@ export function EnvironmentPerformance({
                   className="flex min-h-60 flex-1 flex-col justify-between rounded-xl bg-blue-950 p-6 lg:max-w-[33%]"
                 >
                   <div>
-                    <Image
-                      src={assetUrl(item?.icon || "") || ""}
-                      width={40}
-                      height={40}
-                      alt={item.title}
-                    />
+                    {item.icon && (
+                      <Image
+                        src={assetUrl(item?.icon || "") || ""}
+                        width={40}
+                        height={40}
+                        alt={item.title}
+                      />
+                    )}
                   </div>
                   <div>
                     <ScrambleText text={item.number} />

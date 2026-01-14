@@ -143,6 +143,34 @@ export type BusinessSolutionsProp = {
   quicklink?: MetaQuickLink
   seo_meta?: SeoMeta
   contant_tab: BusinessSolutionsContentTab
+  environmental_performance?: MetaInNumbers
+  circular_economy_tabs?: CircularEconomyTabsMap
+  policy_performance?: MetaInNumbers
+  policy_items?: { items_en?: CircularEconomyTabItem[]; items_id?: CircularEconomyTabItem[] }
+  end_to_end_performance?: MetaInNumbers
+  end_to_end_items?: { items_en?: CircularEconomyTabItem[]; items_id?: CircularEconomyTabItem[] }
+  technology_performance?: MetaInNumbers
+  technology_items?: { items_en?: CircularEconomyTabItem[]; items_id?: CircularEconomyTabItem[] }
+}
+
+export type CircularEconomyTabItem = {
+  status: string
+  title: string
+  image: string
+  description: string
+  cta_label: string
+  cta_url: string
+}
+
+export type CircularEconomyTabData = {
+  performance?: MetaInNumbers
+  items?: CircularEconomyTabItem[]
+}
+
+export type CircularEconomyTabsMap = {
+  policy: CircularEconomyTabData
+  "end-to-end": CircularEconomyTabData
+  technology: CircularEconomyTabData
 }
 
 export type ChemicalSolutionsProps = {
@@ -152,7 +180,7 @@ export type ChemicalSolutionsProps = {
   document?: MetaDocument
   product?: MetaProducts
   facilities?: MetaProducts
-  embedded_video?: MetaEmbeddedVideo 
+  embedded_video?: MetaEmbeddedVideo
 }
 
 export type EnvironmentPageProps = {
