@@ -39,7 +39,7 @@ export function BannerBlock({
     <>
       <Jumbotron
         bg={assetUrl(
-          getLocalizedContent(locale, image_desktop_id, image_desktop_id)
+          getLocalizedContent(locale, image_desktop_en, image_desktop_id)
         )}
         bgMobile={assetUrl(
           getLocalizedContent(locale, image_mobile_id, image_mobile_id)

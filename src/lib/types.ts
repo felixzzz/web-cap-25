@@ -86,6 +86,8 @@ export type PaginationHandlerResponse<T> = {
 export type HttpGeneralResponse<T> = {
   id: number
   title: string
+  title_en?: string
+  title_id?: string
   slug: string
   excerpt: string | null
   content: string | null

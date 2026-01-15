@@ -21,30 +21,7 @@ import {
 import { notFound } from "next/navigation"
 import { getLocalizedContent, isContentActive } from "@/lib/utils"
 
-const ENVIROMENTAL_PERFORMANCE_DUMMY_DATA = {
-    title_en: "Environmental Performance for Sustainability",
-    title_id: "Kinerja Lingkungan untuk Keberlanjutan",
-    description_en: "<p>We are committed to reducing our environmental footprint through continuous improvement and innovation.</p>",
-    description_id: "<p>Kami berkomitmen untuk mengurangi jejak lingkungan kami melalui perbaikan terus-menerus dan inovasi.</p>",
-    status_en: "active",
-    status_id: "active",
-    numbers_en: [
-        {
-            icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
-            number: "25%",
-            title: "Total Waste Managed",
-            small_title: "Year 2025",
-        }
-    ],
-    numbers_id: [
-        {
-            icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
-            number: "25%",
-            title: "Total Limbah yang di Kelola",
-            small_title: "Tahun 2025",
-        }
-    ],
-}
+
 
 import ContentTab from "@/app/[locale]/our-business/_components/ContentTab"
 
@@ -61,8 +38,8 @@ export async function generateMetadata({
     return {
         title: getLocalizedContent(
             locale,
-            data?.meta?.seo_meta?.meta_title_en,
-            data?.meta?.seo_meta?.meta_title_id
+            data?.meta?.seo_meta?.meta_title_en || data?.meta?.banner?.title_en || data?.title_en || data?.title,
+            data?.meta?.seo_meta?.meta_title_id || data?.meta?.banner?.title_id || data?.title_id || data?.title
         ),
         description: getLocalizedContent(
             locale,
@@ -96,14 +73,10 @@ export default async function CircularEconomyPage({
             {data?.meta?.content_left_right && (
                 <ContentLeftRightBlock {...data?.meta.content_left_right} />
             )}
-            {data?.meta?.icon_list_horizontal && (
-                <IconListhorizontalBlock {...data?.meta.icon_list_horizontal} />
-            )}
+            {/* Key Pillars Section Removed */}
             {/* Environmental Performance Section */}
-            {data?.meta?.environmental_performance ? (
+            {data?.meta?.environmental_performance && (
                 <EnvironmentPerformance {...data.meta.environmental_performance} />
-            ) : (
-                <EnvironmentPerformance {...ENVIROMENTAL_PERFORMANCE_DUMMY_DATA} />
             )}
 
 
