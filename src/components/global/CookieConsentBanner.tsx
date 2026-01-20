@@ -38,7 +38,6 @@ export default function CookieConsentBanner({
       expires={365} // Number of days before the cookie expires
       onAccept={() => {
         // Add functionality when user accepts cookies
-        console.log("Cookies accepted")
       }}
     >
       <p className="mb-2 text-xl font-bold text-[#1A1A1A]">

@@ -33,6 +33,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "gsap": "^3.12.5",
     "lucide-react": "^0.427.0",
     "negotiator": "^0.6.3",
@@ -77,5 +79,6 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "engineStrict": true
+  "engineStrict": true,
+  "packageManager": "pnpm@10.28.0+sha256.9b0b04e6e79945566917f8411bb6f65fd2f3e1590426904e8500e1acc4b33561"
 }

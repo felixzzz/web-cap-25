@@ -149,10 +149,10 @@ export function useQueryPressReleases({
   page,
   search,
 }: DocumentListProp & { page: number; search?: string }) {
-  const getDocuments = (page = 1, search?: string) => 
+  const getDocuments = (page = 1, search?: string) =>
     API.get(
-      `/documents?${urlEncodedString({per_page: 9, document_page: 'news', order: 'DESC', page, search, sort: 'published_at'})}`)
-      .then((res) => res.data.data)
+      `/documents?${urlEncodedString({ per_page: 9, document_page: "news", order: "DESC", page, search, sort: "published_at" })}`
+    ).then((res) => res.data.data)
 
   return useQuery({
     queryKey: ["documents-press-releases", page, search],
@@ -284,8 +284,13 @@ export function useGeneralSearch({
   page,
   search,
   media,
-  locale
-}: SearchListProp & { page: number; search: string | null; media: string[]; locale: string }) {
+  locale,
+}: SearchListProp & {
+  page: number
+  search: string | null
+  media: string[]
+  locale: string
+}) {
   const getSearch = async (
     page = 1,
     search: string | null,
@@ -302,5 +307,16 @@ export function useGeneralSearch({
     queryKey: ["general-search", page, search],
     queryFn: async () => await getSearch(page, search, media),
     ...options,
+  })
+}
+
+export function useEmbeddedBanner(id: string) {
+  return useQuery({
+    queryKey: ["embedded-banner", id],
+    queryFn: async () => {
+      const res = await API.get(`/banner-active/${id}`)
+      return res.data
+    },
+    enabled: !!id,
   })
 }
