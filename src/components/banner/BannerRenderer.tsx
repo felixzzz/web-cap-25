@@ -15,11 +15,6 @@ export function BannerRenderer({
   position,
   className,
 }: BannerRendererProps) {
-  console.log(
-    `BannerRenderer [${position}] received:`,
-    banners?.length,
-    "banners"
-  )
   if (!banners || banners.length === 0) return null
 
   if (banners.length === 1) {

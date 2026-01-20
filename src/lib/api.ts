@@ -69,13 +69,6 @@ async function fetchAPI(path: string, method: string, body?: BodyInit) {
     if (res.ok) {
       const json = await res.json()
       if (json.errors) {
-        console.log(
-          "JSON ERROR ON: ",
-          `${API_URL}/api/${path}`,
-          "THE ERRORS ARE: ",
-          json.errors
-        )
-
         throw new Error("Failed to fetch API")
       }
       return json.data || json.meta || json
@@ -83,13 +76,6 @@ async function fetchAPI(path: string, method: string, body?: BodyInit) {
 
     // throw res
   } catch (errors) {
-    console.log(
-      "ERROR ON: ",
-      `${API_URL}/api/${path}`,
-      "THE ERRORS ARE: ",
-      errors
-    )
-
     throw new Error("Failed to fetch API")
   }
 }
@@ -147,10 +133,8 @@ export async function postContactUs(body: BodyContactUs) {
 export async function getActiveBanners(slug: string) {
   try {
     const data = await fetchAPI(`banner/${slug}`, "GET")
-    console.log("getActiveBanners success:", slug, data)
     return data ?? null
   } catch (e) {
-    console.error("getActiveBanners error:", e)
     return null
   }
 }

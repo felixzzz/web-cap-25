@@ -32,18 +32,29 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
     >
       {/* Background Image */}
       <div className="absolute inset-0 h-full w-full">
-        {banner.image && (
+        {
           <Image
             src={
               banner.image
                 ? assetUrl(banner.image)!
-                : "/img/common/img_default-news.jpg"
+                : (() => {
+                    switch (banner.aspect_ratio) {
+                      case "1:1":
+                        return "/img/bg/default-1/1.webp"
+                      case "3:4":
+                        return "/img/bg/default-3/4.webp"
+                      case "9:16":
+                        return "/img/bg/default-9/16.webp"
+                      default:
+                        return "/img/bg/default-bg.webp"
+                    }
+                  })()
             }
             alt={banner.title || title || "Banner"}
             fill
-            className="h-full w-full object-cover opacity-60 transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover object-center opacity-60 transition-transform duration-500 group-hover:scale-105"
           />
-        )}
+        }
         {/* Dark Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
       </div>
