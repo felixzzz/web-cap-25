@@ -8,6 +8,7 @@ import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import { dateFormatter, getLocalizedContent } from "@/lib/utils"
 import { SITE_URL } from "@/lib/constant"
+import LanguageAvailabilitySetter from "@/components/global/LanguageAvailabilitySetter"
 
 export async function generateStaticParams({
   params: { locale },
@@ -121,12 +122,18 @@ export default async function NewsDetailPage({
   }
 
   if (data.type !== "news") {
-    return notFound() 
+    return notFound()
+  }
+
+  const availableLanguages = {
+    en: !!data.title_en,
+    id: !!data.title,
   }
 
   return (
     <>
       <div className="mt-16">
+        <LanguageAvailabilitySetter availableLanguages={availableLanguages} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

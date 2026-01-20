@@ -100,45 +100,51 @@ export default function NewsContent({
         </div>
       )} */}
 
-          {data?.data?.map((item, i) => {
-            const en_slug = item?.slug_en !== null ? item?.slug_en : item?.slug
-            return (
-              <div key={i}>
-                <Card
-                  href={`/${locale}/${item.type === "news" ? "news" : "blog"}/${getLocalizedContent(locale, en_slug, item.slug)}`}
-                >
-                  <CardImage
-                    className="rounded-2xl"
-                    img={assetUrl(item.image)!}
-                    alt={getLocalizedContent(
-                      locale,
-                      item.alt_image_en,
-                      item.alt_image
-                    )}
-                  />
-                  <CardContent
-                    label={dateFormater(item.published_at)}
-                    title={getLocalizedContent(
-                      locale,
-                      item.title_en,
-                      item.title
-                    )}
+          {data?.data
+            ?.filter((item) => {
+              if (locale === "en") return item.title_en
+              if (locale === "id") return item.title
+              return true
+            })
+            ?.map((item, i) => {
+              const en_slug = item?.slug_en !== null ? item?.slug_en : item?.slug
+              return (
+                <div key={i}>
+                  <Card
+                    href={`/${locale}/${item.type === "news" ? "news" : "blog"}/${getLocalizedContent(locale, en_slug, item.slug)}`}
                   >
-                    <Link
-                      href={`/${locale}/${item.type === "news" ? "news" : "blog"}/${getLocalizedContent(locale, en_slug, item.slug)}`}
+                    <CardImage
+                      className="rounded-2xl"
+                      img={assetUrl(item.image)!}
+                      alt={getLocalizedContent(
+                        locale,
+                        item.alt_image_en,
+                        item.alt_image
+                      )}
+                    />
+                    <CardContent
+                      label={dateFormater(item.published_at)}
+                      title={getLocalizedContent(
+                        locale,
+                        item.title_en,
+                        item.title
+                      )}
                     >
-                      <Button
-                        variant={"link"}
-                        className="min-w-0 px-0 group-hover:underline"
+                      <Link
+                        href={`/${locale}/${item.type === "news" ? "news" : "blog"}/${getLocalizedContent(locale, en_slug, item.slug)}`}
                       >
-                        {t("read_more")}
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              </div>
-            )
-          })}
+                        <Button
+                          variant={"link"}
+                          className="min-w-0 px-0 group-hover:underline"
+                        >
+                          {t("read_more")}
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                </div>
+              )
+            })}
         </div>
       </Anim>
       {data?.last_page > 1 && (

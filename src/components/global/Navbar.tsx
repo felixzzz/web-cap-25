@@ -42,6 +42,7 @@ import { Card, CardContent, CardImage } from "./card/Card"
 import { assetUrl, getLocalizedContent } from "@/lib/utils"
 import { Megamenu } from "./Megamenu"
 import { z } from "zod"
+import { useLanguageAvailability } from "@/contexts/LanguageAvailabilityContext"
 
 const ChildrenSchema = z.object({
   href: z.string(),
@@ -71,6 +72,7 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
   const t = useTranslations("global")
   const tNavbar = useTranslations("navbar")
   const locale = useLocale()
+  const { availableLanguages } = useLanguageAvailability()
 
   const initialListMenu: MenuItem[] = useMemo(
     () => [
@@ -358,16 +360,18 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="z-[1002]" align="end">
                 <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => switchLocale("en")}
+                  className={clsx("cursor-pointer", !availableLanguages.en && "opacity-50 cursor-not-allowed pointer-events-none")}
+                  onClick={() => availableLanguages.en && switchLocale("en")}
+                  disabled={!availableLanguages.en}
                 >
                   <div className="flex cursor-pointer items-center">
                     English
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => switchLocale("id")}
+                  className={clsx("cursor-pointer", !availableLanguages.id && "opacity-50 cursor-not-allowed pointer-events-none")}
+                  onClick={() => availableLanguages.id && switchLocale("id")}
+                  disabled={!availableLanguages.id}
                 >
                   <div className="flex cursor-pointer items-center">
                     Bahasa Indonesia
@@ -436,6 +440,7 @@ function NavbarMobile({
   const [childrenData, setChildrenData] = useState<MenuItem | null>(null)
   const t = useTranslations("global")
   const tNavbar = useTranslations("navbar")
+  const { availableLanguages } = useLanguageAvailability()
 
   return (
     <>
@@ -493,18 +498,24 @@ function NavbarMobile({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="z-[1000]" align="end">
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={!availableLanguages.en}
+                    className={clsx(!availableLanguages.en && "opacity-50 cursor-not-allowed pointer-events-none")}
+                  >
                     <div
                       className="flex cursor-pointer items-center"
-                      onClick={() => switchLocale("en")}
+                      onClick={() => availableLanguages.en && switchLocale("en")}
                     >
                       English
                     </div>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={!availableLanguages.id}
+                    className={clsx(!availableLanguages.id && "opacity-50 cursor-not-allowed pointer-events-none")}
+                  >
                     <div
                       className="flex cursor-pointer items-center"
-                      onClick={() => switchLocale("id")}
+                      onClick={() => availableLanguages.id && switchLocale("id")}
                     >
                       Bahasa Indonesia
                     </div>

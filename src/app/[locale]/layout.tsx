@@ -17,6 +17,7 @@ import { QueryClientProviderWrapper } from "@/components/providers/query-provide
 import { Toaster } from "@/components/ui/toaster"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { SITE_URL } from "@/lib/constant"
+import { LanguageAvailabilityProvider } from "@/contexts/LanguageAvailabilityContext"
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -98,12 +99,14 @@ export default async function LocaleLayout({
           >
           </ThemeProvider> */}
           <QueryClientProviderWrapper>
-            <CursorProvider>
-              {children}
-              <Toaster />
-            </CursorProvider>
-            <Footer />
-            <DownloadStorages />
+            <LanguageAvailabilityProvider>
+              <CursorProvider>
+                {children}
+                <Toaster />
+              </CursorProvider>
+              <Footer />
+              <DownloadStorages />
+            </LanguageAvailabilityProvider>
           </QueryClientProviderWrapper>
         </NextIntlClientProvider>
       </body>
