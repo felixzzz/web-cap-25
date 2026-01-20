@@ -78,7 +78,7 @@ async function fetchAPI(path: string, method: string, body?: BodyInit) {
 
         throw new Error("Failed to fetch API")
       }
-      return json.data || json.meta
+      return json.data || json.meta || json
     }
 
     // throw res
@@ -142,4 +142,15 @@ export async function getPostCategories(query: string) {
 export async function postContactUs(body: BodyContactUs) {
   const data = await API.post(`contact-us`, JSON.stringify(body))
   return data
+}
+
+export async function getActiveBanners(slug: string) {
+  try {
+    const data = await fetchAPI(`banner/${slug}`, "GET")
+    console.log("getActiveBanners success:", slug, data)
+    return data ?? null
+  } catch (e) {
+    console.error("getActiveBanners error:", e)
+    return null
+  }
 }
