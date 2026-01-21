@@ -67,6 +67,7 @@ export type Banner = {
   id: number
   banner_group_id: number
   title: string
+  video: string
   image: string
   is_active: number
   aspect_ratio: string
