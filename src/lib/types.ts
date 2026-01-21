@@ -76,6 +76,7 @@ export type Banner = {
   order: number
   cta_url: string
   cta_label: string
+  cta_gtm: string
 }
 
 export type BannerResponse = {

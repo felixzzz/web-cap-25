@@ -71,10 +71,7 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
   const isExternal = href.startsWith("http")
 
   return (
-    <Link
-      href={href}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
+    <div
       className={`bg-gray-900 group relative block w-full overflow-hidden rounded-xl ${className}`}
       style={{
         aspectRatio: banner.aspect_ratio
@@ -109,7 +106,7 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
           )
         })()}
         {/* Dark Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" /> */}
       </div>
 
       {/* Content Overlay */}
@@ -132,12 +129,19 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
 
         {banner.cta_label && (
           <div className="mt-2">
-            <span className="hover:bg-gray-100 inline-flex items-center rounded-full bg-white px-6 py-2 text-sm font-bold text-black transition-colors">
-              {banner.cta_label}
-            </span>
+            <Link
+              href={href}
+              id={banner.cta_gtm}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
+            >
+              <span className="hover:bg-gray-100 inline-flex items-center rounded-full bg-white px-6 py-2 text-sm font-bold text-black transition-colors">
+                {banner.cta_label}
+              </span>
+            </Link>
           </div>
         )}
       </div>
-    </Link>
+    </div>
   )
 }
