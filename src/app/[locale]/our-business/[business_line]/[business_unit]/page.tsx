@@ -16,13 +16,18 @@ import RelatedArticles from "../../_components/RelatedArticles"
 import { getLocalizedContent } from "@/lib/utils"
 
 export async function generateStaticParams() {
-  const business: DynamicProps[] = await getPage("dynamic")
-  return business.flatMap((business) => {
-    return business.children.map((unit) => ({
-      business_line: business.slug,
-      business_unit: unit.slug,
-    }))
-  })
+  try {
+    const business: DynamicProps[] = await getPage("dynamic")
+    return business.flatMap((business) => {
+      return business.children.map((unit) => ({
+        business_line: business.slug,
+        business_unit: unit.slug,
+      }))
+    })
+  } catch (error) {
+    console.warn("Could not generate static params for our-business:", error)
+    return []
+  }
 }
 
 export const revalidate = 60

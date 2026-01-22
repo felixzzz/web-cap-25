@@ -14,31 +14,36 @@ export async function generateStaticParams({
 }: {
   params: { locale: string }
 }) {
-  const allSlugs: { slug: string }[] = []
-  let currentPage = 1
-  let hasMorePages = true
-  const perPage = 10
+  try {
+    const allSlugs: { slug: string }[] = []
+    let currentPage = 1
+    let hasMorePages = true
+    const perPage = 10
 
-  while (hasMorePages) {
-    try {
-      const posts: PaginationHandlerResponse<PostNews[]> = await getPostList(
-        `?type=blog&limit=${perPage}&page=${currentPage}&sort=published_at&order=DESC&lang=${locale}`
-      )
-      const pageSlugs = posts.data.map((item) => ({
-        slug: item.slug,
-        locale,
-      }))
-      allSlugs.push(...pageSlugs)
+    while (hasMorePages) {
+      try {
+        const posts: PaginationHandlerResponse<PostNews[]> = await getPostList(
+          `?type=blog&limit=${perPage}&page=${currentPage}&sort=published_at&order=DESC&lang=${locale}`
+        )
+        const pageSlugs = posts.data.map((item) => ({
+          slug: item.slug,
+          locale,
+        }))
+        allSlugs.push(...pageSlugs)
 
-      hasMorePages = currentPage < posts.last_page
-      currentPage++
-    } catch (error) {
-      console.error(`Error fetching blog posts page ${currentPage}:`, error)
-      break
+        hasMorePages = currentPage < posts.last_page
+        currentPage++
+      } catch (error) {
+        console.error(`Error fetching blog posts page ${currentPage}:`, error)
+        break
+      }
     }
-  }
 
-  return allSlugs
+    return allSlugs
+  } catch (error) {
+    console.warn("Could not generate static params for blog:", error)
+    return []
+  }
 }
 
 export const revalidate = 60
