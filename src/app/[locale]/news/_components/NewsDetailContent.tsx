@@ -79,7 +79,7 @@ export default function NewsDetailContent({
 
   return (
     <section className="relative">
-      <div className="container pb-8 pt-6 lg:pb-[126px]">
+      <div className="mx-auto w-full max-w-[1680px] px-4 pb-8 pt-6 lg:pb-[126px]">
         <CustomBreadcrumb
           data={[
             {
@@ -97,15 +97,21 @@ export default function NewsDetailContent({
               isPrimary: true,
             },
           ]}
-          className="mb-5 lg:mb-[40px]"
+          className="container mx-auto mb-5 lg:mb-[40px]"
         />
         <div
-          className={`grid grid-cols-1 items-start lg:grid-cols-12 ${
-            hasLeft || hasRight ? "gap-4" : "gap-8"
-          }`}
+          className={`grid grid-cols-1 items-start ${
+            hasLeft && hasRight
+              ? "lg:grid-cols-[225px_minmax(0,1fr)_225px] xl:grid-cols-[300px_minmax(0,1fr)_300px]"
+              : hasLeft
+                ? "lg:grid-cols-[225px_minmax(0,1fr)] xl:grid-cols-[300px_minmax(0,1fr)]"
+                : hasRight
+                  ? "lg:grid-cols-[minmax(0,1fr)_225px] xl:grid-cols-[minmax(0,1fr)_300px]"
+                  : "lg:grid-cols-12"
+          } ${hasLeft || hasRight ? "gap-4" : "gap-8"}`}
         >
           {hasLeft && (
-            <div className="hidden lg:col-span-3 lg:block">
+            <div className="hidden lg:block">
               <div className="sticky top-24">
                 <BannerRenderer banners={banners!.left} position="left" />
               </div>
@@ -114,9 +120,7 @@ export default function NewsDetailContent({
 
           <div
             className={`col-span-1 mx-auto max-w-[850px] lg:mx-0 lg:max-w-none ${
-              !hasAnyBanner
-                ? "lg:col-span-8 lg:col-start-3"
-                : "lg:col-span-6 lg:col-start-4"
+              !hasAnyBanner ? "lg:col-span-8 lg:col-start-3" : ""
             }`}
           >
             {/* Removed top center banner renderer */}
@@ -273,7 +277,7 @@ export default function NewsDetailContent({
           </div>
 
           {hasRight && (
-            <div className="hidden lg:col-span-3 lg:block">
+            <div className="hidden lg:block">
               <div className="sticky top-24">
                 <BannerRenderer banners={banners!.right} position="right" />
               </div>
