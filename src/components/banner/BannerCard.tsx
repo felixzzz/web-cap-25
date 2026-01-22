@@ -36,24 +36,12 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
   useEffect(() => {
     if (imageUrl) {
       const fac = new FastAverageColor()
-      // Use proxy URL for analysis to avoid CORS
-      const proxyUrl = imageUrl
-        .replace(
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
-          "/proxy"
-        )
-        .replace(
-          process.env.NEXT_PUBLIC_IMAGE_URL || "http://localhost:8000/storage",
-          "/proxy/storage"
-        )
-
-      // Fallback: If replacements didn't work (e.g. different env var names), try strict replacement of common backend origin
-      const finalUrl = proxyUrl.startsWith("http")
-        ? proxyUrl.replace(/^https?:\/\/[^/]+\/storage/, "/proxy/storage")
-        : proxyUrl
+      // Use Next.js image optimization endpoint as a proxy to avoid CORS
+      // This works because the Next.js server fetches the image (s2s) and serves it back to us (same origin)
+      const proxiedUrl = `/_next/image?url=${encodeURIComponent(imageUrl)}&w=640&q=75`
 
       fac
-        .getColorAsync(finalUrl)
+        .getColorAsync(proxiedUrl)
         .then((color) => {
           setTextColor(color.isDark ? "white" : "black")
         })
@@ -131,7 +119,7 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
           <div className="mt-2">
             <Link
               href={href}
-              id={banner.cta_gtm}
+              className={banner.cta_gtm}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noopener noreferrer" : undefined}
             >
