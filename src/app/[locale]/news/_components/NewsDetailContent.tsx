@@ -101,22 +101,20 @@ export default function NewsDetailContent({
         />
         <div
           className={`grid grid-cols-1 items-start ${
-            hasLeft && hasRight
-              ? "lg:grid-cols-[225px_minmax(0,1fr)_225px] xl:grid-cols-[300px_minmax(0,1fr)_300px]"
-              : hasLeft
-                ? "lg:grid-cols-[225px_minmax(0,1fr)] xl:grid-cols-[300px_minmax(0,1fr)]"
-                : hasRight
-                  ? "lg:grid-cols-[minmax(0,1fr)_225px] xl:grid-cols-[minmax(0,1fr)_300px]"
-                  : "lg:grid-cols-12"
+            hasAnyBanner
+              ? "lg:grid-cols-[230px_minmax(0,1fr)_230px] xl:grid-cols-[230px_minmax(0,1fr)_230px]"
+              : "lg:grid-cols-12"
           } ${hasLeft || hasRight ? "gap-4" : "gap-8"}`}
         >
-          {hasLeft && (
+          {hasLeft ? (
             <div className="hidden lg:block">
               <div className="sticky top-24">
                 <BannerRenderer banners={banners!.left} position="left" />
               </div>
             </div>
-          )}
+          ) : hasAnyBanner ? (
+            <div className="hidden lg:block" />
+          ) : null}
 
           <div
             className={`col-span-1 mx-auto max-w-[850px] lg:mx-0 lg:max-w-none ${
@@ -276,13 +274,15 @@ export default function NewsDetailContent({
             />
           </div>
 
-          {hasRight && (
+          {hasRight ? (
             <div className="hidden lg:block">
               <div className="sticky top-24">
                 <BannerRenderer banners={banners!.right} position="right" />
               </div>
             </div>
-          )}
+          ) : hasAnyBanner ? (
+            <div className="hidden lg:block" />
+          ) : null}
         </div>
       </div>
     </section>

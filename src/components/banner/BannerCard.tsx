@@ -108,7 +108,7 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
 
         {banner.description && (
           <p
-            className="mb-4 line-clamp-3 text-sm lg:text-base"
+            className="mb-4 line-clamp-3 text-xs lg:text-sm"
             style={{ color: textColor }}
           >
             {banner.description}
