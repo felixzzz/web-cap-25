@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react"
 import Navbar from "@/components/global/Navbar"
+import StickyBanner from "@/components/global/StickyBanner"
 import SectionJumbotron from "./_components/SectionJumbotron"
 import SectionListCard from "./_components/SectionListCard"
 import HomeDrivingChange from "./_components/HomeDrivingChange"
@@ -8,7 +9,7 @@ import HomeFinancialReports from "./_components/HomeFinancialReports"
 import HomeIndonesiaAsri from "./_components/HomeIndonesiaAsri"
 import HomeDiscovery from "./_components/HomeDiscovery"
 import HomeFooterDescription from "./_components/HomeFooterDescription"
-import { getDocuments, getPage, getPostList } from "@/lib/api"
+import { getDocuments, getPage, getPostList, getHomeBanners } from "@/lib/api"
 import { HomeProps, HttpGeneralResponse } from "@/lib/types"
 import HomeQuicklink from "./_components/HomeQuicklinks"
 import { Metadata } from "next"
@@ -19,6 +20,7 @@ import {
   SmallPopup,
 } from "@/lib/fragment"
 import { getLocalizedContent } from "@/lib/utils"
+import { BannerRenderer } from "@/components/banner/BannerRenderer"
 // import CookieConsentBanner from "@/components/global/CookieConsentBanner"
 
 export const revalidate = 60
@@ -64,13 +66,26 @@ export default async function Home() {
     small_popup: SmallPopup
   }> = await getPage("cookies-consent")
 
+  // Fetch banners for home page positions
+  const bannerPosition1 = await getHomeBanners("1")
+  const bannerPosition2 = await getHomeBanners("2")
+
   return (
     <>
       <Navbar />
+      <Suspense fallback={null}>
+        <StickyBanner />
+      </Suspense>
       {data?.meta?.banner && <SectionJumbotron {...data?.meta.banner} />}
       {data?.meta?.intro && <SectionListCard {...data?.meta.intro} />}
       {data?.meta?.business_solution && (
         <HomeDrivingChange {...data?.meta.business_solution} />
+      )}
+      {/* Banner Position 1 */}
+      {bannerPosition1 && bannerPosition1.length > 0 && (
+        <div className="container mx-auto my-8 px-4">
+          <BannerRenderer banners={bannerPosition1} position="center" />
+        </div>
       )}
       {data?.meta?.in_numbers && (
         <HomeJourneyGrowth {...data?.meta.in_numbers} />
@@ -81,10 +96,17 @@ export default async function Home() {
           dataDocuments={dataDocuments?.data}
         />
       )}
+      {/* Banner Position 2 */}
+      {bannerPosition2 && bannerPosition2.length > 0 && (
+        <div className="container mx-auto my-8 px-4">
+          <BannerRenderer banners={bannerPosition2} position="center" />
+        </div>
+      )}
+      {/* Indonesia Asri */}
       {data?.meta?.small_banner && (
         <HomeIndonesiaAsri {...data?.meta.small_banner} />
       )}
-
+      {/* Discovery */}
       {data?.meta?.news && (
         <HomeDiscovery
           {...data?.meta.news}

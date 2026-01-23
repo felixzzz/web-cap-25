@@ -138,3 +138,12 @@ export async function getActiveBanners(slug: string) {
     return null
   }
 }
+
+export async function getHomeBanners(position: string) {
+  try {
+    const data = await fetchAPI(`banner-active/${position}`, "GET")
+    return data ?? null
+  } catch (e) {
+    return null
+  }
+}
