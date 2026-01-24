@@ -86,6 +86,12 @@ export type BannerResponse = {
   bottom: Banner[]
 }
 
+export type HomeBannersResponse = {
+  navbar: Banner[]
+  "journey-growth": Banner[]
+  "financial-reports": Banner[]
+}
+
 export type HttpHandlerResponse<T> = {
   success: string
   data: T

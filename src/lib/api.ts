@@ -139,9 +139,13 @@ export async function getActiveBanners(slug: string) {
   }
 }
 
-export async function getHomeBanners(position: string) {
+export async function getHomeBanners(locale: string): Promise<{
+  navbar: any[]
+  "journey-growth": any[]
+  "financial-reports": any[]
+} | null> {
   try {
-    const data = await fetchAPI(`banner-active/${position}`, "GET")
+    const data = await fetchAPI(`home-banners?lang=${locale}`, "GET")
     return data ?? null
   } catch (e) {
     return null

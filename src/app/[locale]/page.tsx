@@ -50,7 +50,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function Home() {
+export default async function Home({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const data: HttpGeneralResponse<HomeProps> = await getPage("home")
   const dataDocuments: { data: MetaDocumentItem[] } = await getDocuments(
     "?per_page=2&document_page=investor_reports&order=DESC&sort=published_at"
@@ -66,42 +70,49 @@ export default async function Home() {
     small_popup: SmallPopup
   }> = await getPage("cookies-consent")
 
-  // Fetch banners for home page positions
-  const bannerPosition1 = await getHomeBanners("1")
-  const bannerPosition2 = await getHomeBanners("2")
+  // Fetch home banners with locale
+  const homeBanners = await getHomeBanners(locale)
 
   return (
     <>
       <Navbar />
       <Suspense fallback={null}>
-        <StickyBanner />
+        <StickyBanner banner={homeBanners?.navbar?.[0] || null} />
       </Suspense>
       {data?.meta?.banner && <SectionJumbotron {...data?.meta.banner} />}
       {data?.meta?.intro && <SectionListCard {...data?.meta.intro} />}
       {data?.meta?.business_solution && (
         <HomeDrivingChange {...data?.meta.business_solution} />
       )}
-      {/* Banner Position 1 */}
-      {bannerPosition1 && bannerPosition1.length > 0 && (
-        <div className="container mx-auto my-8 px-4">
-          <BannerRenderer banners={bannerPosition1} position="center" />
-        </div>
-      )}
       {data?.meta?.in_numbers && (
         <HomeJourneyGrowth {...data?.meta.in_numbers} />
       )}
+      {/* Journey Growth Banner - After journey growth section */}
+      {homeBanners?.["journey-growth"] &&
+        homeBanners["journey-growth"].length > 0 && (
+          <div className="container mx-auto my-8 px-4">
+            <BannerRenderer
+              banners={homeBanners["journey-growth"]}
+              position="center"
+            />
+          </div>
+        )}
       {data?.meta?.financial_report && (
         <HomeFinancialReports
           {...data?.meta.financial_report}
           dataDocuments={dataDocuments?.data}
         />
       )}
-      {/* Banner Position 2 */}
-      {bannerPosition2 && bannerPosition2.length > 0 && (
-        <div className="container mx-auto my-8 px-4">
-          <BannerRenderer banners={bannerPosition2} position="center" />
-        </div>
-      )}
+      {/* Financial Reports Banner - After financial reports section */}
+      {homeBanners?.["financial-reports"] &&
+        homeBanners["financial-reports"].length > 0 && (
+          <div className="container mx-auto my-8 px-4">
+            <BannerRenderer
+              banners={homeBanners["financial-reports"]}
+              position="center"
+            />
+          </div>
+        )}
       {/* Indonesia Asri */}
       {data?.meta?.small_banner && (
         <HomeIndonesiaAsri {...data?.meta.small_banner} />
