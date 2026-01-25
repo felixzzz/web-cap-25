@@ -84,9 +84,6 @@ export default async function Home({
       {data?.meta?.business_solution && (
         <HomeDrivingChange {...data?.meta.business_solution} />
       )}
-      {data?.meta?.in_numbers && (
-        <HomeJourneyGrowth {...data?.meta.in_numbers} />
-      )}
       {/* Journey Growth Banner - After journey growth section */}
       {homeBanners?.["journey-growth"] &&
         homeBanners["journey-growth"].length > 0 && (
@@ -97,6 +94,9 @@ export default async function Home({
             />
           </div>
         )}
+      {data?.meta?.in_numbers && (
+        <HomeJourneyGrowth {...data?.meta.in_numbers} />
+      )}
       {data?.meta?.financial_report && (
         <HomeFinancialReports
           {...data?.meta.financial_report}
