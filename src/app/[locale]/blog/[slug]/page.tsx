@@ -3,7 +3,7 @@ import NewsDetailContent from "@/app/[locale]/news/_components/NewsDetailContent
 import NewsDetailOther from "@/app/[locale]/news/_components/NewsDetailOther"
 import { PaginationHandlerResponse } from "@/lib/types"
 import { PostNews } from "@/lib/fragment"
-import { getDetailPost, getPostList } from "@/lib/api"
+import { getActiveBanners, getDetailPost, getPostList } from "@/lib/api"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import { dateFormatter, getLocalizedContent } from "@/lib/utils"
@@ -81,6 +81,8 @@ export default async function NewsDetailPage({
   params: { slug, locale },
 }: Readonly<{ params: { slug: string; locale: string } }>) {
   const data: PostNews = await getDetailPost(slug)
+  const banners = await getActiveBanners(slug)
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -122,7 +124,7 @@ export default async function NewsDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar isBackgroundWhite />
-      <NewsDetailContent data={data} path="blog" />
+      <NewsDetailContent data={data} path="blog" banners={banners} />
       {relatedArticles?.data?.length > 0 && (
         <NewsDetailOther data={relatedArticles.data} />
       )}

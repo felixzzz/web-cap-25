@@ -67,69 +67,78 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
           : "4/3",
       }}
     >
-      {/* Background Media */}
-      <div className="absolute inset-0 h-full w-full">
-        {(() => {
-          if (banner.video) {
-            return (
-              <video
-                src={assetUrl(banner.video)!}
-                poster={imageUrl}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-              />
-            )
-          }
+      {banner.html ? (
+        <div
+          className="h-full w-full"
+          dangerouslySetInnerHTML={{ __html: banner.html }}
+        />
+      ) : (
+        <>
+          {/* Background Media */}
+          <div className="absolute inset-0 h-full w-full">
+            {(() => {
+              if (banner.video) {
+                return (
+                  <video
+                    src={assetUrl(banner.video)!}
+                    poster={imageUrl}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  />
+                )
+              }
 
-          return (
-            <Image
-              src={imageUrl}
-              alt={banner.title || title || "Banner"}
-              fill
-              className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-            />
-          )
-        })()}
-        {/* Dark Gradient Overlay */}
-        {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" /> */}
-      </div>
+              return (
+                <Image
+                  src={imageUrl}
+                  alt={banner.title || title || "Banner"}
+                  fill
+                  className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                />
+              )
+            })()}
+            {/* Dark Gradient Overlay */}
+            {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" /> */}
+          </div>
 
-      {/* Content Overlay */}
-      <div
-        className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center p-6 text-center"
-        style={{ color: textColor }}
-      >
-        <h3 className="mb-2 text-xl font-bold leading-tight lg:text-2xl">
-          {banner.title}
-        </h3>
-
-        {banner.description && (
-          <p
-            className="mb-4 line-clamp-3 text-xs lg:text-sm"
+          {/* Content Overlay */}
+          <div
+            className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center p-6 text-center"
             style={{ color: textColor }}
           >
-            {banner.description}
-          </p>
-        )}
+            <h3 className="mb-2 text-xl font-bold leading-tight lg:text-2xl">
+              {banner.title}
+            </h3>
 
-        {banner.cta_label && (
-          <div className="mt-2">
-            <Link
-              href={href}
-              className={banner.cta_gtm}
-              target={isExternal ? "_blank" : undefined}
-              rel={isExternal ? "noopener noreferrer" : undefined}
-            >
-              <span className="hover:bg-gray-100 inline-flex items-center rounded-full bg-white px-6 py-2 text-sm font-bold text-black transition-colors">
-                {banner.cta_label}
-              </span>
-            </Link>
+            {banner.description && (
+              <p
+                className="mb-4 line-clamp-3 text-xs lg:text-sm"
+                style={{ color: textColor }}
+              >
+                {banner.description}
+              </p>
+            )}
+
+            {banner.cta_label && (
+              <div className="mt-2">
+                <Link
+                  href={href}
+                  className={banner.cta_gtm}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                >
+                  <span className="hover:bg-gray-100 inline-flex items-center rounded-full bg-white px-6 py-2 text-sm font-bold text-black transition-colors">
+                    {banner.cta_label}
+                  </span>
+                </Link>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   )
 }

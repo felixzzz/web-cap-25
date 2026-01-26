@@ -70,6 +70,7 @@ export type Banner = {
   video: string
   image: string
   is_active: number
+  html?: string
   aspect_ratio: string
   created_at: string
   updated_at: string
