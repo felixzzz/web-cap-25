@@ -122,7 +122,6 @@ export default function NewsDetailContent({
             }`}
           >
             {/* Removed top center banner renderer */}
-
             {data?.image && (
               <AspectRatio ratio={16 / 9} className="mb-6">
                 <Image
