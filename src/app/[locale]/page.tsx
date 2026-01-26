@@ -70,7 +70,6 @@ export default async function Home({
     small_popup: SmallPopup
   }> = await getPage("cookies-consent")
 
-  // Fetch home banners with locale
   const homeBanners = await getHomeBanners(locale)
 
   return (
