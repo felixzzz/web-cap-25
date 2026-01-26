@@ -67,14 +67,17 @@ export type Banner = {
   id: number
   banner_group_id: number
   title: string
+  video: string
   image: string
   is_active: number
+  html?: string
   aspect_ratio: string
   created_at: string
   updated_at: string
   order: number
   cta_url: string
   cta_label: string
+  cta_gtm: string
 }
 
 export type BannerResponse = {
@@ -82,6 +85,12 @@ export type BannerResponse = {
   right: Banner[]
   center: Banner[]
   bottom: Banner[]
+}
+
+export type HomeBannersResponse = {
+  navbar: Banner[]
+  "journey-growth": Banner[]
+  "financial-reports": Banner[]
 }
 
 export type HttpHandlerResponse<T> = {

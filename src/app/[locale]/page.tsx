@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react"
 import Navbar from "@/components/global/Navbar"
+import StickyBanner from "@/components/global/StickyBanner"
 import SectionJumbotron from "./_components/SectionJumbotron"
 import SectionListCard from "./_components/SectionListCard"
 import HomeDrivingChange from "./_components/HomeDrivingChange"
@@ -8,7 +9,7 @@ import HomeFinancialReports from "./_components/HomeFinancialReports"
 import HomeIndonesiaAsri from "./_components/HomeIndonesiaAsri"
 import HomeDiscovery from "./_components/HomeDiscovery"
 import HomeFooterDescription from "./_components/HomeFooterDescription"
-import { getDocuments, getPage, getPostList } from "@/lib/api"
+import { getDocuments, getPage, getPostList, getHomeBanners } from "@/lib/api"
 import { HomeProps, HttpGeneralResponse } from "@/lib/types"
 import HomeQuicklink from "./_components/HomeQuicklinks"
 import { Metadata } from "next"
@@ -19,6 +20,7 @@ import {
   SmallPopup,
 } from "@/lib/fragment"
 import { getLocalizedContent } from "@/lib/utils"
+import { BannerRenderer } from "@/components/banner/BannerRenderer"
 // import CookieConsentBanner from "@/components/global/CookieConsentBanner"
 
 export const revalidate = 60
@@ -48,7 +50,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function Home() {
+export default async function Home({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const data: HttpGeneralResponse<HomeProps> = await getPage("home")
   const dataDocuments: { data: MetaDocumentItem[] } = await getDocuments(
     "?per_page=2&document_page=investor_reports&order=DESC&sort=published_at"
@@ -64,14 +70,29 @@ export default async function Home() {
     small_popup: SmallPopup
   }> = await getPage("cookies-consent")
 
+  const homeBanners = await getHomeBanners(locale)
+
   return (
     <>
       <Navbar />
+      <Suspense fallback={null}>
+        <StickyBanner banner={homeBanners?.navbar?.[0] || null} />
+      </Suspense>
       {data?.meta?.banner && <SectionJumbotron {...data?.meta.banner} />}
       {data?.meta?.intro && <SectionListCard {...data?.meta.intro} />}
       {data?.meta?.business_solution && (
         <HomeDrivingChange {...data?.meta.business_solution} />
       )}
+      {/* Journey Growth Banner - After journey growth section */}
+      {homeBanners?.["journey-growth"] &&
+        homeBanners["journey-growth"].length > 0 && (
+          <div className="container mx-auto my-8 px-4">
+            <BannerRenderer
+              banners={homeBanners["journey-growth"]}
+              position="center"
+            />
+          </div>
+        )}
       {data?.meta?.in_numbers && (
         <HomeJourneyGrowth {...data?.meta.in_numbers} />
       )}
@@ -81,10 +102,21 @@ export default async function Home() {
           dataDocuments={dataDocuments?.data}
         />
       )}
+      {/* Financial Reports Banner - After financial reports section */}
+      {homeBanners?.["financial-reports"] &&
+        homeBanners["financial-reports"].length > 0 && (
+          <div className="container mx-auto my-8 px-4">
+            <BannerRenderer
+              banners={homeBanners["financial-reports"]}
+              position="center"
+            />
+          </div>
+        )}
+      {/* Indonesia Asri */}
       {data?.meta?.small_banner && (
         <HomeIndonesiaAsri {...data?.meta.small_banner} />
       )}
-
+      {/* Discovery */}
       {data?.meta?.news && (
         <HomeDiscovery
           {...data?.meta.news}
