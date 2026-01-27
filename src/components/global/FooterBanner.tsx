@@ -1,31 +1,24 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { X } from "lucide-react"
-import Link from "next/link"
+import { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { useLocale } from "next-intl"
 import { Banner } from "@/lib/types"
 import { assetUrl } from "@/lib/utils"
+import Link from "next/link"
 import { FastAverageColor } from "fast-average-color"
+import { getHomeBannersReactQuery } from "@/lib/api"
 
-const BANNER_STORAGE_KEY = "sticky-banner-closed"
-
-interface StickyBannerProps {
-  banner?: Banner | null
-}
-
-export default function StickyBanner({ banner }: StickyBannerProps) {
-  const [isVisible, setIsVisible] = useState(false)
+export default function FooterBanner() {
+  const locale = useLocale()
   const [textColor, setTextColor] = useState("white")
 
-  useEffect(() => {
-    // Only show if banner data exists and wasn't previously closed
-    if (banner) {
-      const isClosed = localStorage.getItem(BANNER_STORAGE_KEY)
-      if (!isClosed) {
-        setIsVisible(true)
-      }
-    }
-  }, [banner])
+  const { data: homeBanners, isLoading } = useQuery({
+    queryKey: ["home-banners", locale],
+    queryFn: () => getHomeBannersReactQuery(locale),
+  })
+
+  const banner: Banner | null = homeBanners?.navbar?.[0] || null
 
   const imageUrl =
     banner?.image && banner.image !== "null" ? assetUrl(banner.image)! : null
@@ -46,34 +39,14 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
     }
   }, [imageUrl])
 
-  // Set CSS variable for banner height
-  useEffect(() => {
-    if (isVisible) {
-      document.documentElement.style.setProperty(
-        "--sticky-banner-height",
-        "64px"
-      )
-    } else {
-      document.documentElement.style.setProperty(
-        "--sticky-banner-height",
-        "0px"
-      )
-    }
-  }, [isVisible])
-
-  const handleClose = () => {
-    setIsVisible(false)
-    localStorage.setItem(BANNER_STORAGE_KEY, "true")
-  }
-
-  if (!isVisible || !banner) return null
+  if (isLoading || !banner) return null
 
   return (
     <div
-      className="fixed top-0 z-[998] h-16 w-full shadow-md"
+      className="h-16 w-full shadow-md lg:h-24"
       style={{
         backgroundImage: imageUrl
-          ? `url(${assetUrl(imageUrl)})`
+          ? `url(${imageUrl})`
           : "linear-gradient(to right, rgb(239, 246, 255), rgb(219, 234, 254))",
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -121,15 +94,6 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
             </Link>
           )}
         </div>
-
-        {/* Close Button */}
-        <button
-          onClick={handleClose}
-          className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-colors hover:bg-white/20"
-          aria-label="Close banner"
-        >
-          <X className="h-5 w-5" style={{ color: textColor }} />
-        </button>
       </div>
     </div>
   )

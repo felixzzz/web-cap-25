@@ -166,3 +166,13 @@ export async function getHomeBanners(locale: string): Promise<{
     return null
   }
 }
+
+export async function getHomeBannersReactQuery(locale: string): Promise<{
+  navbar: any[]
+  "journey-growth": any[]
+  "financial-reports": any[]
+} | null> {
+  return API.get(`home-banners?lang=${locale}`)
+    .then((res) => res.data ?? null)
+    .catch(() => null)
+}

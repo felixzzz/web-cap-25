@@ -17,6 +17,8 @@ import { QueryClientProviderWrapper } from "@/components/providers/query-provide
 import { Toaster } from "@/components/ui/toaster"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { SITE_URL } from "@/lib/constant"
+import { Suspense } from "react"
+import StickyBannerWrapper from "@/components/global/StickyBannerWrapper"
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -101,6 +103,9 @@ export default async function LocaleLayout({
           >
           </ThemeProvider> */}
           <QueryClientProviderWrapper>
+            <Suspense fallback={null}>
+              <StickyBannerWrapper />
+            </Suspense>
             <CursorProvider>
               {children}
               <Toaster />
