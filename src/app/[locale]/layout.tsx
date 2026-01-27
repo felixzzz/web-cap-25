@@ -68,7 +68,10 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale}>
+    <html
+      lang={locale}
+      style={{ "--sticky-banner-height": "0px" } as React.CSSProperties}
+    >
       <GoogleTagManager gtmId={process.env.GTM_ID || ""} />
       <body
         className={`${plusJakartaSans.variable} min-h-screen bg-background font-sans antialiased`}

@@ -46,6 +46,21 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
     }
   }, [imageUrl])
 
+  // Set CSS variable for banner height
+  useEffect(() => {
+    if (isVisible) {
+      document.documentElement.style.setProperty(
+        "--sticky-banner-height",
+        "64px"
+      )
+    } else {
+      document.documentElement.style.setProperty(
+        "--sticky-banner-height",
+        "0px"
+      )
+    }
+  }, [isVisible])
+
   const handleClose = () => {
     setIsVisible(false)
     localStorage.setItem(BANNER_STORAGE_KEY, "true")
@@ -55,7 +70,7 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
 
   return (
     <div
-      className="fixed top-16 z-[999] w-full shadow-md"
+      className="fixed top-0 z-[998] h-16 w-full shadow-md"
       style={{
         backgroundImage: imageUrl
           ? `url(${imageUrl})`
@@ -64,13 +79,13 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
         backgroundPosition: "center",
       }}
     >
-      <div className="container relative flex items-center justify-between gap-4 py-3">
+      <div className="container relative flex h-full items-center justify-between gap-2 px-4 lg:gap-4">
         {/* Banner Content */}
-        <div className="flex flex-1 items-center gap-4">
-          <div className="flex-1">
+        <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden lg:gap-4">
+          <div className="min-w-0 flex-1 overflow-hidden">
             {banner.title && (
               <p
-                className="text-sm font-semibold lg:text-base"
+                className="line-clamp-1 text-xs font-semibold lg:text-base"
                 style={{
                   color: textColor,
                   textShadow:
@@ -84,7 +99,7 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
             )}
             {banner.description && (
               <p
-                className="text-xs lg:text-sm"
+                className="line-clamp-1 text-xs lg:text-sm"
                 style={{
                   color: textColor,
                   textShadow:
@@ -100,7 +115,7 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
           {banner.cta_url && banner.cta_label && (
             <Link
               href={banner.cta_url}
-              className="flex-shrink-0 rounded-full bg-blue-600 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-blue-700 lg:text-sm"
+              className="hidden flex-shrink-0 whitespace-nowrap rounded-full bg-blue-600 px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-700 sm:inline-flex lg:text-sm"
             >
               {banner.cta_label}
             </Link>
