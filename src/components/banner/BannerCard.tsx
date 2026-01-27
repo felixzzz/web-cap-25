@@ -60,7 +60,7 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
 
   return (
     <div
-      className={`bg-gray-900 group relative block w-full overflow-hidden rounded-xl ${className}`}
+      className={`bg-gray-900 group relative block min-h-[180px] w-full overflow-hidden rounded-xl ${className}`}
       style={{
         aspectRatio: banner.aspect_ratio
           ? banner.aspect_ratio.replace(":", "/")
@@ -104,22 +104,25 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
                 />
               )
             })()}
-            {/* Dark Gradient Overlay */}
-            {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" /> */}
+            {!banner.title && !banner.description && (
+              <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            )}
           </div>
 
           {/* Content Overlay */}
           <div
-            className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center p-6 text-center"
+            className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center p-3 text-center lg:p-6"
             style={{ color: textColor }}
           >
-            <h3 className="mb-2 text-xl font-bold leading-tight lg:text-2xl">
-              {banner.title}
-            </h3>
+            {banner.title && (
+              <h3 className="mb-2 text-base font-bold leading-tight lg:text-2xl">
+                {banner.title}
+              </h3>
+            )}
 
             {banner.description && (
               <p
-                className="mb-4 line-clamp-3 text-xs lg:text-sm"
+                className="mb-2 line-clamp-2 text-xs lg:mb-4 lg:line-clamp-3 lg:text-sm"
                 style={{ color: textColor }}
               >
                 {banner.description}
@@ -127,14 +130,16 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
             )}
 
             {banner.cta_label && (
-              <div className="mt-2">
+              <div
+                className={`mt-1 lg:mt-2 ${!banner.title && !banner.description ? "opacity-0 transition-opacity duration-300 group-hover:opacity-100" : ""}`}
+              >
                 <Link
                   href={href}
                   className={banner.cta_gtm}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
                 >
-                  <span className="hover:bg-gray-100 inline-flex items-center rounded-full bg-white px-6 py-2 text-sm font-bold text-black transition-colors">
+                  <span className="hover:bg-gray-100 inline-flex items-center rounded-full bg-white px-3 py-1.5 text-xs font-bold text-black transition-colors lg:px-6 lg:py-2 lg:text-sm">
                     {banner.cta_label}
                   </span>
                 </Link>

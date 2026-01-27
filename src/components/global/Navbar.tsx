@@ -279,10 +279,11 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
   return (
     <header
       className={clsx(
-        "fixed top-0 z-[1000] w-full duration-200 ease-in-out",
+        "fixed z-[1000] w-full duration-200 ease-in-out",
         backgroundWhite ? "box-shadow bg-white" : "bg-transparent text-white",
         isOpenNavbarMobile && `bg-white`
       )}
+      style={{ top: "var(--sticky-banner-height, 0px)" }}
     >
       <div className="container flex h-16 items-center justify-between">
         <Link href={`/${locale}/`} className="flex items-center gap-2">
@@ -383,7 +384,10 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
         </div>
       </div>
       {isOpenSearch && (
-        <div className="box-shadow absolute top-16 z-[100] w-full bg-white transition-all">
+        <div
+          className="box-shadow absolute z-[100] w-full bg-white transition-all"
+          style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
+        >
           <div className="container relative w-full py-4">
             <Image
               src={iconSearch}
@@ -419,7 +423,10 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
             locale={locale}
             items={listMenu}
           />
-          <div className="fixed inset-0 left-0 top-[64px] z-10 h-full w-full bg-black/60" />
+          <div
+            className="fixed inset-0 left-0 z-10 h-full w-full bg-black/60"
+            style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
+          />
         </>
       )}
       {children}
@@ -443,7 +450,10 @@ function NavbarMobile({
 
   return (
     <>
-      <div className="fixed left-0 top-16 z-50 w-full bg-white">
+      <div
+        className="fixed left-0 z-50 w-full bg-white"
+        style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
+      >
         <div className="mx-auto flex flex-col lg:flex-row">
           <div className="py-4">
             <div className="container lg:ml-auto">

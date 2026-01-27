@@ -1,6 +1,5 @@
 import { Suspense, lazy } from "react"
 import Navbar from "@/components/global/Navbar"
-import StickyBanner from "@/components/global/StickyBanner"
 import SectionJumbotron from "./_components/SectionJumbotron"
 import SectionListCard from "./_components/SectionListCard"
 import HomeDrivingChange from "./_components/HomeDrivingChange"
@@ -75,9 +74,6 @@ export default async function Home({
   return (
     <>
       <Navbar />
-      <Suspense fallback={null}>
-        <StickyBanner banner={homeBanners?.navbar?.[0] || null} />
-      </Suspense>
       {data?.meta?.banner && <SectionJumbotron {...data?.meta.banner} />}
       {data?.meta?.intro && <SectionListCard {...data?.meta.intro} />}
       {data?.meta?.business_solution && (

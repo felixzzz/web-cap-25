@@ -151,6 +151,7 @@ export async function getHomeBanners(locale: string): Promise<{
   navbar: any[]
   "journey-growth": any[]
   "financial-reports": any[]
+  footer: any[]
 } | null> {
   try {
     const data = await fetchAPI(
@@ -165,4 +166,15 @@ export async function getHomeBanners(locale: string): Promise<{
   } catch (e) {
     return null
   }
+}
+
+export async function getHomeBannersReactQuery(locale: string): Promise<{
+  navbar: any[]
+  "journey-growth": any[]
+  "financial-reports": any[]
+  footer: any[]
+} | null> {
+  return API.get(`home-banners?lang=${locale}`)
+    .then((res) => res.data ?? null)
+    .catch(() => null)
 }
