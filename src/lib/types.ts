@@ -91,6 +91,7 @@ export type HomeBannersResponse = {
   navbar: Banner[]
   "journey-growth": Banner[]
   "financial-reports": Banner[]
+  footer: Banner[]
 }
 
 export type HttpHandlerResponse<T> = {

@@ -60,6 +60,7 @@ export async function Footer() {
 
   return (
     <>
+      <FooterBanner />
       <footer className="relative bg-[#182147] py-6 lg:py-12">
         <div className="container">
           <div className="flex flex-col justify-between gap-8 lg:flex-row">
@@ -221,7 +222,6 @@ export async function Footer() {
         </div>
         {/* Footer Banner */}
       </footer>
-      <FooterBanner />
     </>
   )
 }

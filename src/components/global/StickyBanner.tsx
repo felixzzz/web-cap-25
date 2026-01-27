@@ -73,7 +73,7 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
       className="fixed top-0 z-[998] h-16 w-full shadow-md"
       style={{
         backgroundImage: imageUrl
-          ? `url(${assetUrl(imageUrl)})`
+          ? `url(${imageUrl})`
           : "linear-gradient(to right, rgb(239, 246, 255), rgb(219, 234, 254))",
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -115,7 +115,7 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
           {banner.cta_url && banner.cta_label && (
             <Link
               href={banner.cta_url}
-              className="hidden flex-shrink-0 whitespace-nowrap rounded-full bg-blue-600 px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-700 sm:inline-flex lg:text-sm"
+              className="flex-shrink-0 whitespace-nowrap rounded-full bg-blue-600 px-3 py-1 text-[10px] font-medium text-white transition-colors hover:bg-blue-700 sm:px-4 sm:py-1.5 sm:text-xs lg:text-sm"
             >
               {banner.cta_label}
             </Link>
