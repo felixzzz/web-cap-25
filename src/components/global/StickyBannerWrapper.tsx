@@ -17,7 +17,5 @@ export default function StickyBannerWrapper() {
 
   const banner = homeBanners?.navbar?.[0] || null
 
-  console.log(homeBanners)
-
   return <StickyBanner banner={banner} />
 }
