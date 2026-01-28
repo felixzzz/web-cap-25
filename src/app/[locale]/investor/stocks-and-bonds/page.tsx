@@ -6,6 +6,8 @@ import { HttpGeneralResponse, InvestorStocksAndBondsProps } from "@/lib/types"
 import { getLocalizedContent } from "@/lib/utils"
 import { Metadata } from "next"
 
+import { PageIdSetter } from "@/components/providers/query-provider"
+
 export const revalidate = 60
 
 export async function generateMetadata({
@@ -35,6 +37,7 @@ export default async function InvestorStocksAndBondsPage() {
     await getPage("stocks-and-bonds")
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <StocksAndBondsJumbotron {...data?.meta.banner} />}
       {data?.meta?.investor_content && (

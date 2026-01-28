@@ -5,6 +5,7 @@ import { HttpGeneralResponse } from "@/lib/types"
 import { Metadata } from "next"
 import { MetaContentBlock } from "@/lib/fragment"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -35,6 +36,7 @@ export default async function CookiesConsentPage() {
     await getPage("cookies-consent")
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar isBackgroundWhite />
       <ContentBlock isHaveStatus {...data?.meta?.cookies_content} />
     </>

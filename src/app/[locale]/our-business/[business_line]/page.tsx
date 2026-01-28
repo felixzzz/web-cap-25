@@ -15,6 +15,7 @@ import RelatedArticles from "../_components/RelatedArticles"
 import { Post } from "@/lib/fragment"
 import { getLocalizedContent, isContentActive } from "@/lib/utils"
 import ContentTab from "../_components/ContentTab"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export async function generateStaticParams() {
   const business: DynamicProps[] = await getPage("dynamic")
@@ -65,6 +66,7 @@ export default async function BusinessLineProducts({
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
       {data?.meta?.content_left_right && (

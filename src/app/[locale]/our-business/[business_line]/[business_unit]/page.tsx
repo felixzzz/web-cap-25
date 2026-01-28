@@ -14,6 +14,7 @@ import {
 import { notFound } from "next/navigation"
 import RelatedArticles from "../../_components/RelatedArticles"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export async function generateStaticParams() {
   try {
@@ -74,6 +75,7 @@ export default async function BusinessUnitProducts({
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
       {data?.meta?.content_left_right && (

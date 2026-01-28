@@ -169,12 +169,22 @@ export async function getHomeBanners(locale: string): Promise<{
 }
 
 export async function getHomeBannersReactQuery(locale: string): Promise<{
-  navbar: any[]
   "journey-growth": any[]
   "financial-reports": any[]
-  footer: any[]
 } | null> {
   return API.get(`home-banners?lang=${locale}`)
+    .then((res) => res.data ?? null)
+    .catch(() => null)
+}
+
+export async function getBannerPage(
+  id: string,
+  locale: string
+): Promise<{
+  navbar: any[]
+  footer: any[]
+} | null> {
+  return API.get(`banner-page?id=${id}&lang=${locale}`)
     .then((res) => res.data ?? null)
     .catch(() => null)
 }

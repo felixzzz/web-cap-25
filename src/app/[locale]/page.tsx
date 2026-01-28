@@ -22,6 +22,8 @@ import { getLocalizedContent } from "@/lib/utils"
 import { BannerRenderer } from "@/components/banner/BannerRenderer"
 // import CookieConsentBanner from "@/components/global/CookieConsentBanner"
 
+import { PageIdSetter } from "@/components/providers/query-provider"
+
 export const revalidate = 60
 
 const CookieConsentBanner = lazy(
@@ -73,6 +75,7 @@ export default async function Home({
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <SectionJumbotron {...data?.meta.banner} />}
       {data?.meta?.intro && <SectionListCard {...data?.meta.intro} />}

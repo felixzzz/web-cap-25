@@ -7,6 +7,7 @@ import { getDocuments, getDocumentsCategories, getPage } from "@/lib/api"
 import { Suspense } from "react"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -40,6 +41,7 @@ export default async function ReportsPage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <ReportsJumbotron {...data?.meta.banner} />}
       <Suspense>

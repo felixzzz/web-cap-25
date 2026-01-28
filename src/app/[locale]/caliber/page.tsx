@@ -18,6 +18,7 @@ import ContentTab from "../our-business/_components/ContentTab"
 import ResponsibilityTitle from "../sustainability/product-responsibility/_components/ResponsibilityTitle"
 import ResponsibilityList from "../sustainability/product-responsibility/_components/ResponsibilityList"
 import PracticeContent from "../sustainability/_components/PracticeContent"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -26,8 +27,7 @@ export async function generateMetadata({
 }: {
   params: { business_line: string; locale: "en" | "id" }
 }) {
-  const data: HttpGeneralResponse<EventPageProps> =
-    await getPage("event")
+  const data: HttpGeneralResponse<EventPageProps> = await getPage("event")
   return {
     title: getLocalizedContent(
       locale,
@@ -47,8 +47,7 @@ export default async function Event({
 }: {
   params: { business_line: string; locale: "en" | "id" }
 }) {
-  const data: HttpGeneralResponse<EventPageProps> =
-    await getPage("event")
+  const data: HttpGeneralResponse<EventPageProps> = await getPage("event")
 
   if (!data) {
     return notFound()
@@ -56,6 +55,7 @@ export default async function Event({
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
       <PracticeContent
@@ -78,9 +78,7 @@ export default async function Event({
       {/* {news?.data.length > 0 && data?.meta?.news && (
         <RelatedArticles posts={news?.data} {...data?.meta.news} />
         )} */}
-        {data?.meta.news && (
-          <RelatedArticles posts={[]} {...data.meta.news} />
-        )}
+      {data?.meta.news && <RelatedArticles posts={[]} {...data.meta.news} />}
     </>
   )
 }

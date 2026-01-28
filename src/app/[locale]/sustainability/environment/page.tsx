@@ -12,6 +12,7 @@ import { EnvironmentPageProps, HttpGeneralResponse } from "@/lib/types"
 import { getPage } from "@/lib/api"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -43,6 +44,7 @@ export default async function SustainabilityEnvironmentPage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
       {data?.meta?.intro && <EnvironmentBenefit {...data?.meta.intro} />}

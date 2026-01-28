@@ -2,20 +2,22 @@
 
 import { useQuery } from "@tanstack/react-query"
 import { useLocale } from "next-intl"
-import { getHomeBannersReactQuery } from "@/lib/api"
+import { getBannerPage } from "@/lib/api"
 import { BannerRenderer } from "../banner/BannerRenderer"
+import { usePageId } from "../providers/query-provider"
 
 export default function FooterBanner() {
   const locale = useLocale()
+  const { pageId } = usePageId()
 
   const { data: homeBanners } = useQuery({
-    queryKey: ["home-banners", locale],
-    queryFn: () => getHomeBannersReactQuery(locale),
+    queryKey: ["pages-banner", pageId, locale],
+    queryFn: () => getBannerPage(pageId as string, locale),
+    enabled: !!pageId,
     refetchOnWindowFocus: false,
     refetchInterval: false,
   })
 
-  // Use navbar banners for footer as well, or we could look for a 'footer' key if added later
   const banners = homeBanners?.footer || []
 
   if (!banners || banners.length === 0) return null

@@ -11,6 +11,7 @@ import SocialHumanRight from "../_components/SocialHumanRight"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
 import SocialProgram from "../_components/SocialProgram"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -41,6 +42,7 @@ export default async function RootPage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
 
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}

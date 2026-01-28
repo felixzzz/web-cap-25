@@ -11,6 +11,7 @@ import { HttpGeneralResponse, WhoWeAreProps } from "@/lib/types"
 import { MetaDocumentItem } from "@/lib/fragment"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -47,6 +48,7 @@ export default async function WhoWeArePage() {
   return (
     <>
       <Navbar />
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       {data?.meta?.banner && <WhoWeAreJumbotron {...data?.meta?.banner} />}
       {data?.meta?.intro && <WhoWeAreChandraAsri {...data?.meta?.intro} />}
       {data?.meta?.in_numbers && <WhoWeAreStats {...data?.meta?.in_numbers} />}
@@ -56,7 +58,9 @@ export default async function WhoWeArePage() {
       {data?.meta?.core_values && (
         <WhoWeAreCoreValue {...data?.meta?.core_values} />
       )}
-      {data?.meta?.milestone && <WhoWeAreMilestone {...data?.meta?.milestone} />}
+      {data?.meta?.milestone && (
+        <WhoWeAreMilestone {...data?.meta?.milestone} />
+      )}
       {data?.meta?.download && (
         <WhoWeAreDownload
           {...data?.meta?.download}
