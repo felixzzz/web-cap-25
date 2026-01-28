@@ -157,7 +157,7 @@ export default function NewsDetailContent({
                 <div className="w-full">
                   <BannerRenderer
                     banners={banners!.left}
-                    aspectRatio="16/9"
+                    aspectRatio="21/9"
                     position="left"
                   />
                 </div>
@@ -312,7 +312,7 @@ export default function NewsDetailContent({
             >
               <div className="sticky top-24">
                 <BannerRenderer
-                  aspectRatio="16/9"
+                  aspectRatio="21/9"
                   banners={banners!.right}
                   position="right"
                 />

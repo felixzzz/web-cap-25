@@ -11,7 +11,15 @@ interface BannerCardProps {
   banner: Banner
   title?: string
   className?: string
-  aspectRatio?: "16/9" | "4/3" | "9/16" | "3/4" | "1/1" | "21/5" | "21/4"
+  aspectRatio?:
+    | "16/9"
+    | "4/3"
+    | "9/16"
+    | "3/4"
+    | "1/1"
+    | "21/5"
+    | "21/4"
+    | "21/9"
 }
 
 export function BannerCard({
@@ -130,7 +138,7 @@ export function BannerCard({
 
             {banner.description && (
               <p
-                className="mb-0 line-clamp-1 text-[10px] text-xs md:mb-2 md:text-xs lg:line-clamp-3 lg:text-sm"
+                className="mb-3 line-clamp-1 text-[10px] text-xs md:mb-2 md:text-xs lg:line-clamp-3 lg:text-sm"
                 style={{ color: textColor }}
               >
                 {banner.description}

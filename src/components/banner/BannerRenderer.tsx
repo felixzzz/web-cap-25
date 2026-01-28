@@ -8,7 +8,15 @@ interface BannerRendererProps {
   banners: Banner[]
   position: "left" | "right" | "center" | "bottom"
   className?: string
-  aspectRatio?: "16/9" | "4/3" | "9/16" | "3/4" | "1/1" | "21/5" | "21/4"
+  aspectRatio?:
+    | "16/9"
+    | "4/3"
+    | "9/16"
+    | "3/4"
+    | "1/1"
+    | "21/5"
+    | "21/4"
+    | "21/9"
 }
 
 export function BannerRenderer({
