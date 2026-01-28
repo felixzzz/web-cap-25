@@ -10,6 +10,7 @@ import ResponsibilityList from "./_components/ResponsibilityList"
 import { getPage } from "@/lib/api"
 import { getLocalizedContent } from "@/lib/utils"
 import { ProductResponsibility, HttpGeneralResponse } from "@/lib/types"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -42,6 +43,7 @@ export default async function RootPage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta?.banner} />}
       {data?.meta?.content_left_image && (

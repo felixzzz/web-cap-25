@@ -12,6 +12,7 @@ import { Metadata } from "next"
 import { MetaDocumentItem, MetaTopics, PostManagement } from "@/lib/fragment"
 import { Suspense } from "react"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -49,6 +50,7 @@ export default async function ManagementAndStructurePage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && (
         <AboutManagementJumbotron {...data?.meta.banner} />

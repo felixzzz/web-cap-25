@@ -1,14 +1,44 @@
 "use client"
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-
-type Prop = {
-  children: React.ReactNode
-}
+import { createContext, useContext, useEffect, useState } from "react"
 
 const queryClient = new QueryClient()
-export function QueryClientProviderWrapper({ children }: Readonly<Prop>) {
+
+type PageContextType = {
+  pageId: string | null
+  setPageId: (id: string | null) => void
+}
+
+const PageIdContext = createContext<PageContextType>({
+  pageId: null,
+  setPageId: () => {},
+})
+
+export const usePageId = () => useContext(PageIdContext)
+
+export function PageIdSetter({ id }: { id: string }) {
+  const { setPageId } = usePageId()
+
+  useEffect(() => {
+    setPageId(id)
+  }, [id, setPageId])
+
+  return null
+}
+
+export function QueryClientProviderWrapper({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const [pageId, setPageId] = useState<string | null>(null)
+
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <PageIdContext.Provider value={{ pageId, setPageId }}>
+        {children}
+      </PageIdContext.Provider>
+    </QueryClientProvider>
   )
 }

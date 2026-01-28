@@ -5,6 +5,7 @@ import { getPage } from "@/lib/api"
 import { AwardsProps, HttpGeneralResponse } from "@/lib/types"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -36,6 +37,7 @@ export default async function AwardsAndRecognitionPage() {
   )
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <AwardsJumbotron {...data?.meta.banner} />}
       {data?.meta?.awards && data?.meta?.certification && (

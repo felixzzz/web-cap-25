@@ -5,6 +5,7 @@ import { HttpGeneralResponse, WhistleblowingProps } from "@/lib/types"
 import { MetaTopics } from "@/lib/fragment"
 import { getLocalizedContent } from "@/lib/utils"
 import { Metadata } from "next"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -40,6 +41,7 @@ export default async function WhistleblowingPage() {
   return (
     <>
       <div className="mt-16">
+        {data?.id && <PageIdSetter id={data.id.toString()} />}
         <Navbar isBackgroundWhite />
         {data?.meta?.banner && (
           <WhistleblowingForm {...data?.meta.banner} topics={dataTopics} />
