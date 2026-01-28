@@ -78,6 +78,7 @@ export type Banner = {
   cta_url: string
   cta_label: string
   cta_gtm: string
+  is_hide_in_mobile: boolean
 }
 
 export type BannerResponse = {

@@ -15,9 +15,14 @@ import { cn } from "@/lib/utils"
 interface BannerCarouselProps {
   banners: Banner[]
   className?: string
+  aspectRatio?: "16/9" | "4/3" | "9/16" | "3/4" | "1/1" | "21/5" | "21/4"
 }
 
-export function BannerCarousel({ banners, className }: BannerCarouselProps) {
+export function BannerCarousel({
+  banners,
+  className,
+  aspectRatio,
+}: BannerCarouselProps) {
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
@@ -54,7 +59,7 @@ export function BannerCarousel({ banners, className }: BannerCarouselProps) {
         <CarouselContent>
           {banners.map((banner) => (
             <CarouselItem key={banner.id}>
-              <BannerCard banner={banner} />
+              <BannerCard banner={banner} aspectRatio={aspectRatio} />
             </CarouselItem>
           ))}
         </CarouselContent>

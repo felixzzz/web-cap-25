@@ -11,9 +11,15 @@ interface BannerCardProps {
   banner: Banner
   title?: string
   className?: string
+  aspectRatio?: "16/9" | "4/3" | "9/16" | "3/4" | "1/1" | "21/5" | "21/4"
 }
 
-export function BannerCard({ banner, title, className }: BannerCardProps) {
+export function BannerCard({
+  banner,
+  title,
+  className,
+  aspectRatio,
+}: BannerCardProps) {
   const [textColor, setTextColor] = useState("white")
 
   const imageUrl =
@@ -60,11 +66,13 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
 
   return (
     <div
-      className={`bg-gray-900 group relative block min-h-[180px] w-full overflow-hidden rounded-xl ${className}`}
+      className={`bg-gray-900 group relative block w-full overflow-hidden rounded-xl ${className}`}
       style={{
-        aspectRatio: banner.aspect_ratio
-          ? banner.aspect_ratio.replace(":", "/")
-          : "4/3",
+        aspectRatio: aspectRatio
+          ? aspectRatio.replace(":", "/")
+          : banner.aspect_ratio
+            ? banner.aspect_ratio.replace(":", "/")
+            : "4/3",
       }}
     >
       {banner.html ? (
@@ -115,14 +123,14 @@ export function BannerCard({ banner, title, className }: BannerCardProps) {
             style={{ color: textColor }}
           >
             {banner.title && (
-              <h3 className="mb-2 text-base font-bold leading-tight lg:text-2xl">
+              <h3 className="mb-0 text-base font-bold leading-tight md:mb-2 lg:text-2xl">
                 {banner.title}
               </h3>
             )}
 
             {banner.description && (
               <p
-                className="mb-2 line-clamp-2 text-xs lg:mb-4 lg:line-clamp-3 lg:text-sm"
+                className="mb-0 line-clamp-1 text-[10px] text-xs md:mb-2 md:text-xs lg:line-clamp-3 lg:text-sm"
                 style={{ color: textColor }}
               >
                 {banner.description}

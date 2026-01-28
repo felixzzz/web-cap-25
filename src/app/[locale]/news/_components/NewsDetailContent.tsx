@@ -9,7 +9,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { SITE_URL } from "@/lib/constant"
 import { PostNews } from "@/lib/fragment"
 import { BannerResponse } from "@/lib/types"
-import { assetUrl, dateFormater, getLocalizedContent } from "@/lib/utils"
+import { assetUrl, cn, dateFormater, getLocalizedContent } from "@/lib/utils"
 import { useLocale } from "next-intl"
 import Image from "next/image"
 
@@ -79,7 +79,7 @@ export default function NewsDetailContent({
 
   return (
     <section className="relative">
-      <div className="mx-auto w-full max-w-[1680px] px-4 pb-8 pt-6 lg:pb-[126px]">
+      <div className="mx-auto w-full px-4 pb-8 pt-6 lg:max-w-[1680px] lg:pb-[126px]">
         <CustomBreadcrumb
           data={[
             {
@@ -146,6 +146,25 @@ export default function NewsDetailContent({
                 />
               </AspectRatio>
             )}
+            {hasLeft ? (
+              <div
+                className={cn(
+                  banners?.left[0].is_hide_in_mobile
+                    ? "hidden lg:col-span-2"
+                    : "mb-6 lg:col-span-3 lg:hidden"
+                )}
+              >
+                <div className="w-full">
+                  <BannerRenderer
+                    banners={banners!.left}
+                    aspectRatio="16/9"
+                    position="left"
+                  />
+                </div>
+              </div>
+            ) : hasAnyBanner ? (
+              <div className="hidden lg:block" />
+            ) : null}
             {data?.published_at && (
               <p className="mb-1 text-xs font-semibold tracking-[0.8px] text-gray lg:text-md">
                 {dateFormater(data?.published_at)}
@@ -277,6 +296,26 @@ export default function NewsDetailContent({
             <div className="hidden lg:block">
               <div className="sticky top-24">
                 <BannerRenderer banners={banners!.right} position="right" />
+              </div>
+            </div>
+          ) : hasAnyBanner ? (
+            <div className="hidden lg:block" />
+          ) : null}
+
+          {hasRight ? (
+            <div
+              className={cn(
+                banners!.right[0].is_hide_in_mobile
+                  ? "hidden"
+                  : "mb-6 block lg:hidden"
+              )}
+            >
+              <div className="sticky top-24">
+                <BannerRenderer
+                  aspectRatio="16/9"
+                  banners={banners!.right}
+                  position="right"
+                />
               </div>
             </div>
           ) : hasAnyBanner ? (
