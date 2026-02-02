@@ -43,7 +43,7 @@ export default async function NewsPage({
 
   return (
     <>
-      <div className="mt-16">
+      <div style={{ marginTop: "calc(64px + var(--sticky-banner-height, 0px))" }}>
         <Navbar isBackgroundWhite />
         {data?.id && <PageIdSetter id={data.id.toString()} />}
         {featuredPost && (

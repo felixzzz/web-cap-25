@@ -128,7 +128,7 @@ export default async function NewsDetailPage({
 
   return (
     <>
-      <div className="mt-16">
+      <div style={{ marginTop: "calc(64px + var(--sticky-banner-height, 0px))" }}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
