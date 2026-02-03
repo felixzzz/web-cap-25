@@ -70,15 +70,29 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
 
   return (
     <div
-      className="fixed top-0 z-[998] h-16 w-full shadow-md"
+      className="fixed top-0 z-[998] h-16 w-full shadow-md bg-primary overflow-hidden"
       style={{
-        backgroundImage: imageUrl
-          ? `url(${imageUrl})`
-          : "linear-gradient(to right, rgb(239, 246, 255), rgb(219, 234, 254))",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundColor: "#09102B",
       }}
     >
+      {imageUrl ? (
+        <img
+          src={imageUrl}
+          alt={banner.title || "Banner"}
+          className="absolute inset-0 h-full w-full object-cover"
+          onError={(e) => {
+            e.currentTarget.style.display = "none"
+          }}
+        />
+      ) : (
+        <div
+          className="absolute inset-0 h-full w-full"
+          style={{
+            background:
+              "linear-gradient(to right, rgb(239, 246, 255), rgb(219, 234, 254))",
+          }}
+        />
+      )}
       <div className="container relative flex h-full items-center justify-between gap-2 px-4 lg:gap-4">
         {/* Banner Content */}
         <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden lg:gap-4">
