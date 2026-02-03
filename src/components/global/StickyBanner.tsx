@@ -75,24 +75,44 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
         backgroundColor: "#09102B",
       }}
     >
-      {imageUrl ? (
-        <img
-          src={imageUrl}
-          alt={banner.title || "Banner"}
-          className="absolute inset-0 h-full w-full object-cover"
-          onError={(e) => {
-            e.currentTarget.style.display = "none"
-          }}
-        />
-      ) : (
-        <div
-          className="absolute inset-0 h-full w-full"
-          style={{
-            background:
-              "linear-gradient(to right, rgb(239, 246, 255), rgb(219, 234, 254))",
-          }}
-        />
-      )}
+      {(() => {
+        if (banner.video) {
+          return (
+            <video
+              src={assetUrl(banner.video)!}
+              poster={imageUrl || undefined}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )
+        }
+
+        if (imageUrl) {
+          return (
+            <img
+              src={imageUrl}
+              alt={banner.title || "Banner"}
+              className="absolute inset-0 h-full w-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = "none"
+              }}
+            />
+          )
+        }
+
+        return (
+          <div
+            className="absolute inset-0 h-full w-full"
+            style={{
+              background:
+                "linear-gradient(to right, rgb(239, 246, 255), rgb(219, 234, 254))",
+            }}
+          />
+        )
+      })()}
       <div className="container relative flex h-full items-center justify-between gap-2 px-4 lg:gap-4">
         {/* Banner Content */}
         <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden lg:gap-4">
