@@ -146,6 +146,7 @@ export type BusinessSolutionsProp = {
   seo_meta?: SeoMeta
   contant_tab: BusinessSolutionsContentTab
   environmental_performance?: MetaInNumbers
+  circular_economy_intro?: MetaCircularEconomyIntro
   circular_economy_tabs?: CircularEconomyTabsMap
   policy_performance?: MetaInNumbers
   policy_items?: { items_en?: CircularEconomyTabItem[]; items_id?: CircularEconomyTabItem[] }
@@ -462,6 +463,17 @@ export type ContentProductResponsibility = {
   title2_en: string
   description_id: string
   description_en: string
+}
+
+export type MetaCircularEconomyIntro = {
+  status_id: string
+  status_en: string
+  image_en: string
+  image_id: string
+  cta_label_id: string
+  cta_label_en: string
+  cta_url_id: string
+  cta_url_en: string
 }
 
 export type MetaPraticesOfEmployment = {

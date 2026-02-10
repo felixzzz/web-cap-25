@@ -19,7 +19,7 @@ import {
     SmallPopup,
 } from "@/lib/fragment"
 import { notFound } from "next/navigation"
-import { getLocalizedContent, isContentActive } from "@/lib/utils"
+import { getLocalizedContent, isContentActive, assetUrl } from "@/lib/utils"
 
 
 
@@ -84,7 +84,19 @@ export default async function CircularEconomyPage({
             <div className="py-10">
                 <div className="container mx-auto mb-10 w-full">
                     <Image
-                        src={imgCircularEconomyMapLevel}
+                        width={1240}
+                        height={600}
+                        src={
+                            (params.locale === "en"
+                                ? data?.meta?.circular_economy_intro?.image_en
+                                : data?.meta?.circular_economy_intro?.image_id)
+                                ? assetUrl(
+                                    (params.locale === "en"
+                                        ? data?.meta?.circular_economy_intro?.image_en
+                                        : data?.meta?.circular_economy_intro?.image_id) || null
+                                )!
+                                : imgCircularEconomyMapLevel
+                        }
                         alt="Circular Economy Map"
                         className="w-full rounded-3xl object-cover"
                     />
@@ -93,6 +105,10 @@ export default async function CircularEconomyPage({
                 {/* Pass the tabs data from the API response */}
                 {data?.meta && (
                     <CircularEconomyTabs
+                        reportButton={{
+                            label: params.locale === "en" ? data.meta.circular_economy_intro?.cta_label_en || "Discover our circular economy report" : data.meta.circular_economy_intro?.cta_label_id || "Discover our circular economy report",
+                            url: params.locale === "en" ? data.meta.circular_economy_intro?.cta_url_en || `/${params.locale}/sustainability/reports-and-publications` : data.meta.circular_economy_intro?.cta_url_id || `/${params.locale}/sustainability/reports-and-publications`
+                        }}
                         tabsData={{
                             policy: {
                                 performance: data.meta.policy_performance,
@@ -122,10 +138,6 @@ export default async function CircularEconomyPage({
                     />
                 )}
             </div>
-
-            {data?.meta?.content_left_right_2 && (
-                <ContentLeftRightBlock {...data?.meta.content_left_right_2} />
-            )}
         </>
     )
 }
