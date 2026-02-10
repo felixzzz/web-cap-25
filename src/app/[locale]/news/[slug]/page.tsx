@@ -3,11 +3,12 @@ import NewsDetailContent from "../_components/NewsDetailContent"
 import NewsDetailOther from "../_components/NewsDetailOther"
 import { PaginationHandlerResponse } from "@/lib/types"
 import { PostNews } from "@/lib/fragment"
-import { getDetailPost, getPostList } from "@/lib/api"
+import { getActiveBanners, getDetailPost, getPage, getPostList } from "@/lib/api"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import { dateFormatter, getLocalizedContent } from "@/lib/utils"
 import { SITE_URL } from "@/lib/constant"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export async function generateStaticParams({
   params: { locale },
@@ -26,7 +27,7 @@ export async function generateStaticParams({
       )
       const pageSlugs = posts.data.map((item) => ({
         slug: item.slug,
-        locale
+        locale,
       }))
       allSlugs.push(...pageSlugs)
 
@@ -81,6 +82,15 @@ export default async function NewsDetailPage({
   params: { slug, locale },
 }: Readonly<{ params: { slug: string; locale: string } }>) {
   const data: PostNews = await getDetailPost(slug)
+  const banners = await getActiveBanners(slug)
+
+  let newsPageData = null
+  try {
+    newsPageData = await getPage("news")
+  } catch (error) {
+    console.error("Failed to fetch news page data:", error)
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -121,18 +131,19 @@ export default async function NewsDetailPage({
   }
 
   if (data.type !== "news") {
-    return notFound() 
+    return notFound()
   }
 
   return (
     <>
-      <div className="mt-16">
+      <div style={{ marginTop: "calc(64px + var(--sticky-banner-height, 0px))" }}>
+        {newsPageData?.id && <PageIdSetter id={newsPageData.id.toString()} />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Navbar isBackgroundWhite />
-        <NewsDetailContent data={data} path="news" />
+        <NewsDetailContent data={data} path="news" banners={banners} />
         {relatedArticles?.data?.length > 0 && (
           <NewsDetailOther data={relatedArticles.data} />
         )}

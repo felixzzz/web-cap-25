@@ -47,6 +47,12 @@ const nextConfig = {
         pathname: "**",
       },
       {
+        protocol: "https",
+        hostname: "dev-back.chandra-asri.com",
+        port: "",
+        pathname: "**",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "8000",

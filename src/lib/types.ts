@@ -62,6 +62,39 @@ import {
   MetaEmbeddedVideo,
 } from "./fragment"
 
+export type Banner = {
+  description: any
+  id: number
+  banner_group_id: number
+  title: string
+  video: string
+  image: string
+  is_active: number
+  html?: string
+  aspect_ratio: string
+  created_at: string
+  updated_at: string
+  order: number
+  cta_url: string
+  cta_label: string
+  cta_gtm: string
+  is_hide_in_mobile: boolean
+}
+
+export type BannerResponse = {
+  left: Banner[]
+  right: Banner[]
+  center: Banner[]
+  bottom: Banner[]
+}
+
+export type HomeBannersResponse = {
+  navbar: Banner[]
+  "journey-growth": Banner[]
+  "financial-reports": Banner[]
+  footer: Banner[]
+}
+
 export type HttpHandlerResponse<T> = {
   success: string
   data: T
@@ -149,11 +182,20 @@ export type BusinessSolutionsProp = {
   circular_economy_intro?: MetaCircularEconomyIntro
   circular_economy_tabs?: CircularEconomyTabsMap
   policy_performance?: MetaInNumbers
-  policy_items?: { items_en?: CircularEconomyTabItem[]; items_id?: CircularEconomyTabItem[] }
+  policy_items?: {
+    items_en?: CircularEconomyTabItem[]
+    items_id?: CircularEconomyTabItem[]
+  }
   end_to_end_performance?: MetaInNumbers
-  end_to_end_items?: { items_en?: CircularEconomyTabItem[]; items_id?: CircularEconomyTabItem[] }
+  end_to_end_items?: {
+    items_en?: CircularEconomyTabItem[]
+    items_id?: CircularEconomyTabItem[]
+  }
   technology_performance?: MetaInNumbers
-  technology_items?: { items_en?: CircularEconomyTabItem[]; items_id?: CircularEconomyTabItem[] }
+  technology_items?: {
+    items_en?: CircularEconomyTabItem[]
+    items_id?: CircularEconomyTabItem[]
+  }
 }
 
 export type CircularEconomyTabItem = {

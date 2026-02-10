@@ -13,6 +13,7 @@ import { MetaDocumentItem } from "@/lib/fragment"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
 import GovernanceSHERegulation from "./_components/GovernanceSHERegulation"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -55,6 +56,7 @@ export default async function GovernancePage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <GovernanceJumbotron {...data?.meta.banner} />}
       {data?.meta?.corporate_secretary && (

@@ -1,12 +1,17 @@
 import { BannerBlock } from "@/components/block/BannerBlock"
 import Navbar from "@/components/global/Navbar"
 import ReportContent from "./_components/ReportContent"
-import { DocumentsCategories, HttpGeneralResponse, ReportsAndPublicationsProp } from "@/lib/types"
+import {
+  DocumentsCategories,
+  HttpGeneralResponse,
+  ReportsAndPublicationsProp,
+} from "@/lib/types"
 import { getDocuments, getDocumentsCategories, getPage } from "@/lib/api"
 import { MetaDocumentItem } from "@/lib/fragment"
 import { notFound } from "next/navigation"
 import { getLocalizedContent } from "@/lib/utils"
 import { Metadata } from "next"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -44,9 +49,10 @@ export default async function RootPage({
   const data: HttpGeneralResponse<ReportsAndPublicationsProp> = await getPage(
     "reports-and-publications"
   )
-  const dataDocumentsCategories: DocumentsCategories[] = await getDocumentsCategories(
-    `?document_page=sustainability_reports&section=document`
-  )
+  const dataDocumentsCategories: DocumentsCategories[] =
+    await getDocumentsCategories(
+      `?document_page=sustainability_reports&section=document`
+    )
 
   if (!data) {
     return notFound()
@@ -54,6 +60,7 @@ export default async function RootPage({
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar
         isBackgroundWhite={
           getLocalizedContent(
@@ -69,7 +76,12 @@ export default async function RootPage({
           locale,
           data?.meta?.document?.status_en,
           data?.meta?.document?.status_id
-        ) === "active" && <ReportContent categories={dataDocumentsCategories} documents={dataDocuments?.data} />}
+        ) === "active" && (
+          <ReportContent
+            categories={dataDocumentsCategories}
+            documents={dataDocuments?.data}
+          />
+        )}
     </>
   )
 }
