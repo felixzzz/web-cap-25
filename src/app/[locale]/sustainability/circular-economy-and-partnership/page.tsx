@@ -14,7 +14,8 @@ import { EnvironmentPerformance } from "../environment/_components/EnvironmentPe
 import { BusinessSolutionsProp, HttpGeneralResponse } from "@/lib/types"
 import { SmallPopup } from "@/lib/fragment"
 import { notFound } from "next/navigation"
-import { getLocalizedContent, isContentActive } from "@/lib/utils"
+import { getLocalizedContent, isContentActive, assetUrl } from "@/lib/utils"
+
 
 const ENVIROMENTAL_PERFORMANCE_DUMMY_DATA = {
   title_en: "Environmental Performance for Sustainability",

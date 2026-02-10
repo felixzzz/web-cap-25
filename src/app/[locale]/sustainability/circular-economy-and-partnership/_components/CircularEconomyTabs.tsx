@@ -6,7 +6,7 @@ import { useLocale } from "next-intl"
 import { EnvironmentPerformance } from "../../environment/_components/EnvironmentPerfornamce"
 import { CircularEconomyTabsMap } from "@/lib/types"
 
-export default function CircularEconomyTabs({ tabsData }: { tabsData: CircularEconomyTabsMap }) {
+export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsData: CircularEconomyTabsMap, reportButton?: { label: string, url: string } }) {
     const locale = useLocale()
 
     if (!tabsData) return null
@@ -36,8 +36,8 @@ export default function CircularEconomyTabs({ tabsData }: { tabsData: CircularEc
                         />
                     )}
                     <div className="mt-8 flex justify-center">
-                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            Discover our circular economy report
+                        <a href={reportButton?.url || "#"} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            {reportButton?.label || "Discover our circular economy report"}
                         </a>
                     </div>
                 </div>
@@ -58,8 +58,8 @@ export default function CircularEconomyTabs({ tabsData }: { tabsData: CircularEc
                         />
                     )}
                     <div className="mt-8 flex justify-center">
-                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            Discover our circular economy report
+                        <a href={reportButton?.url || "#"} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            {reportButton?.label || "Discover our circular economy report"}
                         </a>
                     </div>
                 </div>
@@ -80,8 +80,8 @@ export default function CircularEconomyTabs({ tabsData }: { tabsData: CircularEc
                         />
                     )}
                     <div className="mt-8 flex justify-center">
-                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            Discover our circular economy report
+                        <a href={reportButton?.url || "#"} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            {reportButton?.label || "Discover our circular economy report"}
                         </a>
                     </div>
                 </div>

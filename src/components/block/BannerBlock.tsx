@@ -35,26 +35,40 @@ export function BannerBlock({
     return <div className="py-8"></div>
   }
 
+  const PLACEHOLDER_IMAGE = "images/post/temp-card-item.jpg"
+
+  const getLocalizedImage = (locale: string, en: string | null, id: string | null) => {
+    if (locale === "en") {
+      return en && en !== PLACEHOLDER_IMAGE ? en : id
+    }
+    return id && id !== PLACEHOLDER_IMAGE ? id : en
+  }
+
+  const getLocalizedAlt = (locale: string, en: string | null, id: string | null) => {
+    if (locale === "en") {
+      return en || id
+    }
+    return id || en
+  }
+
   return (
     <>
       <Jumbotron
-        bg={assetUrl(
-          getLocalizedContent(locale, image_desktop_id, image_desktop_id)
-        )}
+        bg={assetUrl(getLocalizedImage(locale, image_desktop_en, image_desktop_id))}
         bgMobile={assetUrl(
-          getLocalizedContent(locale, image_mobile_id, image_mobile_id)
+          getLocalizedImage(locale, image_mobile_en, image_mobile_id)
         )}
         className={className}
         hideLoadingVertical={hideLoadingVertical}
-        alt={getLocalizedContent(
+        alt={getLocalizedAlt(
           locale,
-          alt_text_image_desktop_id,
-          alt_text_image_desktop_en
+          alt_text_image_desktop_en,
+          alt_text_image_desktop_id
         )}
-        altMobile={getLocalizedContent(
+        altMobile={getLocalizedAlt(
           locale,
-          alt_text_image_mobile_id,
-          alt_text_image_mobile_en
+          alt_text_image_mobile_en,
+          alt_text_image_mobile_id
         )}
       >
         <JumbotronContent

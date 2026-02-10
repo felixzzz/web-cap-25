@@ -16,6 +16,7 @@ export default function ContentTabSwiper({
   list: {
     status: string
     image: string
+    title: string
     description: string
   }[]
 }) {
@@ -77,10 +78,14 @@ export default function ContentTabSwiper({
               )}
               <div
                 className="[&>h2]:mb-4 [&>h2]:text-xl [&>p]:mb-4 [&>ul]:grid [&>ul]:grid-cols-1 [&>ul]:gap-y-6 [&>ul]:list-disc [&>ul]:ml-4 [&>ul>li::marker]:text-[#53C3D9]"
-                dangerouslySetInnerHTML={{
+              >
+                {listImage.title && (
+                  <h2 className="text-3xl font-bold text-blue-950 mb-4">{listImage.title}</h2>
+                )}
+                <div dangerouslySetInnerHTML={{
                   __html: listImage.description,
-                }}
-              />
+                }} />
+              </div>
             </div>
           </SwiperSlide>
         ))}
