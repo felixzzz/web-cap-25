@@ -100,10 +100,11 @@ export default function NewsDetailContent({
           className="container mx-auto mb-5 lg:mb-[40px]"
         />
         <div
-          className={`grid grid-cols-1 items-start ${hasAnyBanner
+          className={`grid grid-cols-1 ${
+            hasAnyBanner
               ? "lg:grid-cols-[230px_minmax(0,1fr)_230px] xl:grid-cols-[230px_minmax(0,1fr)_230px]"
               : "lg:grid-cols-12"
-            } ${hasLeft || hasRight ? "gap-4" : "gap-8"}`}
+          } ${hasLeft || hasRight ? "gap-4" : "gap-8"}`}
         >
           {hasLeft ? (
             <div className="hidden lg:block">
@@ -116,8 +117,9 @@ export default function NewsDetailContent({
           ) : null}
 
           <div
-            className={`col-span-1 mx-auto max-w-[850px] lg:mx-0 lg:max-w-none ${!hasAnyBanner ? "lg:col-span-8 lg:col-start-3" : ""
-              }`}
+            className={`col-span-1 mx-auto max-w-[850px] lg:mx-0 lg:max-w-none ${
+              !hasAnyBanner ? "lg:col-span-8 lg:col-start-3" : ""
+            }`}
           >
             {/* Removed top center banner renderer */}
             {data?.image && (
