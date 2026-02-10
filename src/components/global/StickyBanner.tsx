@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Banner } from "@/lib/types"
 import { assetUrl } from "@/lib/utils"
 import { FastAverageColor } from "fast-average-color"
+import NextImage from "next/image"
 
 const BANNER_STORAGE_KEY = "sticky-banner-closed"
 
@@ -37,7 +38,7 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
 
       fac
         .getColorAsync(proxiedUrl)
-        .then((color) => {
+        .then((color: any) => {
           setTextColor(color.isDark ? "white" : "black")
         })
         .catch(() => {
@@ -92,11 +93,12 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
 
         if (imageUrl) {
           return (
-            <img
+            <NextImage
               src={imageUrl}
               alt={banner.title || "Banner"}
-              className="absolute inset-0 h-full w-full object-cover"
-              onError={(e) => {
+              fill
+              className="object-cover"
+              onError={(e: any) => {
                 e.currentTarget.style.display = "none"
               }}
             />

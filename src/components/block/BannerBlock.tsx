@@ -46,9 +46,9 @@ export function BannerBlock({
 
   const getLocalizedAlt = (locale: string, en: string | null, id: string | null) => {
     if (locale === "en") {
-      return en || id
+      return en || id || undefined
     }
-    return id || en
+    return id || en || undefined
   }
 
   return (

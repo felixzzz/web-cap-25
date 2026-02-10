@@ -16,7 +16,7 @@ export default function ContentTabSwiper({
   list: {
     status: string
     image: string
-    title: string
+    title?: string
     description: string
   }[]
 }) {
