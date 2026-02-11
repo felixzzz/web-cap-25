@@ -183,34 +183,25 @@ export type BusinessSolutionsProp = {
   circular_economy_tabs?: CircularEconomyTabsMap
   policy_performance?: MetaInNumbers
   policy_items?: {
-    hero_image_en?: string
-    hero_image_id?: string
-    hero_image_alt_en?: string
-    hero_image_alt_id?: string
-    tab_description_en?: string
-    tab_description_id?: string
+    hero_image?: string
+    hero_image_alt?: string
+    tab_description?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }
   end_to_end_performance?: MetaInNumbers
   end_to_end_items?: {
-    hero_image_en?: string
-    hero_image_id?: string
-    hero_image_alt_en?: string
-    hero_image_alt_id?: string
-    tab_description_en?: string
-    tab_description_id?: string
+    hero_image?: string
+    hero_image_alt?: string
+    tab_description?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }
   technology_performance?: MetaInNumbers
   technology_items?: {
-    hero_image_en?: string
-    hero_image_id?: string
-    hero_image_alt_en?: string
-    hero_image_alt_id?: string
-    tab_description_en?: string
-    tab_description_id?: string
+    hero_image?: string
+    hero_image_alt?: string
+    tab_description?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }

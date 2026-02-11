@@ -20,6 +20,15 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
         const tab = tabsData[tabKey]
         if (!tab) return null
 
+        // DEBUG: Log what tab is receiving
+        console.log(`🎯 [${tabKey}] TabData Received:`, {
+            hero_image: tab.hero_image,
+            hero_image_alt: tab.hero_image_alt,
+            tab_description: tab.tab_description?.substring(0, 50) + '...',
+            has_performance: !!tab.performance,
+            items_count: tab.items?.length
+        })
+
         return (
             <TabsContent value={tabKey}>
 

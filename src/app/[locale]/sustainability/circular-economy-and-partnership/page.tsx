@@ -113,24 +113,32 @@ export default async function CircularEconomyPage({
           />
         </div>
         {/* Pass the tabs data from the API response */}
-        {/* DEBUG: Log raw API data */}
+        {(() => {
+          console.log("🔍 RAW API DATA:", {
+            policy_items: data?.meta?.policy_items,
+            end_to_end_items: data?.meta?.end_to_end_items,
+            technology_items: data?.meta?.technology_items
+          })
+          return null
+        })()}
 
         {data?.meta && (
           <CircularEconomyTabs
             tabsData={{
               policy: {
-                hero_image:
-                  params.locale === "en"
+                // Try new field name first, fallback to old _en/_id fields
+                hero_image: data.meta.policy_items?.hero_image ||
+                  (params.locale === "en"
                     ? data.meta.policy_items?.hero_image_en
-                    : data.meta.policy_items?.hero_image_id,
-                hero_image_alt:
-                  params.locale === "en"
+                    : data.meta.policy_items?.hero_image_id),
+                hero_image_alt: data.meta.policy_items?.hero_image_alt ||
+                  (params.locale === "en"
                     ? data.meta.policy_items?.hero_image_alt_en
-                    : data.meta.policy_items?.hero_image_alt_id,
-                tab_description:
-                  params.locale === "en"
+                    : data.meta.policy_items?.hero_image_alt_id),
+                tab_description: data.meta.policy_items?.tab_description ||
+                  (params.locale === "en"
                     ? data.meta.policy_items?.tab_description_en
-                    : data.meta.policy_items?.tab_description_id,
+                    : data.meta.policy_items?.tab_description_id),
                 performance: data.meta.policy_performance,
                 // @ts-ignore
                 items:
@@ -139,18 +147,18 @@ export default async function CircularEconomyPage({
                     : data.meta.policy_items?.items_id,
               },
               "end-to-end": {
-                hero_image:
-                  params.locale === "en"
+                hero_image: data.meta.end_to_end_items?.hero_image ||
+                  (params.locale === "en"
                     ? data.meta.end_to_end_items?.hero_image_en
-                    : data.meta.end_to_end_items?.hero_image_id,
-                hero_image_alt:
-                  params.locale === "en"
+                    : data.meta.end_to_end_items?.hero_image_id),
+                hero_image_alt: data.meta.end_to_end_items?.hero_image_alt ||
+                  (params.locale === "en"
                     ? data.meta.end_to_end_items?.hero_image_alt_en
-                    : data.meta.end_to_end_items?.hero_image_alt_id,
-                tab_description:
-                  params.locale === "en"
+                    : data.meta.end_to_end_items?.hero_image_alt_id),
+                tab_description: data.meta.end_to_end_items?.tab_description ||
+                  (params.locale === "en"
                     ? data.meta.end_to_end_items?.tab_description_en
-                    : data.meta.end_to_end_items?.tab_description_id,
+                    : data.meta.end_to_end_items?.tab_description_id),
                 performance: data.meta.end_to_end_performance,
                 // @ts-ignore
                 items:
@@ -159,18 +167,18 @@ export default async function CircularEconomyPage({
                     : data.meta.end_to_end_items?.items_id,
               },
               technology: {
-                hero_image:
-                  params.locale === "en"
+                hero_image: data.meta.technology_items?.hero_image ||
+                  (params.locale === "en"
                     ? data.meta.technology_items?.hero_image_en
-                    : data.meta.technology_items?.hero_image_id,
-                hero_image_alt:
-                  params.locale === "en"
+                    : data.meta.technology_items?.hero_image_id),
+                hero_image_alt: data.meta.technology_items?.hero_image_alt ||
+                  (params.locale === "en"
                     ? data.meta.technology_items?.hero_image_alt_en
-                    : data.meta.technology_items?.hero_image_alt_id,
-                tab_description:
-                  params.locale === "en"
+                    : data.meta.technology_items?.hero_image_alt_id),
+                tab_description: data.meta.technology_items?.tab_description ||
+                  (params.locale === "en"
                     ? data.meta.technology_items?.tab_description_en
-                    : data.meta.technology_items?.tab_description_id,
+                    : data.meta.technology_items?.tab_description_id),
                 performance: data.meta.technology_performance,
                 // @ts-ignore
                 items:
