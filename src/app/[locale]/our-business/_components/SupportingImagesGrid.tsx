@@ -20,7 +20,7 @@ export default function SupportingImagesGrid({ images, className }: Props) {
             "grid-cols-1": images.length === 1,
             "grid-cols-1 md:grid-cols-2": images.length === 2,
             "grid-cols-1 md:grid-cols-2 lg:grid-cols-3": images.length === 3,
-            "grid-cols-1 md:grid-cols-2": images.length === 4,
+            "grid-cols-2": images.length === 4,
         },
         className
     )
