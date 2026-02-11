@@ -13,6 +13,7 @@ export default function ContentTabSwiper({
   index: number
   status: string
   title: string
+  description?: string
   hideOverflow?: boolean
   list: {
     status: string
@@ -35,7 +36,15 @@ export default function ContentTabSwiper({
       className={cn({ "bg-[#F8FAFD]": item.index % 2 }, "py-20")}
     >
       <div className="container flex items-center justify-between">
-        <h5 className="mb-10 text-3xl font-bold">{item.title}</h5>
+        <div className="mb-10">
+          <h5 className="text-3xl font-bold">{item.title}</h5>
+          {item.description && (
+            <div
+              className="mt-4 prose prose-lg max-w-none [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:mb-4 [&>p]:mb-4 [&>p]:text-gray-700"
+              dangerouslySetInnerHTML={{ __html: item.description }}
+            />
+          )}
+        </div>
 
         {typeof item.list === "object" && item.list.length > 1 && <div className="mr-16 hidden gap-x-4 max-md:mr-0 lg:flex">
           <button

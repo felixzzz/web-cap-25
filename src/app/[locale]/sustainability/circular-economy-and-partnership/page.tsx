@@ -15,35 +15,6 @@ import { BusinessSolutionsProp, HttpGeneralResponse } from "@/lib/types"
 import { SmallPopup } from "@/lib/fragment"
 import { notFound } from "next/navigation"
 import { getLocalizedContent, isContentActive, assetUrl } from "@/lib/utils"
-
-
-const ENVIROMENTAL_PERFORMANCE_DUMMY_DATA = {
-  title_en: "Environmental Performance for Sustainability",
-  title_id: "Kinerja Lingkungan untuk Keberlanjutan",
-  description_en:
-    "<p>We are committed to reducing our environmental footprint through continuous improvement and innovation.</p>",
-  description_id:
-    "<p>Kami berkomitmen untuk mengurangi jejak lingkungan kami melalui perbaikan terus-menerus dan inovasi.</p>",
-  status_en: "active",
-  status_id: "active",
-  numbers_en: [
-    {
-      icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
-      number: "25%",
-      title: "Total Waste Managed",
-      small_title: "Year 2025",
-    },
-  ],
-  numbers_id: [
-    {
-      icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
-      number: "25%",
-      title: "Total Limbah yang di Kelola",
-      small_title: "Tahun 2025",
-    },
-  ],
-}
-
 import ContentTab from "@/app/[locale]/our-business/_components/ContentTab"
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -115,11 +86,7 @@ export default async function CircularEconomyPage({
         </div>
         {/* Pass the tabs data from the API response */}
         {/* DEBUG: Log raw API data */}
-        {console.log("🔍 Raw API Data:", {
-          policy_items: data?.meta?.policy_items,
-          end_to_end_items: data?.meta?.end_to_end_items,
-          technology_items: data?.meta?.technology_items
-        })}
+
         {data?.meta && (
           <CircularEconomyTabs
             tabsData={{

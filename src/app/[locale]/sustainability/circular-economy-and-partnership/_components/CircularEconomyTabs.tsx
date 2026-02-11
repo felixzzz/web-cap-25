@@ -32,6 +32,8 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
 
         return (
             <TabsContent value={tabKey}>
+
+
                 {/* Performance Section (Top) */}
                 {tab.performance && (
                     <EnvironmentPerformance {...tab.performance} />
@@ -52,16 +54,6 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
                     </div>
                 )}
 
-                {/* Tab Description Section */}
-                {tab.tab_description && (
-                    <div className="container mx-auto mb-8">
-                        <div
-                            className="prose prose-lg max-w-none [&>h2]:text-2xl  [&>h2]:font-bold [&>h2]:mb-4 [&>p]:mb-4 [&>p]:text-gray-700"
-                            dangerouslySetInnerHTML={{ __html: tab.tab_description }}
-                        />
-                    </div>
-                )}
-
                 {/* Slider Items */}
                 <div className="container mx-auto mt-12">
                     {tab.items && (
@@ -69,6 +61,7 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
                             index={0}
                             status="active"
                             title={title}
+                            description={tab.tab_description}
                             list={tab.items}
                             hideOverflow={true}
                         />
