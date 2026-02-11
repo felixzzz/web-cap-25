@@ -20,6 +20,16 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
         const tab = tabsData[tabKey]
         if (!tab) return null
 
+        // DEBUG: Log tab data to console
+        console.log(`🔍 [${tabKey}] Tab Data:`, {
+            hero_image: tab.hero_image,
+            hero_image_alt: tab.hero_image_alt,
+            tab_description: tab.tab_description?.substring(0, 100),
+            hasPerformance: !!tab.performance,
+            itemsCount: tab.items?.length,
+            firstItem: tab.items?.[0]
+        })
+
         return (
             <TabsContent value={tabKey}>
                 {/* Performance Section (Top) */}
