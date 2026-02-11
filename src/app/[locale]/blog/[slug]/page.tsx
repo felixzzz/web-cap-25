@@ -130,6 +130,8 @@ export default async function NewsDetailPage({
   if (!data) return notFound()
   if (data.type !== "blog") return notFound()
 
+  const shouldDisableLanguageSwitch = data.language_availability === 'en' || data.language_availability === 'id'
+
   return (
     <div style={{ marginTop: "calc(64px + var(--sticky-banner-height, 0px))" }}>
       {newsPageData?.id && <PageIdSetter id={newsPageData.id.toString()} />}
@@ -137,7 +139,7 @@ export default async function NewsDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar isBackgroundWhite />
+      <Navbar isBackgroundWhite disableLanguageSwitch={shouldDisableLanguageSwitch} />
       <NewsDetailContent data={data} path="blog" banners={banners} />
       {relatedArticles?.data?.length > 0 && (
         <NewsDetailOther data={relatedArticles.data} />

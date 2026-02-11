@@ -62,9 +62,10 @@ export type MenuItem = z.infer<typeof MenuItemSchema>
 type Props = {
   isBackgroundWhite?: boolean
   children?: React.ReactNode
+  disableLanguageSwitch?: boolean
 }
 
-export default function Navbar({ isBackgroundWhite = false, children }: Props) {
+export default function Navbar({ isBackgroundWhite = false, children, disableLanguageSwitch = false }: Props) {
   const router = useRouter()
   const params = useParams()
   const pathname = usePathname()
@@ -345,11 +346,12 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
           </button>
           <div className="hidden lg:block">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger asChild disabled={disableLanguageSwitch}>
                 <Button
                   className="flex w-auto flex-shrink-0 gap-[2px] px-4"
                   variant="ghost"
                   size="icon"
+                  disabled={disableLanguageSwitch}
                 >
                   <Image
                     className="mr-1 size-4 rounded-full border border-white"
@@ -422,6 +424,7 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
             switchLocale={switchLocale}
             locale={locale}
             items={listMenu}
+            disableLanguageSwitch={disableLanguageSwitch}
           />
           <div
             className="fixed inset-0 left-0 z-10 h-full w-full bg-black/60"
@@ -438,10 +441,12 @@ function NavbarMobile({
   items,
   locale,
   switchLocale,
+  disableLanguageSwitch = false,
 }: {
   items: MenuItem[]
   locale: string
   switchLocale: (nextLocale: "id" | "en") => void
+  disableLanguageSwitch?: boolean
 }) {
   const { data } = useNavbarArticle()
   const [childrenData, setChildrenData] = useState<MenuItem | null>(null)
@@ -490,11 +495,12 @@ function NavbarMobile({
                 ))}
               </div>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger asChild disabled={disableLanguageSwitch}>
                   <Button
                     className="my-6 flex w-auto flex-shrink-0 gap-[2px] text-black"
                     variant="ghost"
                     size="icon"
+                    disabled={disableLanguageSwitch}
                   >
                     <Image
                       className="mr-1 size-4 rounded-full border border-white"
@@ -685,11 +691,12 @@ function NavbarMobile({
             </Link> */}
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild disabled={disableLanguageSwitch}>
               <Button
                 className="my-6 flex w-auto flex-shrink-0 gap-[2px] font-normal text-black"
                 variant="ghost"
                 size="icon"
+                disabled={disableLanguageSwitch}
               >
                 <Image
                   className="mr-1 size-4 rounded-full border border-white"
