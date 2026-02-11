@@ -15,35 +15,6 @@ import { BusinessSolutionsProp, HttpGeneralResponse } from "@/lib/types"
 import { SmallPopup } from "@/lib/fragment"
 import { notFound } from "next/navigation"
 import { getLocalizedContent, isContentActive, assetUrl } from "@/lib/utils"
-
-
-const ENVIROMENTAL_PERFORMANCE_DUMMY_DATA = {
-  title_en: "Environmental Performance for Sustainability",
-  title_id: "Kinerja Lingkungan untuk Keberlanjutan",
-  description_en:
-    "<p>We are committed to reducing our environmental footprint through continuous improvement and innovation.</p>",
-  description_id:
-    "<p>Kami berkomitmen untuk mengurangi jejak lingkungan kami melalui perbaikan terus-menerus dan inovasi.</p>",
-  status_en: "active",
-  status_id: "active",
-  numbers_en: [
-    {
-      icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
-      number: "25%",
-      title: "Total Waste Managed",
-      small_title: "Year 2025",
-    },
-  ],
-  numbers_id: [
-    {
-      icon: "images/post/thmOz6VVdIDJQRT3huuEv4jDSdwqpl8G6tsM1TGP.png",
-      number: "25%",
-      title: "Total Limbah yang di Kelola",
-      small_title: "Tahun 2025",
-    },
-  ],
-}
-
 import ContentTab from "@/app/[locale]/our-business/_components/ContentTab"
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -114,11 +85,24 @@ export default async function CircularEconomyPage({
           />
         </div>
         {/* Pass the tabs data from the API response */}
-        {/* Pass the tabs data from the API response */}
+        {/* DEBUG: Log raw API data */}
+
         {data?.meta && (
           <CircularEconomyTabs
             tabsData={{
               policy: {
+                hero_image:
+                  params.locale === "en"
+                    ? data.meta.policy_items?.hero_image_en
+                    : data.meta.policy_items?.hero_image_id,
+                hero_image_alt:
+                  params.locale === "en"
+                    ? data.meta.policy_items?.hero_image_alt_en
+                    : data.meta.policy_items?.hero_image_alt_id,
+                tab_description:
+                  params.locale === "en"
+                    ? data.meta.policy_items?.tab_description_en
+                    : data.meta.policy_items?.tab_description_id,
                 performance: data.meta.policy_performance,
                 // @ts-ignore
                 items:
@@ -127,6 +111,18 @@ export default async function CircularEconomyPage({
                     : data.meta.policy_items?.items_id,
               },
               "end-to-end": {
+                hero_image:
+                  params.locale === "en"
+                    ? data.meta.end_to_end_items?.hero_image_en
+                    : data.meta.end_to_end_items?.hero_image_id,
+                hero_image_alt:
+                  params.locale === "en"
+                    ? data.meta.end_to_end_items?.hero_image_alt_en
+                    : data.meta.end_to_end_items?.hero_image_alt_id,
+                tab_description:
+                  params.locale === "en"
+                    ? data.meta.end_to_end_items?.tab_description_en
+                    : data.meta.end_to_end_items?.tab_description_id,
                 performance: data.meta.end_to_end_performance,
                 // @ts-ignore
                 items:
@@ -135,6 +131,18 @@ export default async function CircularEconomyPage({
                     : data.meta.end_to_end_items?.items_id,
               },
               technology: {
+                hero_image:
+                  params.locale === "en"
+                    ? data.meta.technology_items?.hero_image_en
+                    : data.meta.technology_items?.hero_image_id,
+                hero_image_alt:
+                  params.locale === "en"
+                    ? data.meta.technology_items?.hero_image_alt_en
+                    : data.meta.technology_items?.hero_image_alt_id,
+                tab_description:
+                  params.locale === "en"
+                    ? data.meta.technology_items?.tab_description_en
+                    : data.meta.technology_items?.tab_description_id,
                 performance: data.meta.technology_performance,
                 // @ts-ignore
                 items:

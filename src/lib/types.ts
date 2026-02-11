@@ -203,11 +203,18 @@ export type CircularEconomyTabItem = {
   title: string
   image: string
   description: string
+  supporting_images?: Array<{
+    image: string
+    alt: string
+  }>
   cta_label: string
   cta_url: string
 }
 
 export type CircularEconomyTabData = {
+  hero_image?: string
+  hero_image_alt?: string
+  tab_description?: string
   performance?: MetaInNumbers
   items?: CircularEconomyTabItem[]
 }

@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import { useRef } from "react"
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
+import SupportingImagesGrid from "./SupportingImagesGrid"
 
 export default function ContentTabSwiper({
   hideOverflow,
@@ -12,12 +13,17 @@ export default function ContentTabSwiper({
   index: number
   status: string
   title: string
+  description?: string
   hideOverflow?: boolean
   list: {
     status: string
     image: string
     title?: string
     description: string
+    supporting_images?: Array<{
+      image: string
+      alt: string
+    }>
   }[]
 }) {
   const swiperRef = useRef<SwiperRef>(null)
@@ -30,7 +36,15 @@ export default function ContentTabSwiper({
       className={cn({ "bg-[#F8FAFD]": item.index % 2 }, "py-20")}
     >
       <div className="container flex items-center justify-between">
-        <h5 className="mb-10 text-3xl font-bold">{item.title}</h5>
+        <div className="mb-10">
+          <h5 className="text-3xl font-bold">{item.title}</h5>
+          {item.description && (
+            <div
+              className="mt-4 prose prose-lg max-w-none [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:mb-4 [&>p]:mb-4 [&>p]:text-gray-700"
+              dangerouslySetInnerHTML={{ __html: item.description }}
+            />
+          )}
+        </div>
 
         {typeof item.list === "object" && item.list.length > 1 && <div className="mr-16 hidden gap-x-4 max-md:mr-0 lg:flex">
           <button
@@ -66,26 +80,33 @@ export default function ContentTabSwiper({
       <Swiper className={cn(hideOverflow ? "overflow-hidden" : "!overflow-visible", "mb-6 lg:mb-0")} slidesPerView={1} ref={swiperRef} autoHeight>
         {item.list.map((listImage, listImageIndex) => (
           <SwiperSlide key={listImageIndex}>
-            <div className="container flex flex-col items-center justify-center gap-y-6 lg:flex-row lg:gap-x-24 lg:gap-y-0">
-              {listImage.image && (
-                <Image
-                  width={516}
-                  height={516}
-                  src={assetUrl(listImage.image) || ""}
-                  alt={item.title}
-                  className="size-80 object-cover xl:size-[516px] rounded-3xl"
-                />
-              )}
-              <div
-                className="[&>h2]:mb-4 [&>h2]:text-xl [&>p]:mb-4 [&>ul]:grid [&>ul]:grid-cols-1 [&>ul]:gap-y-6 [&>ul]:list-disc [&>ul]:ml-4 [&>ul>li::marker]:text-[#53C3D9]"
-              >
-                {listImage.title && (
-                  <h2 className="text-3xl font-bold text-blue-950 mb-4">{listImage.title}</h2>
+            <div className="container">
+              <div className="flex flex-col items-center justify-center gap-y-6 lg:flex-row lg:gap-x-24 lg:gap-y-0">
+                {listImage.image && (
+                  <Image
+                    width={516}
+                    height={516}
+                    src={assetUrl(listImage.image) || ""}
+                    alt={item.title}
+                    className="size-80 object-cover xl:size-[516px] rounded-3xl"
+                  />
                 )}
-                <div dangerouslySetInnerHTML={{
-                  __html: listImage.description,
-                }} />
+                <div
+                  className="[&>h2]:mb-4 [&>h2]:text-xl [&>p]:mb-4 [&>ul]:grid [&>ul]:grid-cols-1 [&>ul]:gap-y-6 [&>ul]:list-disc [&>ul]:ml-4 [&>ul>li::marker]:text-[#53C3D9]"
+                >
+                  {listImage.title && (
+                    <h2 className="text-3xl font-bold text-blue-950 mb-4">{listImage.title}</h2>
+                  )}
+                  <div dangerouslySetInnerHTML={{
+                    __html: listImage.description,
+                  }} />
+                </div>
               </div>
+
+              {/* Supporting Images Grid */}
+              {listImage.supporting_images && listImage.supporting_images.length > 0 && (
+                <SupportingImagesGrid images={listImage.supporting_images} />
+              )}
             </div>
           </SwiperSlide>
         ))}
