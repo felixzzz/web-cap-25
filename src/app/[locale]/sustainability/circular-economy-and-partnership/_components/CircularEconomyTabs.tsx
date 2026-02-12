@@ -41,12 +41,12 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
                 {/* Hero Image Section */}
                 {tab.hero_image && (
                     <div className="container mx-auto mt-12 mb-8">
-                        <div className="relative w-full aspect-[21/9] rounded-3xl overflow-hidden">
+                        <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden bg-gray-100">
                             <Image
                                 src={assetUrl(tab.hero_image) || ""}
                                 alt={tab.hero_image_alt || title}
                                 fill
-                                className="object-cover"
+                                className="object-contain"
                                 priority
                             />
                         </div>
