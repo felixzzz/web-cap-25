@@ -183,9 +183,17 @@ export type BusinessSolutionsProp = {
   circular_economy_tabs?: CircularEconomyTabsMap
   policy_performance?: MetaInNumbers
   policy_items?: {
+    // Preferred single fields (for future)
     hero_image?: string
     hero_image_alt?: string
     tab_description?: string
+    // Old _en/_id fields (currently returned by API)
+    hero_image_en?: string
+    hero_image_id?: string
+    hero_image_alt_en?: string
+    hero_image_alt_id?: string
+    tab_description_en?: string
+    tab_description_id?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }
@@ -194,6 +202,12 @@ export type BusinessSolutionsProp = {
     hero_image?: string
     hero_image_alt?: string
     tab_description?: string
+    hero_image_en?: string
+    hero_image_id?: string
+    hero_image_alt_en?: string
+    hero_image_alt_id?: string
+    tab_description_en?: string
+    tab_description_id?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }
@@ -202,6 +216,12 @@ export type BusinessSolutionsProp = {
     hero_image?: string
     hero_image_alt?: string
     tab_description?: string
+    hero_image_en?: string
+    hero_image_id?: string
+    hero_image_alt_en?: string
+    hero_image_alt_id?: string
+    tab_description_en?: string
+    tab_description_id?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }
