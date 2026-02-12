@@ -113,14 +113,6 @@ export default async function CircularEconomyPage({
           />
         </div>
         {/* Pass the tabs data from the API response */}
-        {(() => {
-          console.log("🔍 RAW API DATA:", {
-            policy_items: data?.meta?.policy_items,
-            end_to_end_items: data?.meta?.end_to_end_items,
-            technology_items: data?.meta?.technology_items
-          })
-          return null
-        })()}
 
         {data?.meta && (
           <CircularEconomyTabs

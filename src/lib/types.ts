@@ -349,9 +349,20 @@ export type DetailChemicalSolutionsProps = {
   banner?: MetaCover
   product_datasheet?: MetaProductDatasheet
   product_datasheet2: MetaProductDatasheet2
+  product_catalog_banners?: ProductCatalogBanner[] | string
+  product_catalog_banners_id?: ProductCatalogBanner[] | string
+  product_catalog_banners_en?: ProductCatalogBanner[] | string
   seo_meta?: SeoMeta
   // product_datasheet3?: MetaProductDatasheet
 }
+
+export type ProductCatalogBanner = {
+  status: "active" | "inactive"
+  banner_image: string
+  banner_image_alt?: string
+  pdf_file: string
+}
+
 
 export type SustainabilityProps = {
   banner?: MetaCover
