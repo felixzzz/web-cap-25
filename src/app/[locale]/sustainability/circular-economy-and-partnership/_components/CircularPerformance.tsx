@@ -33,8 +33,8 @@ export function EnvironmentPerformance({
         />
 
         <div className="container relative z-10 text-white">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <div className="relative lg:bottom-10">
+          <div className="flex flex-col justify-center gap-6 lg:flex-row">
+            <div className="flex-1 lg:max-w-[33%]">
               <h2 className="mb-3 text-balance text-xl font-bold">
                 {getLocalizedContent(locale, title_en, title_id)}
               </h2>
@@ -53,15 +53,17 @@ export function EnvironmentPerformance({
               (item, i) => (
                 <div
                   key={i}
-                  className="flex min-h-60 flex-col justify-between rounded-xl bg-blue-950 p-6"
+                  className="flex min-h-60 flex-1 flex-col justify-between rounded-xl bg-blue-950 p-6 lg:max-w-[33%]"
                 >
                   <div>
-                    <Image
-                      src={assetUrl(item?.icon || "") || ""}
-                      width={40}
-                      height={40}
-                      alt={item.title}
-                    />
+                    {item.icon && (
+                      <Image
+                        src={assetUrl(item?.icon || "") || ""}
+                        width={40}
+                        height={40}
+                        alt={item.title}
+                      />
+                    )}
                   </div>
                   <div>
                     <ScrambleText text={item.number} />
