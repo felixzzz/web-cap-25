@@ -42,11 +42,11 @@ export default function ItemImageGallery({
             <div className={cn("relative rounded-3xl overflow-hidden aspect-[4/3] xl:aspect-[4/3] w-full flex items-center justify-center bg-gray-100", className)}>
                 {/* Main Image Layer */}
                 <Image
-                    width={516}
-                    height={387}
                     src={assetUrl(allImages[0].image) || ""}
                     alt={allImages[0].alt}
-                    className="object-cover w-full h-full"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
             </div>
         )
@@ -57,19 +57,19 @@ export default function ItemImageGallery({
             <Swiper
                 ref={swiperRef}
                 slidesPerView={1}
-                className="w-full h-full"
+                className="absolute inset-0 w-full h-full"
                 loop={false}
             >
                 {allImages.map((img, idx) => (
-                    <SwiperSlide key={idx} className="w-full h-full">
+                    <SwiperSlide key={idx} className="!w-full !h-full">
                         <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
                             {/* Main Image Layer */}
                             <Image
-                                width={516}
-                                height={387}
                                 src={assetUrl(img.image) || ""}
                                 alt={img.alt}
-                                className="object-cover w-full h-full"
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                         </div>
                     </SwiperSlide>
