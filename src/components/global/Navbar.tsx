@@ -62,9 +62,10 @@ export type MenuItem = z.infer<typeof MenuItemSchema>
 type Props = {
   isBackgroundWhite?: boolean
   children?: React.ReactNode
+  disableLanguageSwitch?: boolean
 }
 
-export default function Navbar({ isBackgroundWhite = false, children }: Props) {
+export default function Navbar({ isBackgroundWhite = false, children, disableLanguageSwitch = false }: Props) {
   const router = useRouter()
   const params = useParams()
   const pathname = usePathname()
@@ -279,10 +280,11 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
   return (
     <header
       className={clsx(
-        "fixed top-0 z-[1000] w-full duration-200 ease-in-out",
+        "fixed z-[1000] w-full duration-200 ease-in-out",
         backgroundWhite ? "box-shadow bg-white" : "bg-transparent text-white",
         isOpenNavbarMobile && `bg-white`
       )}
+      style={{ top: "var(--sticky-banner-height, 0px)" }}
     >
       <div className="container flex h-16 items-center justify-between">
         <Link href={`/${locale}/`} className="flex items-center gap-2">
@@ -344,11 +346,12 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
           </button>
           <div className="hidden lg:block">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger asChild disabled={disableLanguageSwitch}>
                 <Button
                   className="flex w-auto flex-shrink-0 gap-[2px] px-4"
                   variant="ghost"
                   size="icon"
+                  disabled={disableLanguageSwitch}
                 >
                   <Image
                     className="mr-1 size-4 rounded-full border border-white"
@@ -383,7 +386,10 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
         </div>
       </div>
       {isOpenSearch && (
-        <div className="box-shadow absolute top-16 z-[100] w-full bg-white transition-all">
+        <div
+          className="box-shadow absolute z-[100] w-full bg-white transition-all"
+          style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
+        >
           <div className="container relative w-full py-4">
             <Image
               src={iconSearch}
@@ -418,8 +424,12 @@ export default function Navbar({ isBackgroundWhite = false, children }: Props) {
             switchLocale={switchLocale}
             locale={locale}
             items={listMenu}
+            disableLanguageSwitch={disableLanguageSwitch}
           />
-          <div className="fixed inset-0 left-0 top-[64px] z-10 h-full w-full bg-black/60" />
+          <div
+            className="fixed inset-0 left-0 z-10 h-full w-full bg-black/60"
+            style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
+          />
         </>
       )}
       {children}
@@ -431,10 +441,12 @@ function NavbarMobile({
   items,
   locale,
   switchLocale,
+  disableLanguageSwitch = false,
 }: {
   items: MenuItem[]
   locale: string
   switchLocale: (nextLocale: "id" | "en") => void
+  disableLanguageSwitch?: boolean
 }) {
   const { data } = useNavbarArticle()
   const [childrenData, setChildrenData] = useState<MenuItem | null>(null)
@@ -443,7 +455,10 @@ function NavbarMobile({
 
   return (
     <>
-      <div className="fixed left-0 top-16 z-50 w-full bg-white">
+      <div
+        className="fixed left-0 z-50 w-full bg-white"
+        style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
+      >
         <div className="mx-auto flex flex-col lg:flex-row">
           <div className="py-4">
             <div className="container lg:ml-auto">
@@ -480,11 +495,12 @@ function NavbarMobile({
                 ))}
               </div>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger asChild disabled={disableLanguageSwitch}>
                   <Button
                     className="my-6 flex w-auto flex-shrink-0 gap-[2px] text-black"
                     variant="ghost"
                     size="icon"
+                    disabled={disableLanguageSwitch}
                   >
                     <Image
                       className="mr-1 size-4 rounded-full border border-white"
@@ -675,11 +691,12 @@ function NavbarMobile({
             </Link> */}
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild disabled={disableLanguageSwitch}>
               <Button
                 className="my-6 flex w-auto flex-shrink-0 gap-[2px] font-normal text-black"
                 variant="ghost"
                 size="icon"
+                disabled={disableLanguageSwitch}
               >
                 <Image
                   className="mr-1 size-4 rounded-full border border-white"

@@ -8,6 +8,8 @@ import { Suspense } from "react"
 import { getLocalizedContent } from "@/lib/utils"
 import { Metadata } from "next"
 
+import { PageIdSetter } from "@/components/providers/query-provider"
+
 export const revalidate = 60
 
 export async function generateMetadata({
@@ -35,7 +37,12 @@ export async function generateMetadata({
 export default async function PublicationPage({
   searchParams,
 }: {
-  searchParams: { page: string, category_id: string, search: string, year: string}
+  searchParams: {
+    page: string
+    category_id: string
+    search: string
+    year: string
+  }
 }) {
   const data = await getPage("publications-for-investors")
   const dataCategories: CategoryDocument[] = await getDocumentsCategories(
@@ -48,6 +55,7 @@ export default async function PublicationPage({
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <PublicationJumbotron {...data?.meta.banner} />}
       <Suspense>

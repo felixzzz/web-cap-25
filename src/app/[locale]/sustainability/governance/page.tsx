@@ -15,6 +15,7 @@ import { InNumbersBlock } from "@/components/block/InNumbers"
 import { getLocalizedContent } from "@/lib/utils"
 import { Metadata } from "next"
 import GovernancePerformance from "./_components/GovernancePerformance"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -46,6 +47,7 @@ export default async function RootPage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
       {data?.meta?.intro && <GovernanceBusinessEthics {...data?.meta.intro} />}

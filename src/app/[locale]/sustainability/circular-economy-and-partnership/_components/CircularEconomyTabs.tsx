@@ -3,89 +3,97 @@
 import ContentTabSwiper from "@/app/[locale]/our-business/_components/ContentTabSwiper"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocale } from "next-intl"
-import { EnvironmentPerformance } from "../../environment/_components/EnvironmentPerfornamce"
+import { EnvironmentPerformance } from "../_components/CircularPerformance"
 import { CircularEconomyTabsMap } from "@/lib/types"
+import Image from "next/image"
+import { assetUrl } from "@/lib/utils"
 
-export default function CircularEconomyTabs({ tabsData }: { tabsData: CircularEconomyTabsMap }) {
+export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsData: CircularEconomyTabsMap, reportButton?: { label: string, url: string } }) {
     const locale = useLocale()
 
+    const tabTitles = {
+        policy: locale === "id" ? "Edukasi Publik" : "Public Education",
+        "end-to-end": locale === "id" ? "Pengelolaan Sampah Menyeluruh" : "End-to-end Waste Management Model",
+        technology: locale === "id" ? "Inovasi Teknologi" : "Technology for Circular Products",
+    }
+
     if (!tabsData) return null
+
+    const renderTabContent = (
+        tabKey: keyof CircularEconomyTabsMap,
+        title: string
+    ) => {
+        const tab = tabsData[tabKey]
+        if (!tab) return null
+
+        // DEBUG: Log what tab is receiving
+        console.log(`🎯 [${tabKey}] TabData Received:`, {
+            hero_image: tab.hero_image,
+            hero_image_alt: tab.hero_image_alt,
+            tab_description: tab.tab_description?.substring(0, 50) + '...',
+            has_performance: !!tab.performance,
+            items_count: tab.items?.length
+        })
+
+        return (
+            <TabsContent value={tabKey}>
+
+
+                {/* Performance Section (Top) */}
+                {tab.performance && (
+                    <EnvironmentPerformance {...tab.performance} />
+                )}
+
+                {/* Hero Image Section */}
+                {tab.hero_image && (
+                    <div className="container mx-auto mt-12 mb-8">
+                        <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden bg-gray-100">
+                            <Image
+                                src={assetUrl(tab.hero_image) || ""}
+                                alt={tab.hero_image_alt || title}
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* Slider Items */}
+                <div className="container mx-auto mt-12">
+                    {tab.items && (
+                        <ContentTabSwiper
+                            index={0}
+                            status="active"
+                            title={title}
+                            description={tab.tab_description}
+                            list={tab.items}
+                            hideOverflow={true}
+                        />
+                    )}
+                    <div className="mt-8 flex justify-center">
+                        <a href={reportButton?.url || "#"} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            {reportButton?.label || "Discover our circular economy report"}
+                        </a>
+                    </div>
+                </div>
+            </TabsContent>
+        )
+    }
 
     return (
         <Tabs defaultValue="policy" className="min-h-[25vh]">
             <div className="container mx-auto">
-                <TabsList className="min-w-fit md:min-w-fit flex-nowrap overflow-x-auto overflow-y-hidden mb-6 flex w-full flex-row">
-                    <TabsTrigger value="policy" className="min-w-fit font-bold">Public Education</TabsTrigger>
-                    <TabsTrigger value="end-to-end" className="min-w-fit font-bold">End-to-end Waste Management Model</TabsTrigger>
-                    <TabsTrigger value="technology" className="min-w-fit font-bold">Technology for Circular Products</TabsTrigger>
+                <TabsList className="min-w-fit md:min-w-fit flex-nowrap overflow-x-auto overflow-y-hidden mb-6 flex w-full flex-row gap-2 md:gap-4 p-1 md:p-2">
+                    <TabsTrigger value="policy" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles.policy}</TabsTrigger>
+                    <TabsTrigger value="end-to-end" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles["end-to-end"]}</TabsTrigger>
+                    <TabsTrigger value="technology" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles.technology}</TabsTrigger>
                 </TabsList>
             </div>
 
-            <TabsContent value="policy">
-                {tabsData?.policy?.performance && (
-                    <EnvironmentPerformance {...tabsData.policy.performance} />
-                )}
-                <div className="container mx-auto mt-12">
-                    {tabsData?.policy?.items && (
-                        <ContentTabSwiper
-                            index={0}
-                            status="active"
-                            title="Public Education"
-                            list={tabsData.policy.items}
-                            hideOverflow={true}
-                        />
-                    )}
-                    <div className="mt-8 flex justify-center">
-                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            Discover our circular economy report
-                        </a>
-                    </div>
-                </div>
-            </TabsContent>
-
-            <TabsContent value="end-to-end">
-                {tabsData?.["end-to-end"]?.performance && (
-                    <EnvironmentPerformance {...tabsData["end-to-end"].performance} />
-                )}
-                <div className="container mx-auto mt-12">
-                    {tabsData?.["end-to-end"]?.items && (
-                        <ContentTabSwiper
-                            index={0}
-                            status="active"
-                            title="End-to-end Waste Management Model"
-                            list={tabsData["end-to-end"].items}
-                            hideOverflow={true}
-                        />
-                    )}
-                    <div className="mt-8 flex justify-center">
-                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            Discover our circular economy report
-                        </a>
-                    </div>
-                </div>
-            </TabsContent>
-
-            <TabsContent value="technology">
-                {tabsData?.technology?.performance && (
-                    <EnvironmentPerformance {...tabsData.technology.performance} />
-                )}
-                <div className="container mx-auto mt-12">
-                    {tabsData?.technology?.items && (
-                        <ContentTabSwiper
-                            index={0}
-                            status="active"
-                            title="Technology for Circular Products"
-                            list={tabsData.technology.items}
-                            hideOverflow={true}
-                        />
-                    )}
-                    <div className="mt-8 flex justify-center">
-                        <a href={`/${locale}/sustainability/reports-and-publications`} className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-center text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            Discover our circular economy report
-                        </a>
-                    </div>
-                </div>
-            </TabsContent>
+            {renderTabContent("policy", tabTitles.policy)}
+            {renderTabContent("end-to-end", tabTitles["end-to-end"])}
+            {renderTabContent("technology", tabTitles.technology)}
         </Tabs>
     )
 }

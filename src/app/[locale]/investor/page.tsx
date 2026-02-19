@@ -12,6 +12,7 @@ import {
 import { MetaDocumentItem } from "@/lib/fragment"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -46,6 +47,7 @@ export default async function InvestorOverviewPage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <InvestorJumbotron {...data?.meta?.banner} />}
       {data?.meta?.intro && data?.meta?.overview_content && (

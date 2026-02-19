@@ -67,14 +67,18 @@ export type Banner = {
   id: number
   banner_group_id: number
   title: string
+  video: string
   image: string
   is_active: number
+  html?: string
   aspect_ratio: string
   created_at: string
   updated_at: string
   order: number
   cta_url: string
   cta_label: string
+  cta_gtm: string
+  is_hide_in_mobile: boolean
 }
 
 export type BannerResponse = {
@@ -82,6 +86,13 @@ export type BannerResponse = {
   right: Banner[]
   center: Banner[]
   bottom: Banner[]
+}
+
+export type HomeBannersResponse = {
+  navbar: Banner[]
+  "journey-growth": Banner[]
+  "financial-reports": Banner[]
+  footer: Banner[]
 }
 
 export type HttpHandlerResponse<T> = {
@@ -108,6 +119,8 @@ export type PaginationHandlerResponse<T> = {
 export type HttpGeneralResponse<T> = {
   id: number
   title: string
+  title_en?: string
+  title_id?: string
   slug: string
   excerpt: string | null
   content: string | null
@@ -166,19 +179,49 @@ export type BusinessSolutionsProp = {
   seo_meta?: SeoMeta
   contant_tab: BusinessSolutionsContentTab
   environmental_performance?: MetaInNumbers
+  circular_economy_intro?: MetaCircularEconomyIntro
   circular_economy_tabs?: CircularEconomyTabsMap
   policy_performance?: MetaInNumbers
   policy_items?: {
+    // Preferred single fields (for future)
+    hero_image?: string
+    hero_image_alt?: string
+    tab_description?: string
+    // Old _en/_id fields (currently returned by API)
+    hero_image_en?: string
+    hero_image_id?: string
+    hero_image_alt_en?: string
+    hero_image_alt_id?: string
+    tab_description_en?: string
+    tab_description_id?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }
   end_to_end_performance?: MetaInNumbers
   end_to_end_items?: {
+    hero_image?: string
+    hero_image_alt?: string
+    tab_description?: string
+    hero_image_en?: string
+    hero_image_id?: string
+    hero_image_alt_en?: string
+    hero_image_alt_id?: string
+    tab_description_en?: string
+    tab_description_id?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }
   technology_performance?: MetaInNumbers
   technology_items?: {
+    hero_image?: string
+    hero_image_alt?: string
+    tab_description?: string
+    hero_image_en?: string
+    hero_image_id?: string
+    hero_image_alt_en?: string
+    hero_image_alt_id?: string
+    tab_description_en?: string
+    tab_description_id?: string
     items_en?: CircularEconomyTabItem[]
     items_id?: CircularEconomyTabItem[]
   }
@@ -189,11 +232,18 @@ export type CircularEconomyTabItem = {
   title: string
   image: string
   description: string
+  supporting_images?: Array<{
+    image: string
+    alt: string
+  }>
   cta_label: string
   cta_url: string
 }
 
 export type CircularEconomyTabData = {
+  hero_image?: string
+  hero_image_alt?: string
+  tab_description?: string
   performance?: MetaInNumbers
   items?: CircularEconomyTabItem[]
 }
@@ -299,9 +349,20 @@ export type DetailChemicalSolutionsProps = {
   banner?: MetaCover
   product_datasheet?: MetaProductDatasheet
   product_datasheet2: MetaProductDatasheet2
+  product_catalog_banners?: ProductCatalogBanner[] | string
+  product_catalog_banners_id?: ProductCatalogBanner[] | string
+  product_catalog_banners_en?: ProductCatalogBanner[] | string
   seo_meta?: SeoMeta
   // product_datasheet3?: MetaProductDatasheet
 }
+
+export type ProductCatalogBanner = {
+  status: "active" | "inactive"
+  banner_image: string
+  banner_image_alt?: string
+  pdf_file: string
+}
+
 
 export type SustainabilityProps = {
   banner?: MetaCover
@@ -491,6 +552,17 @@ export type ContentProductResponsibility = {
   title2_en: string
   description_id: string
   description_en: string
+}
+
+export type MetaCircularEconomyIntro = {
+  status_id: string
+  status_en: string
+  image_en: string
+  image_id: string
+  cta_label_id: string
+  cta_label_en: string
+  cta_url_id: string
+  cta_url_en: string
 }
 
 export type MetaPraticesOfEmployment = {

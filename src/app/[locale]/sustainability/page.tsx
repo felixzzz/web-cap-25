@@ -8,6 +8,8 @@ import { IntroContentImageBlock } from "@/components/block/IntroContentImage"
 import { getLocalizedContent } from "@/lib/utils"
 import { Metadata } from "next"
 
+import { PageIdSetter } from "@/components/providers/query-provider"
+
 export const revalidate = 60
 
 export async function generateMetadata({
@@ -38,6 +40,7 @@ export default async function SustainabilityPage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
       {data?.meta?.intro && (

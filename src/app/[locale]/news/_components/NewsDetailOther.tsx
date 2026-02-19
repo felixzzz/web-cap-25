@@ -13,7 +13,7 @@ export default function NewsDetailOther({ data }: { data?: PostNews[] }) {
 
   return (
     <section className="bg-surface">
-      <div className="clip-r container overflow-clip py-6 lg:py-[80px]">
+      <div className="clip-r mx-auto w-full max-w-[1600px] overflow-clip px-4 py-6 lg:py-[80px]">
         <div className="text-xl font-bold">{t("read_other_news")}</div>
         <Swiper
           direction="horizontal"

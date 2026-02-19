@@ -14,15 +14,21 @@ import {
 import { notFound } from "next/navigation"
 import RelatedArticles from "../../_components/RelatedArticles"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export async function generateStaticParams() {
-  const business: DynamicProps[] = await getPage("dynamic")
-  return business.flatMap((business) => {
-    return business.children.map((unit) => ({
-      business_line: business.slug,
-      business_unit: unit.slug,
-    }))
-  })
+  try {
+    const business: DynamicProps[] = await getPage("dynamic")
+    return business.flatMap((business) => {
+      return business.children.map((unit) => ({
+        business_line: business.slug,
+        business_unit: unit.slug,
+      }))
+    })
+  } catch (error) {
+    console.warn("Could not generate static params for our-business:", error)
+    return []
+  }
 }
 
 export const revalidate = 60
@@ -69,6 +75,7 @@ export default async function BusinessUnitProducts({
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
       {data?.meta?.content_left_right && (

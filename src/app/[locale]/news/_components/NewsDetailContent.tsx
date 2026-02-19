@@ -9,7 +9,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { SITE_URL } from "@/lib/constant"
 import { PostNews } from "@/lib/fragment"
 import { BannerResponse } from "@/lib/types"
-import { assetUrl, dateFormater, getLocalizedContent } from "@/lib/utils"
+import { assetUrl, cn, dateFormater, getLocalizedContent } from "@/lib/utils"
 import { useLocale } from "next-intl"
 import Image from "next/image"
 
@@ -29,7 +29,7 @@ function splitContent(html: string) {
   }
 
   // Pick the middle one
-  const middleIndex = Math.floor(pEndIndices.length / 2)
+  const middleIndex = Math.floor((pEndIndices.length - 1) / 2)
   const splitPoint = pEndIndices[middleIndex]
 
   return {
@@ -58,7 +58,7 @@ export default function NewsDetailContent({
     } else {
       router.push(`/id/${path}/${data.slug}`)
     }
-  }, [locale])
+  }, [locale, data.slug, data.slug_en, path, router])
 
   const rawContent = getLocalizedContent(
     locale,
@@ -79,7 +79,7 @@ export default function NewsDetailContent({
 
   return (
     <section className="relative">
-      <div className="container pb-8 pt-6 lg:pb-[126px]">
+      <div className="mx-auto w-full px-4 pb-8 pt-6 lg:max-w-[1680px] lg:pb-[126px]">
         <CustomBreadcrumb
           data={[
             {
@@ -97,30 +97,31 @@ export default function NewsDetailContent({
               isPrimary: true,
             },
           ]}
-          className="mb-5 lg:mb-[40px]"
+          className="container mx-auto mb-5 lg:mb-[40px]"
         />
         <div
-          className={`grid grid-cols-1 items-start lg:grid-cols-12 ${
-            hasLeft || hasRight ? "gap-4" : "gap-8"
-          }`}
+          className={`grid grid-cols-1 ${
+            hasAnyBanner
+              ? "lg:grid-cols-[230px_minmax(0,1fr)_230px] xl:grid-cols-[230px_minmax(0,1fr)_230px]"
+              : "lg:grid-cols-12"
+          } ${hasLeft || hasRight ? "gap-4" : "gap-8"}`}
         >
-          {hasLeft && (
-            <div className="hidden lg:col-span-3 lg:block">
+          {hasLeft ? (
+            <div className="hidden lg:block">
               <div className="sticky top-24">
                 <BannerRenderer banners={banners!.left} position="left" />
               </div>
             </div>
-          )}
+          ) : hasAnyBanner ? (
+            <div className="hidden lg:block" />
+          ) : null}
 
           <div
             className={`col-span-1 mx-auto max-w-[850px] lg:mx-0 lg:max-w-none ${
-              !hasAnyBanner
-                ? "lg:col-span-8 lg:col-start-3"
-                : "lg:col-span-6 lg:col-start-4"
+              !hasAnyBanner ? "lg:col-span-8 lg:col-start-3" : ""
             }`}
           >
             {/* Removed top center banner renderer */}
-
             {data?.image && (
               <AspectRatio ratio={16 / 9} className="mb-6">
                 <Image
@@ -145,6 +146,25 @@ export default function NewsDetailContent({
                 />
               </AspectRatio>
             )}
+            {hasLeft ? (
+              <div
+                className={cn(
+                  banners?.left[0].is_hide_in_mobile
+                    ? "hidden lg:col-span-2"
+                    : "mb-6 lg:col-span-3 lg:hidden"
+                )}
+              >
+                <div className="w-full">
+                  <BannerRenderer
+                    banners={banners!.left}
+                    aspectRatio="21/9"
+                    position="left"
+                  />
+                </div>
+              </div>
+            ) : hasAnyBanner ? (
+              <div className="hidden lg:block" />
+            ) : null}
             {data?.published_at && (
               <p className="mb-1 text-xs font-semibold tracking-[0.8px] text-gray lg:text-md">
                 {dateFormater(data?.published_at)}
@@ -156,11 +176,14 @@ export default function NewsDetailContent({
             <div className="mt-4 text-sm tracking-[0.16px] lg:mt-8 lg:text-md">
               {(() => {
                 const regex = /###banner###(\d+)###banner###/g
-                if (rawContent && regex.test(rawContent)) {
-                  type Part =
-                    | { type: "html"; content: string }
-                    | { type: "banner"; id: string }
-                  const parts: Part[] = []
+                type Part =
+                  | { type: "html"; content: string }
+                  | { type: "banner"; id: string }
+                  | { type: "center-banner" }
+
+                let parts: Part[] = []
+
+                if (rawContent) {
                   let lastIndex = 0
                   let match
                   regex.lastIndex = 0
@@ -172,64 +195,93 @@ export default function NewsDetailContent({
                         content: rawContent.substring(lastIndex, match.index),
                       })
                     }
-                    // the banner id
                     parts.push({
                       type: "banner",
                       id: match[1],
                     })
                     lastIndex = regex.lastIndex
                   }
-                  // remaining content
+
                   if (lastIndex < rawContent.length) {
                     parts.push({
                       type: "html",
                       content: rawContent.substring(lastIndex),
                     })
                   }
+                }
 
-                  return parts.map((part, index) => {
-                    if (part.type === "banner") {
-                      return <EmbeddedBanner key={index} id={part.id} />
+                // Inject center banner if available
+                if (banners?.center && banners.center.length > 0) {
+                  // Find longest text part
+                  let longestIndex = -1
+                  let maxLength = 0
+
+                  parts.forEach((part, index) => {
+                    if (
+                      part.type === "html" &&
+                      part.content.length > maxLength
+                    ) {
+                      maxLength = part.content.length
+                      longestIndex = index
                     }
+                  })
+
+                  if (longestIndex !== -1) {
+                    const targetPart = parts[longestIndex] as {
+                      type: "html"
+                      content: string
+                    }
+                    const { part1, part2 } = splitContent(targetPart.content)
+
+                    if (part2) {
+                      parts.splice(
+                        longestIndex,
+                        1,
+                        { type: "html", content: part1 },
+                        { type: "center-banner" },
+                        { type: "html", content: part2 }
+                      )
+                    } else {
+                      // If no split possible (no paragraphs), append banner after
+                      parts.splice(
+                        longestIndex,
+                        1,
+                        { type: "html", content: part1 },
+                        { type: "center-banner" }
+                      )
+                    }
+                  }
+                }
+
+                return parts.map((part, index) => {
+                  if (part.type === "banner") {
+                    return (
+                      <EmbeddedBanner key={`manual-${index}`} id={part.id} />
+                    )
+                  }
+                  if (part.type === "center-banner") {
+                    return (
+                      <BannerRenderer
+                        key={`center-${index}`}
+                        banners={banners!.center}
+                        position="center"
+                        className="my-8"
+                      />
+                    )
+                  }
+                  if (part.type === "html" && part.content) {
                     return (
                       <div
-                        key={index}
+                        key={`html-${index}`}
                         className="prose"
                         dangerouslySetInnerHTML={{
                           __html: part.content,
                         }}
                       />
                     )
-                  })
-                }
-
-                return (
-                  <>
-                    <div
-                      className="prose"
-                      dangerouslySetInnerHTML={{
-                        __html: part1,
-                      }}
-                    ></div>
-
-                    {banners?.center && banners.center.length > 0 && (
-                      <BannerRenderer
-                        banners={banners.center}
-                        position="center"
-                        className="my-8"
-                      />
-                    )}
-
-                    {part2 && (
-                      <div
-                        className="prose"
-                        dangerouslySetInnerHTML={{
-                          __html: part2,
-                        }}
-                      ></div>
-                    )}
-                  </>
-                )
+                  }
+                  return null
+                })
               })()}
             </div>
 
@@ -240,13 +292,35 @@ export default function NewsDetailContent({
             />
           </div>
 
-          {hasRight && (
-            <div className="hidden lg:col-span-3 lg:block">
+          {hasRight ? (
+            <div className="hidden lg:block">
               <div className="sticky top-24">
                 <BannerRenderer banners={banners!.right} position="right" />
               </div>
             </div>
-          )}
+          ) : hasAnyBanner ? (
+            <div className="hidden lg:block" />
+          ) : null}
+
+          {hasRight ? (
+            <div
+              className={cn(
+                banners!.right[0].is_hide_in_mobile
+                  ? "hidden"
+                  : "mb-6 block lg:hidden"
+              )}
+            >
+              <div className="sticky top-24">
+                <BannerRenderer
+                  aspectRatio="21/9"
+                  banners={banners!.right}
+                  position="right"
+                />
+              </div>
+            </div>
+          ) : hasAnyBanner ? (
+            <div className="hidden lg:block" />
+          ) : null}
         </div>
       </div>
     </section>

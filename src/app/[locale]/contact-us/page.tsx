@@ -6,6 +6,7 @@ import { ContactUsProps, HttpGeneralResponse } from "@/lib/types"
 import { MetaTopics } from "@/lib/fragment"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -40,6 +41,7 @@ export default async function ContactUsPage() {
   return (
     <>
       <div className="mt-16">
+        {data?.id && <PageIdSetter id={data.id.toString()} />}
         <Navbar isBackgroundWhite />
         {data?.meta?.banner && (
           <ContactForm {...data?.meta.banner} topics={dataTopics} />
