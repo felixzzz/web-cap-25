@@ -5,6 +5,7 @@ import { DisclaimerProps, HttpGeneralResponse } from "@/lib/types"
 import CopyrightContent from "./_components/CopyrightContent"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -34,6 +35,7 @@ export default async function DisclaimerPage() {
   const data: HttpGeneralResponse<DisclaimerProps> = await getPage("disclaimer")
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar isBackgroundWhite />
       <section className="container pb-10 pt-[96px] lg:px-[109px] lg:pb-[80px] lg:pt-[128px]">
         <DisclaimerContent {...data?.meta.disclaimer_content} />

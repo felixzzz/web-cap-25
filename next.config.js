@@ -45,7 +45,41 @@ const nextConfig = {
         hostname: "**.youtube.com",
         port: "",
         pathname: "**",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "dev-back.chandra-asri.com",
+        port: "",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8081",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8000",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        pathname: "**",
+      },
     ],
   },
 }

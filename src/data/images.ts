@@ -129,3 +129,6 @@ export { default as imgMegamenuAboutus2 } from "public/img/common/megamenu/mega-
 export { default as imgMegamenuAboutus3 } from "public/img/common/megamenu/mega-menu-about-us-3-new.jpg"
 
 export { default as imgDefaultNews } from "public/img/common/img_default-news.jpg"
+
+
+export { default as imgCircularEconomyMapLevel } from "public/img/temp/circular-economy-map-level.jpeg"

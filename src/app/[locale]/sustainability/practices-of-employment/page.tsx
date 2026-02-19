@@ -8,6 +8,7 @@ import PracticeContent from "../_components/PracticeContent"
 import { getPage } from "@/lib/api"
 import { getLocalizedContent } from "@/lib/utils"
 import { MetaPraticesOfEmployment, HttpGeneralResponse } from "@/lib/types"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export async function generateMetadata({
   params: { locale },
@@ -38,6 +39,7 @@ export default async function RootPage() {
 
   return (
     <>
+      {data?.id && <PageIdSetter id={data.id.toString()} />}
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta?.banner} />}
       <PracticeContent

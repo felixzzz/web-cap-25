@@ -56,7 +56,12 @@ export async function getNavbarOurBusinessReactQuery(): Promise<
   return API.get(`pages/dynamic`).then((res) => res.data)
 }
 
-async function fetchAPI(path: string, method: string, body?: BodyInit) {
+async function fetchAPI(
+  path: string,
+  method: string,
+  body?: BodyInit,
+  options?: RequestInit
+) {
   const headers =
     method === "POST" ? undefined : { "Content-Type": "application/json" }
 
@@ -65,31 +70,18 @@ async function fetchAPI(path: string, method: string, body?: BodyInit) {
       method,
       body,
       headers,
+      ...options,
     })
     if (res.ok) {
       const json = await res.json()
       if (json.errors) {
-        console.log(
-          "JSON ERROR ON: ",
-          `${API_URL}/api/${path}`,
-          "THE ERRORS ARE: ",
-          json.errors
-        )
-
         throw new Error("Failed to fetch API")
       }
-      return json.data || json.meta
+      return json.data || json.meta || json
     }
 
     // throw res
   } catch (errors) {
-    console.log(
-      "ERROR ON: ",
-      `${API_URL}/api/${path}`,
-      "THE ERRORS ARE: ",
-      errors
-    )
-
     throw new Error("Failed to fetch API")
   }
 }
@@ -142,4 +134,57 @@ export async function getPostCategories(query: string) {
 export async function postContactUs(body: BodyContactUs) {
   const data = await API.post(`contact-us`, JSON.stringify(body))
   return data
+}
+
+export async function getActiveBanners(slug: string) {
+  try {
+    const data = await fetchAPI(`banner/${slug}`, "GET", undefined, {
+      next: { tags: ["active-banners"], revalidate: 60 },
+    })
+    return data ?? null
+  } catch (e) {
+    return null
+  }
+}
+
+export async function getHomeBanners(locale: string): Promise<{
+  navbar: any[]
+  "journey-growth": any[]
+  "financial-reports": any[]
+  footer: any[]
+} | null> {
+  try {
+    const data = await fetchAPI(
+      `home-banners?lang=${locale}`,
+      "GET",
+      undefined,
+      {
+        next: { tags: ["home-banners"], revalidate: 60 },
+      }
+    )
+    return data ?? null
+  } catch (e) {
+    return null
+  }
+}
+
+export async function getHomeBannersReactQuery(locale: string): Promise<{
+  "journey-growth": any[]
+  "financial-reports": any[]
+} | null> {
+  return API.get(`home-banners?lang=${locale}`)
+    .then((res) => res.data ?? null)
+    .catch(() => null)
+}
+
+export async function getBannerPage(
+  id: string,
+  locale: string
+): Promise<{
+  navbar: any[]
+  footer: any[]
+} | null> {
+  return API.get(`banner-page?id=${id}&lang=${locale}`)
+    .then((res) => res.data ?? null)
+    .catch(() => null)
 }
