@@ -3,13 +3,19 @@
 import ContentTabSwiper from "@/app/[locale]/our-business/_components/ContentTabSwiper"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocale } from "next-intl"
-import { EnvironmentPerformance } from "../../environment/_components/EnvironmentPerfornamce"
+import { EnvironmentPerformance } from "../_components/CircularPerformance"
 import { CircularEconomyTabsMap } from "@/lib/types"
 import Image from "next/image"
 import { assetUrl } from "@/lib/utils"
 
 export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsData: CircularEconomyTabsMap, reportButton?: { label: string, url: string } }) {
     const locale = useLocale()
+
+    const tabTitles = {
+        policy: locale === "id" ? "Edukasi Publik" : "Public Education",
+        "end-to-end": locale === "id" ? "Pengelolaan Sampah Menyeluruh" : "End-to-end Waste Management Model",
+        technology: locale === "id" ? "Inovasi Teknologi" : "Technology for Circular Products",
+    }
 
     if (!tabsData) return null
 
@@ -79,15 +85,15 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
         <Tabs defaultValue="policy" className="min-h-[25vh]">
             <div className="container mx-auto">
                 <TabsList className="min-w-fit md:min-w-fit flex-nowrap overflow-x-auto overflow-y-hidden mb-6 flex w-full flex-row gap-2 md:gap-4 p-1 md:p-2">
-                    <TabsTrigger value="policy" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">Public Education</TabsTrigger>
-                    <TabsTrigger value="end-to-end" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">End-to-end Waste Management Model</TabsTrigger>
-                    <TabsTrigger value="technology" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">Technology for Circular Products</TabsTrigger>
+                    <TabsTrigger value="policy" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles.policy}</TabsTrigger>
+                    <TabsTrigger value="end-to-end" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles["end-to-end"]}</TabsTrigger>
+                    <TabsTrigger value="technology" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles.technology}</TabsTrigger>
                 </TabsList>
             </div>
 
-            {renderTabContent("policy", "Public Education")}
-            {renderTabContent("end-to-end", "End-to-end Waste Management Model")}
-            {renderTabContent("technology", "Technology for Circular Products")}
+            {renderTabContent("policy", tabTitles.policy)}
+            {renderTabContent("end-to-end", tabTitles["end-to-end"])}
+            {renderTabContent("technology", tabTitles.technology)}
         </Tabs>
     )
 }

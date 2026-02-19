@@ -85,6 +85,14 @@ export default async function CircularEconomyPage({
     return notFound()
   }
 
+  /* Intro Image Logic */
+  const intro = data?.meta?.circular_economy_intro as any;
+  // Fallback chain: locale -> other locale -> legacy (no suffix)
+  const introImage = params.locale === "en"
+    ? (intro?.image_en || intro?.image_id || intro?.image)
+    : (intro?.image_id || intro?.image_en || intro?.image);
+  const finalIntroImage = introImage ? (assetUrl(introImage) || imgCircularEconomyMapLevel) : imgCircularEconomyMapLevel;
+
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
@@ -107,8 +115,10 @@ export default async function CircularEconomyPage({
       <div className="py-10">
         <div className="container mx-auto mb-10 w-full">
           <Image
-            src={imgCircularEconomyMapLevel}
+            src={finalIntroImage}
             alt="Circular Economy Map"
+            width={1920}
+            height={1080}
             className="w-full rounded-3xl object-cover"
           />
         </div>
@@ -116,21 +126,25 @@ export default async function CircularEconomyPage({
 
         {data?.meta && (
           <CircularEconomyTabs
+            reportButton={{
+              label: params.locale === "en"
+                ? (data.meta.circular_economy_intro?.cta_label_en || "Discover our circular economy report")
+                : (data.meta.circular_economy_intro?.cta_label_id || "Lihat laporan ekonomi sirkular kami"),
+              url: params.locale === "en"
+                ? (data.meta.circular_economy_intro?.cta_url_en || "#")
+                : (data.meta.circular_economy_intro?.cta_url_id || "#"),
+            }}
             tabsData={{
               policy: {
-                // Support both new and old field names for backward compatibility
-                hero_image: data.meta.policy_items?.hero_image ||
-                  (params.locale === "en"
-                    ? data.meta.policy_items?.hero_image_en
-                    : data.meta.policy_items?.hero_image_id),
-                hero_image_alt: data.meta.policy_items?.hero_image_alt ||
-                  (params.locale === "en"
-                    ? data.meta.policy_items?.hero_image_alt_en
-                    : data.meta.policy_items?.hero_image_alt_id),
-                tab_description: data.meta.policy_items?.tab_description ||
-                  (params.locale === "en"
-                    ? data.meta.policy_items?.tab_description_en
-                    : data.meta.policy_items?.tab_description_id),
+                hero_image: data.meta.policy_items?.hero_image_id ||
+                  data.meta.policy_items?.hero_image_en ||
+                  data.meta.policy_items?.hero_image,
+                hero_image_alt: params.locale === "en"
+                  ? (data.meta.policy_items?.hero_image_alt_en || data.meta.policy_items?.hero_image_alt_id)
+                  : (data.meta.policy_items?.hero_image_alt_id || data.meta.policy_items?.hero_image_alt),
+                tab_description: params.locale === "en"
+                  ? (data.meta.policy_items?.tab_description_en || data.meta.policy_items?.tab_description_id)
+                  : (data.meta.policy_items?.tab_description_id || data.meta.policy_items?.tab_description),
                 performance: data.meta.policy_performance,
                 // @ts-ignore
                 items:
@@ -139,18 +153,15 @@ export default async function CircularEconomyPage({
                     : data.meta.policy_items?.items_id,
               },
               "end-to-end": {
-                hero_image: data.meta.end_to_end_items?.hero_image ||
-                  (params.locale === "en"
-                    ? data.meta.end_to_end_items?.hero_image_en
-                    : data.meta.end_to_end_items?.hero_image_id),
-                hero_image_alt: data.meta.end_to_end_items?.hero_image_alt ||
-                  (params.locale === "en"
-                    ? data.meta.end_to_end_items?.hero_image_alt_en
-                    : data.meta.end_to_end_items?.hero_image_alt_id),
-                tab_description: data.meta.end_to_end_items?.tab_description ||
-                  (params.locale === "en"
-                    ? data.meta.end_to_end_items?.tab_description_en
-                    : data.meta.end_to_end_items?.tab_description_id),
+                hero_image: data.meta.end_to_end_items?.hero_image_id ||
+                  data.meta.end_to_end_items?.hero_image_en ||
+                  data.meta.end_to_end_items?.hero_image,
+                hero_image_alt: params.locale === "en"
+                  ? (data.meta.end_to_end_items?.hero_image_alt_en || data.meta.end_to_end_items?.hero_image_alt_id)
+                  : (data.meta.end_to_end_items?.hero_image_alt_id || data.meta.end_to_end_items?.hero_image_alt),
+                tab_description: params.locale === "en"
+                  ? (data.meta.end_to_end_items?.tab_description_en || data.meta.end_to_end_items?.tab_description_id)
+                  : (data.meta.end_to_end_items?.tab_description_id || data.meta.end_to_end_items?.tab_description),
                 performance: data.meta.end_to_end_performance,
                 // @ts-ignore
                 items:
@@ -159,18 +170,15 @@ export default async function CircularEconomyPage({
                     : data.meta.end_to_end_items?.items_id,
               },
               technology: {
-                hero_image: data.meta.technology_items?.hero_image ||
-                  (params.locale === "en"
-                    ? data.meta.technology_items?.hero_image_en
-                    : data.meta.technology_items?.hero_image_id),
-                hero_image_alt: data.meta.technology_items?.hero_image_alt ||
-                  (params.locale === "en"
-                    ? data.meta.technology_items?.hero_image_alt_en
-                    : data.meta.technology_items?.hero_image_alt_id),
-                tab_description: data.meta.technology_items?.tab_description ||
-                  (params.locale === "en"
-                    ? data.meta.technology_items?.tab_description_en
-                    : data.meta.technology_items?.tab_description_id),
+                hero_image: data.meta.technology_items?.hero_image_id ||
+                  data.meta.technology_items?.hero_image_en ||
+                  data.meta.technology_items?.hero_image,
+                hero_image_alt: params.locale === "en"
+                  ? (data.meta.technology_items?.hero_image_alt_en || data.meta.technology_items?.hero_image_alt_id)
+                  : (data.meta.technology_items?.hero_image_alt_id || data.meta.technology_items?.hero_image_alt),
+                tab_description: params.locale === "en"
+                  ? (data.meta.technology_items?.tab_description_en || data.meta.technology_items?.tab_description_id)
+                  : (data.meta.technology_items?.tab_description_id || data.meta.technology_items?.tab_description),
                 performance: data.meta.technology_performance,
                 // @ts-ignore
                 items:
