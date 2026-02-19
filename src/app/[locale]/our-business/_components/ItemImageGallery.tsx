@@ -76,7 +76,7 @@ export default function ItemImageGallery({
                 ))}
             </Swiper>
 
-            {/* Navigation Arrows (Floating) - Always visible for better UX */}
+            {/* Navigation Arrows (Floating) */}
             <div className="absolute inset-0 pointer-events-none z-20">
                 <button
                     onClick={(e) => {
@@ -84,13 +84,14 @@ export default function ItemImageGallery({
                         handlePrev()
                     }}
                     disabled={!allowSlidePrev}
+                    style={allowSlidePrev ? { backgroundColor: "#4A80BA" } : { border: "1px solid rgba(74,128,186,0.4)", backgroundColor: "white" }}
                     className={cn(
-                        "absolute left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/30 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg pointer-events-auto transition-all transform hover:scale-110 active:scale-95 disabled:opacity-0 disabled:cursor-not-allowed hover:bg-white/50 text-white",
+                        "absolute left-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full flex items-center justify-center shadow-lg pointer-events-auto transition-all transform hover:scale-110 active:scale-95 disabled:opacity-0 disabled:cursor-not-allowed",
                         !allowSlidePrev && "hidden"
                     )}
                     aria-label="Previous Image"
                 >
-                    <ArrowLeft className="w-5 h-5 drop-shadow-md" />
+                    <ArrowLeft className="w-5 h-5" color={allowSlidePrev ? "#FFFFFF" : "#4A80BA"} opacity={allowSlidePrev ? 1 : 0.4} />
                 </button>
 
                 <button
@@ -99,13 +100,14 @@ export default function ItemImageGallery({
                         handleNext()
                     }}
                     disabled={!allowSlideNext}
+                    style={allowSlideNext ? { backgroundColor: "#4A80BA" } : { border: "1px solid rgba(74,128,186,0.4)", backgroundColor: "white" }}
                     className={cn(
-                        "absolute right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white/30 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg pointer-events-auto transition-all transform hover:scale-110 active:scale-95 disabled:opacity-0 disabled:cursor-not-allowed hover:bg-white/50 text-white",
+                        "absolute right-4 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full flex items-center justify-center shadow-lg pointer-events-auto transition-all transform hover:scale-110 active:scale-95 disabled:opacity-0 disabled:cursor-not-allowed",
                         !allowSlideNext && "hidden"
                     )}
                     aria-label="Next Image"
                 >
-                    <ArrowRight className="w-5 h-5 drop-shadow-md" />
+                    <ArrowRight className="w-5 h-5" color={allowSlideNext ? "#FFFFFF" : "#4A80BA"} opacity={allowSlideNext ? 1 : 0.4} />
                 </button>
             </div>
 
