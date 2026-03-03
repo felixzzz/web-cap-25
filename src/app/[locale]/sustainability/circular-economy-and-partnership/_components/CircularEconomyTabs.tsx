@@ -13,8 +13,8 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
 
     const tabTitles = {
         policy: locale === "id" ? "Edukasi Publik" : "Public Education",
-        "end-to-end": locale === "id" ? "Pengelolaan Sampah Menyeluruh" : "End-to-end Waste Management Model",
-        technology: locale === "id" ? "Inovasi Teknologi" : "Technology for Circular Products",
+        "end-to-end": locale === "id" ? "Model Pengelolaan Sampah Menyeluruh" : "End-to-end Waste Management Model",
+        technology: locale === "id" ? "Inovasi Teknologi Sirkular" : "Technology for Circular Products",
     }
 
     if (!tabsData) return null
