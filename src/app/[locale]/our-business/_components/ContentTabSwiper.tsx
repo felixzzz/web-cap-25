@@ -101,13 +101,14 @@ export default function ContentTabSwiper({
                 </div>
 
                 {/* Text Section (Static for the item) */}
-                <div className="[&>h2]:mb-4 [&>h2]:text-xl [&>p]:mb-4 [&>ul]:grid [&>ul]:grid-cols-1 [&>ul]:gap-y-6 [&>ul]:list-disc [&>ul]:ml-4 [&>ul>li::marker]:text-[#53C3D9] flex-1">
+                <div className="flex-1">
                   {listItem.title && (
                     <h2 className="text-3xl font-bold text-blue-950 mb-4">
                       {listItem.title}
                     </h2>
                   )}
                   <div
+                    className="prose prose-lg max-w-none [&_h2]:mb-4 [&_h2]:text-xl [&_p]:mb-4 [&_ul]:grid [&_ul]:grid-cols-1 [&_ul]:gap-y-6 [&_ul]:list-disc [&_ul]:ml-4 [&_ul_li::marker]:text-[#53C3D9] [&_ol]:grid [&_ol]:grid-cols-1 [&_ol]:gap-y-6 [&_ol]:list-decimal [&_ol]:ml-4"
                     dangerouslySetInnerHTML={{
                       __html: listItem.description,
                     }}
