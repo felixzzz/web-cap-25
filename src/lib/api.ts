@@ -82,6 +82,7 @@ async function fetchAPI(
 
     // throw res
   } catch (errors) {
+    console.error("API Fetch Error:", path, errors);
     throw new Error("Failed to fetch API")
   }
 }

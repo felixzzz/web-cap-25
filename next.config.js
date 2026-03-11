@@ -60,6 +60,11 @@ const nextConfig = {
       },
       {
         protocol: "http",
+        hostname: "canasite.cap.test",
+        pathname: "**",
+      },
+      {
+        protocol: "http",
         hostname: "localhost",
         port: "8081",
         pathname: "**",

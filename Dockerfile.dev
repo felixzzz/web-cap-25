@@ -6,8 +6,8 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm install
 
-# Expose the standard Next.js port (or 3045 if preferred)
-EXPOSE 3045
+# Expose port 3000 (mapped to 3045 on host via docker-compose)
+EXPOSE 3000
 
-# Command to run in development mode
-CMD ["npm", "run", "dev"]
+# Command to run in development mode with host binding
+CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0"]
