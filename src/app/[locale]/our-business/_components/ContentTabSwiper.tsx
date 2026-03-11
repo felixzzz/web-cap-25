@@ -108,7 +108,7 @@ export default function ContentTabSwiper({
                     </h2>
                   )}
                   <div
-                    className="prose prose-lg max-w-none [&_h2]:mb-4 [&_h2]:text-xl [&_p]:mb-4 [&_ul]:grid [&_ul]:grid-cols-1 [&_ul]:gap-y-6 [&_ul]:list-disc [&_ul]:ml-4 [&_ul_li::marker]:text-[#53C3D9] [&_ol]:grid [&_ol]:grid-cols-1 [&_ol]:gap-y-6 [&_ol]:list-decimal [&_ol]:ml-4"
+                    className="prose prose-lg max-w-none [&_h2]:mb-4 [&_h2]:text-xl [&_p]:mb-4 [&_ul]:grid [&_ul]:grid-cols-1 [&_ul]:list-disc [&_ul]:ml-4 [&_ul_li::marker]:text-[#53C3D9] [&_ol]:grid [&_ol]:grid-cols-1 [&_ol]:gap-y-6 [&_ol]:list-decimal [&_ol]:ml-4"
                     dangerouslySetInnerHTML={{
                       __html: listItem.description,
                     }}
