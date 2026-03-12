@@ -1383,6 +1383,9 @@ export type MetaGovernanceWhistleblowing = {
       title_step: string
     }[]
   }[]
+  hotline_email_id: string
+  hotline_phones_id: { phone: string }[]
+  dropbox_locations_id: { location_name: string; address: string }[]
   status_en: string
   title_en: string
   description_en: string
@@ -1396,6 +1399,9 @@ export type MetaGovernanceWhistleblowing = {
       title_step: string
     }[]
   }[]
+  hotline_email_en: string
+  hotline_phones_en: { phone: string }[]
+  dropbox_locations_en: { location_name: string; address: string }[]
   complaint_handling_en: {
     status: string
     title_step: string

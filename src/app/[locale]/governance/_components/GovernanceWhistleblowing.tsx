@@ -5,6 +5,7 @@ import { getLocalizedContent, isContentActive } from "@/lib/utils"
 import { useLocale, useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
+import WhistleblowerChannels from "./WhistleblowerChannels"
 
 const listComplaint = [
   "Initial examination",
@@ -27,6 +28,12 @@ export default function GovernanceWhistleblowing({
   complaint_handling_title_en,
   complaint_handling_en,
   complaint_handling_id,
+  hotline_email_id,
+  hotline_email_en,
+  hotline_phones_id,
+  hotline_phones_en,
+  dropbox_locations_id,
+  dropbox_locations_en,
 }: MetaGovernanceWhistleblowing) {
   const locale = useLocale()
   const t = useTranslations("governance")
@@ -52,6 +59,11 @@ export default function GovernanceWhistleblowing({
                       description_id
                     ),
                   }}
+                />
+                <WhistleblowerChannels
+                  hotline_email={getLocalizedContent(locale, hotline_email_en, hotline_email_id) as string}
+                  hotline_phones={getLocalizedContent(locale, hotline_phones_en, hotline_phones_id) as { phone: string }[]}
+                  dropbox_locations={getLocalizedContent(locale, dropbox_locations_en, dropbox_locations_id) as { location_name: string; address: string }[]}
                 />
                 <Link
                   href="/governance/whistleblowing"
