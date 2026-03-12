@@ -1,5 +1,5 @@
 import React from "react"
-import { Mail, Phone, Archive } from "lucide-react"
+import { Mailbox, Phone, Archive } from "lucide-react"
 
 interface WhistleblowerChannelsProps {
   hotline_email: string
@@ -38,7 +38,7 @@ export default function WhistleblowerChannels({
           {hotline_email && (
             <div className="flex items-start gap-x-5">
               <div className="flex-shrink-0 w-10 h-10 bg-[#337ABC] rounded-full flex items-center justify-center text-white mt-1">
-                <Mail size={20} className="fill-current" />
+                <Mailbox size={20} className="fill-current" />
               </div>
               <div>
                 <h3 className="text-base font-bold">Hotline Email</h3>
