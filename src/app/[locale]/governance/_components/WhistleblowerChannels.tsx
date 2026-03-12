@@ -1,5 +1,5 @@
 import React from "react"
-import { Mailbox, Phone, Archive } from "lucide-react"
+import { MessageCircle, Phone, Box } from "lucide-react"
 
 interface WhistleblowerChannelsProps {
   hotline_email: string
@@ -38,11 +38,11 @@ export default function WhistleblowerChannels({
           {hotline_email && (
             <div className="flex items-start gap-x-5">
               <div className="flex-shrink-0 w-10 h-10 bg-[#337ABC] rounded-full flex items-center justify-center text-white mt-1">
-                <Mailbox size={20} className="fill-current" />
+                <MessageCircle size={20} className="fill-current" />
               </div>
               <div>
                 <h3 className="text-base font-bold">Hotline Email</h3>
-                <a href={`mailto:${hotline_email}`} className="text-gray-800 text-sm mt-1 hover:text-primary transition-colors">
+                <a href={`mailto:${hotline_email}`} target="_blank" rel="noopener noreferrer" className="text-gray-800 text-sm mt-1 hover:text-primary transition-colors">
                   {hotline_email}
                 </a>
               </div>
@@ -60,7 +60,7 @@ export default function WhistleblowerChannels({
                 <ul className="list-disc ml-5 mt-1 text-gray-800 text-sm space-y-1">
                   {hotline_phones.map((item, idx) => (
                     <li key={`phone-${idx}`}>
-                      <a href={`tel:${item.phone.replace(/[^0-9+]/g, '')}`} className="hover:text-primary transition-colors">
+                      <a href={`tel:${item.phone.replace(/[^0-9+]/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                         {item.phone}
                       </a>
                     </li>
@@ -74,7 +74,7 @@ export default function WhistleblowerChannels({
           {dropbox_locations && dropbox_locations.length > 0 && (
             <div className="flex items-start gap-x-5">
               <div className="flex-shrink-0 w-10 h-10 bg-[#337ABC] rounded-full flex items-center justify-center text-white mt-1 relative">
-                <Archive size={20} className="fill-current" />
+                <Box size={20} className="fill-current" />
               </div>
               <div>
                 <h3 className="text-base font-bold mb-3">Dropbox at:</h3>
