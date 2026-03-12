@@ -42,7 +42,9 @@ export default function WhistleblowerChannels({
               </div>
               <div>
                 <h3 className="text-base font-bold">Hotline Email</h3>
-                <p className="text-gray-800 text-sm mt-1">{hotline_email}</p>
+                <a href={`mailto:${hotline_email}`} className="text-gray-800 text-sm mt-1 hover:text-primary transition-colors">
+                  {hotline_email}
+                </a>
               </div>
             </div>
           )}
@@ -57,7 +59,11 @@ export default function WhistleblowerChannels({
                 <h3 className="text-base font-bold">Hotline Phone</h3>
                 <ul className="list-disc ml-5 mt-1 text-gray-800 text-sm space-y-1">
                   {hotline_phones.map((item, idx) => (
-                    <li key={`phone-${idx}`}>{item.phone}</li>
+                    <li key={`phone-${idx}`}>
+                      <a href={`tel:${item.phone.replace(/[^0-9+]/g, '')}`} className="hover:text-primary transition-colors">
+                        {item.phone}
+                      </a>
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -80,7 +86,7 @@ export default function WhistleblowerChannels({
                         {loc.location_name}
                       </h4>
                       <div
-                        className="whitespace-pre-line"
+
                         dangerouslySetInnerHTML={{ __html: loc.address }}
                       />
                     </div>
