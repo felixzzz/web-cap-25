@@ -65,8 +65,12 @@ export default function GovernanceWhistleblowing({
                   hotline_phones={getLocalizedContent(locale, hotline_phones_en, hotline_phones_id) as { phone: string }[]}
                   dropbox_locations={getLocalizedContent(locale, dropbox_locations_en, dropbox_locations_id) as { location_name: string; address: string }[]}
                 />
+
                 <Link
-                  href="/governance/whistleblowing"
+
+                  href={`mailto:${getLocalizedContent(locale, hotline_email_en, hotline_email_id)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-4 flex gap-2 text-sm font-bold text-primary"
                 >
                   Submit your concerns
