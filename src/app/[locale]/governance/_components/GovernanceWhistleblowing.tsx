@@ -45,8 +45,10 @@ export default function GovernanceWhistleblowing({
       <section className="bg-white py-8 lg:py-20">
         <div className="container">
           <div className="flex flex-col lg:flex-row">
-            <div className="w-full lg:w-6/12">
+            <div className="my-auto mt-8 w-full lg:mt-0 lg:w-5/12">
+
               <Anim>
+
                 <div className="text-3xl font-bold">
                   {getLocalizedContent(locale, title_en, title_id)}
                 </div>
@@ -60,27 +62,7 @@ export default function GovernanceWhistleblowing({
                     ),
                   }}
                 />
-                <WhistleblowerChannels
-                  hotline_email={getLocalizedContent(locale, hotline_email_en, hotline_email_id) as string}
-                  hotline_phones={getLocalizedContent(locale, hotline_phones_en, hotline_phones_id) as { phone: string }[]}
-                  dropbox_locations={getLocalizedContent(locale, dropbox_locations_en, dropbox_locations_id) as { location_name: string; address: string }[]}
-                />
 
-                <Link
-
-                  href={`mailto:${getLocalizedContent(locale, hotline_email_en, hotline_email_id)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 flex gap-2 text-sm font-bold text-primary"
-                >
-                  Submit your concerns
-                  <Image className="my-auto" src={iconNextBlue} alt="" />
-                </Link>
-              </Anim>
-            </div>
-            <div className="w-full lg:w-1/12"></div>
-            <div className="my-auto mt-8 w-full lg:mt-0 lg:w-5/12">
-              <Anim>
                 <div className="text-lg uppercase tracking-[1px] text-[#BABABA]">
                   {getLocalizedContent(
                     locale,
@@ -109,6 +91,28 @@ export default function GovernanceWhistleblowing({
                     </div>
                   ))}
                 </div>
+              </Anim>
+            </div>
+            <div className="w-full lg:w-1/12"></div>
+            <div className="w-full lg:w-6/12">
+              <Anim>
+
+                <WhistleblowerChannels
+                  hotline_email={getLocalizedContent(locale, hotline_email_en, hotline_email_id) as string}
+                  hotline_phones={getLocalizedContent(locale, hotline_phones_en, hotline_phones_id) as { phone: string }[]}
+                  dropbox_locations={getLocalizedContent(locale, dropbox_locations_en, dropbox_locations_id) as { location_name: string; address: string }[]}
+                />
+
+                <Link
+
+                  href={`mailto:${getLocalizedContent(locale, hotline_email_en, hotline_email_id)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 flex gap-2 text-sm font-bold text-primary"
+                >
+                  Submit your concerns
+                  <Image className="my-auto" src={iconNextBlue} alt="" />
+                </Link>
               </Anim>
             </div>
           </div>
