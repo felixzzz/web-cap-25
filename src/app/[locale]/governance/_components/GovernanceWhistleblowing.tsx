@@ -115,7 +115,9 @@ export default function GovernanceWhistleblowing({
                     className="flex gap-2 text-sm font-bold"
                   >
                     Submit your concerns
-                    <Image className="my-auto" src={iconNextBlue} alt="" />
+                    <Image className="my-auto group-hover:brightness-0 group-hover:invert"
+                      src={iconNextBlue}
+                      alt="" />
                   </Link>
                 </Button>
               </Anim>
