@@ -3,6 +3,7 @@ import { iconNextBlue } from "@/data/images"
 import { MetaGovernanceWhistleblowing } from "@/lib/fragment"
 import { getLocalizedContent, isContentActive } from "@/lib/utils"
 import { useLocale, useTranslations } from "next-intl"
+import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 import WhistleblowerChannels from "./WhistleblowerChannels"
@@ -61,7 +62,7 @@ export default function GovernanceWhistleblowing({
                   }}
                 />
               </Anim>
-              <Anim>
+              <Anim className="mt-12">
                 <div className="text-lg uppercase tracking-[1px] text-[#BABABA]">
                   {getLocalizedContent(
                     locale,
@@ -102,16 +103,21 @@ export default function GovernanceWhistleblowing({
                   dropbox_locations={getLocalizedContent(locale, dropbox_locations_en, dropbox_locations_id) as { location_name: string; address: string }[]}
                 />
 
-                <Link
-
-                  href={`mailto:${getLocalizedContent(locale, hotline_email_en, hotline_email_id)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 flex max-w-min gap-2 text-nowrap text-sm font-bold text-primary"
+                <Button
+                  variant={"outline-primary"}
+                  className="mt-5 min-w-0"
+                  asChild
                 >
-                  Submit your concerns
-                  <Image className="my-auto" src={iconNextBlue} alt="" />
-                </Link>
+                  <Link
+                    href={`mailto:${getLocalizedContent(locale, hotline_email_en, hotline_email_id)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex gap-2 text-sm font-bold"
+                  >
+                    Submit your concerns
+                    <Image className="my-auto" src={iconNextBlue} alt="" />
+                  </Link>
+                </Button>
               </Anim>
             </div>
           </div>
