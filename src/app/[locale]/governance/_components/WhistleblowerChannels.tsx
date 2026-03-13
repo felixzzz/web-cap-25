@@ -1,5 +1,6 @@
 import React from "react"
-import { MessageCircle, Phone, Box } from "lucide-react"
+import { icWhistleblowerDropbox, icWhistleblowerEmail, icWhistleblowerPhone } from "@/data/images"
+import Image from "next/image"
 
 interface WhistleblowerChannelsProps {
   hotline_email: string
@@ -38,7 +39,7 @@ export default function WhistleblowerChannels({
           {hotline_email && (
             <div className="flex items-start gap-x-5">
               <div className="flex-shrink-0 w-10 h-10 bg-[#337ABC] rounded-full flex items-center justify-center text-white mt-1">
-                <MessageCircle size={20} className="fill-current" />
+                <Image src={icWhistleblowerEmail} alt="Email" width={24} height={24} />
               </div>
               <div>
                 <h3 className="text-base font-bold">Hotline Email</h3>
@@ -53,7 +54,7 @@ export default function WhistleblowerChannels({
           {hotline_phones && hotline_phones.length > 0 && (
             <div className="flex items-start gap-x-5">
               <div className="flex-shrink-0 w-10 h-10 bg-[#337ABC] rounded-full flex items-center justify-center text-white mt-1">
-                <Phone size={20} className="fill-current" />
+                <Image src={icWhistleblowerPhone} alt="Phone" width={24} height={24} />
               </div>
               <div>
                 <h3 className="text-base font-bold">Hotline Phone</h3>
@@ -74,7 +75,7 @@ export default function WhistleblowerChannels({
           {dropbox_locations && dropbox_locations.length > 0 && (
             <div className="flex items-start gap-x-5">
               <div className="flex-shrink-0 w-10 h-10 bg-[#337ABC] rounded-full flex items-center justify-center text-white mt-1 relative">
-                <Box size={20} className="fill-current" />
+                <Image src={icWhistleblowerDropbox} alt="Dropbox" width={24} height={24} />
               </div>
               <div>
                 <h3 className="text-base font-bold mb-3">Dropbox at:</h3>
