@@ -46,9 +46,7 @@ export default function GovernanceWhistleblowing({
         <div className="container">
           <div className="flex flex-col lg:flex-row">
             <div className="my-auto mt-8 w-full lg:mt-0 lg:w-5/12">
-
               <Anim>
-
                 <div className="text-3xl font-bold">
                   {getLocalizedContent(locale, title_en, title_id)}
                 </div>
@@ -62,7 +60,8 @@ export default function GovernanceWhistleblowing({
                     ),
                   }}
                 />
-
+              </Anim>
+              <Anim>
                 <div className="text-lg uppercase tracking-[1px] text-[#BABABA]">
                   {getLocalizedContent(
                     locale,
@@ -108,7 +107,7 @@ export default function GovernanceWhistleblowing({
                   href={`mailto:${getLocalizedContent(locale, hotline_email_en, hotline_email_id)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 flex gap-2 text-sm font-bold text-primary"
+                  className="mt-5 flex max-w-min gap-2 text-nowrap text-sm font-bold text-primary"
                 >
                   Submit your concerns
                   <Image className="my-auto" src={iconNextBlue} alt="" />
