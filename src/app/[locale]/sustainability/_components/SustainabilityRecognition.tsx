@@ -41,11 +41,11 @@ export function SustainabilityRecognition({
             <h2 className="text-lg font-bold">Rating & Recognition</h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {getLocalizedContent(locale, rating_en, rating_id)?.map(
               (item, i) => (
-                <div key={i}>
-                  <Card className="rounded-xl bg-slate-50 p-6">
+                <div key={i} className="h-full">
+                  <Card className="flex h-full flex-col rounded-xl bg-slate-50 p-6">
                     <div className="relative mb-4 h-[54px]">
                       <Image
                         src={assetUrl(item.logo)!}
