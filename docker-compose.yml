@@ -10,3 +10,7 @@ services:
     ports:
       - "3045:3045"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
