@@ -4,7 +4,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm npm ci
 
 # Stage 2: Build the application
 FROM node:20-alpine AS builder
@@ -20,7 +20,8 @@ ENV NEXT_SHARP_PATH=/app/node_modules/sharp
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN npm run build
+# Cache .next/cache between builds for faster static page regeneration
+RUN --mount=type=cache,target=/app/.next/cache npm run build
 
 # Stage 3: Production runner (minimal image)
 FROM node:20-alpine AS runner

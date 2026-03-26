@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   chandra-asri:
     container_name: chandra-asri
