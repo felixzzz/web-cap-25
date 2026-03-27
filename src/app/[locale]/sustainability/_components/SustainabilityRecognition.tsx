@@ -57,7 +57,7 @@ export function SustainabilityRecognition({
                     <h3 className="mb-3 text-center font-bold">{item.title}</h3>
                     <div className="mb-5 flex flex-col items-center justify-center rounded-xl border border-blue-tint bg-slate-200 p-2 text-blue-tint">
                       <div className="text-3xl font-bold">{item.score}</div>
-                      <div className="text-xs font-semibold">
+                      <div className="text-center text-xs font-semibold">
                         {item.score_description}
                       </div>
                     </div>
