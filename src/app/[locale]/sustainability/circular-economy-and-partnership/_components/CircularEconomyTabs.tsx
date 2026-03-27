@@ -84,10 +84,10 @@ export default function CircularEconomyTabs({ tabsData, reportButton }: { tabsDa
     return (
         <Tabs defaultValue="policy" className="min-h-[25vh]">
             <div className="container mx-auto">
-                <TabsList className="min-w-fit md:min-w-fit flex-nowrap overflow-x-auto overflow-y-hidden mb-6 flex w-full flex-row gap-2 md:gap-4 p-1 md:p-2">
-                    <TabsTrigger value="policy" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles.policy}</TabsTrigger>
-                    <TabsTrigger value="end-to-end" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles["end-to-end"]}</TabsTrigger>
-                    <TabsTrigger value="technology" className="min-w-fit font-bold whitespace-nowrap px-4 md:px-6">{tabTitles.technology}</TabsTrigger>
+                <TabsList className="mb-6 flex w-full flex-row overflow-x-auto">
+                    <TabsTrigger value="policy" className="font-bold text-nowrap px-4 md:px-6">{tabTitles.policy}</TabsTrigger>
+                    <TabsTrigger value="end-to-end" className="font-bold text-nowrap px-4 md:px-6">{tabTitles["end-to-end"]}</TabsTrigger>
+                    <TabsTrigger value="technology" className="font-bold text-nowrap px-4 md:px-6">{tabTitles.technology}</TabsTrigger>
                 </TabsList>
             </div>
 
