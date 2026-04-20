@@ -38,12 +38,17 @@ export async function generateMetadata({
   }
 }
 
-export default async function ManagementAndStructurePage() {
+export default async function ManagementAndStructurePage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
+  const pageDownload = searchParams?.page_download ? Number(searchParams.page_download) : 1
   const data: HttpGeneralResponse<ManagementAndStructureProps> = await getPage(
     "management-and-structure"
   )
   const dataAboutDownload: PaginationHandlerResponse<MetaDocumentItem[]> =
-    await getDocuments(`?per_page=8&document_page=management_structure`)
+    await getDocuments(`?per_page=4&page=${pageDownload}&document_page=management_structure`)
   const dataCategories: MetaTopics[] = await getDetailPost(
     "categories?sort=sort&order=ASC&type=managements"
   )
@@ -65,10 +70,14 @@ export default async function ManagementAndStructurePage() {
         )}
       </Suspense>
       {data?.meta?.download && (
-        <AboutManagementDownload
-          dataAboutDownload={dataAboutDownload?.data}
-          {...data?.meta?.download}
-        />
+        <Suspense>
+          <AboutManagementDownload
+            dataAboutDownload={dataAboutDownload?.data}
+            last_page={dataAboutDownload?.last_page}
+            current_page={dataAboutDownload?.current_page}
+            {...data?.meta?.download}
+          />
+        </Suspense>
       )}
     </>
   )
