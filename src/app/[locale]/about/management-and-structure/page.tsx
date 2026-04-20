@@ -43,7 +43,7 @@ export default async function ManagementAndStructurePage() {
     "management-and-structure"
   )
   const dataAboutDownload: PaginationHandlerResponse<MetaDocumentItem[]> =
-    await getDocuments(`?per_page=4&document_page=management_structure`)
+    await getDocuments(`?per_page=8&document_page=management_structure`)
   const dataCategories: MetaTopics[] = await getDetailPost(
     "categories?sort=sort&order=ASC&type=managements"
   )
