@@ -57,9 +57,9 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
             className={cn(
               `py-4 lg:px-2 xl:px-2`,
               isActiveLink(item.href) &&
-                (backgroundWhite
-                  ? "font-bold text-primary"
-                  : "font-bold text-white")
+              (backgroundWhite
+                ? "font-bold text-primary"
+                : "font-bold text-white")
             )}
           >
             {item.label}
@@ -72,9 +72,9 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
               className={cn(
                 `py-4 hover:font-bold lg:px-2 xl:px-2`,
                 isActiveLink(item.href) &&
-                  (backgroundWhite
-                    ? "font-bold text-primary"
-                    : "font-bold text-white")
+                (backgroundWhite
+                  ? "font-bold text-primary"
+                  : "font-bold text-white")
               )}
             >
               {item.label}
@@ -86,7 +86,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                   <div className="p-14">
                     <h2 className="mb-10 text-2xl font-bold">{item.label}</h2>
 
-                    <div className="space-y-6">
+                    <div className="space-y-4">
                       {item.children?.map((item, i) => (
                         <div key={i} className="font-bold">
                           <Link
@@ -99,25 +99,25 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                       ))}
                       {(item.label === "Sustainability" ||
                         item.label === "Keberlanjutan") && (
-                        <div className="mt-10">
-                          <div className="max-w-[270px] text-xs tracking-[0.12px] text-white">
-                            {tNavbar("join_indonesia_asri")}
+                          <div className="mt-10">
+                            <div className="max-w-[270px] text-xs tracking-[0.12px] text-white">
+                              {tNavbar("join_indonesia_asri")}
+                            </div>
+                            <div className="mt-3">
+                              <Link
+                                href="https://indonesiaasri.com/"
+                                target="_blank"
+                              >
+                                <Image
+                                  src={imgBannerIndonesiaAsri}
+                                  width={258}
+                                  height={48}
+                                  alt=""
+                                />
+                              </Link>
+                            </div>
                           </div>
-                          <div className="mt-3">
-                            <Link
-                              href="https://indonesiaasri.com/"
-                              target="_blank"
-                            >
-                              <Image
-                                src={imgBannerIndonesiaAsri}
-                                width={258}
-                                height={48}
-                                alt=""
-                              />
-                            </Link>
-                          </div>
-                        </div>
-                      )}
+                        )}
                     </div>
                   </div>
                 </div>
@@ -128,97 +128,97 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                     </h3>
                     {(item.label === "About Us" ||
                       item.label === "Tentang Kami") && (
-                      <div className="grid grid-cols-3 gap-6">
-                        {dataMegamenuAboutus?.map((item, i: number) => (
-                          <div key={i}>
-                            <Card href={`/${locale}${item.slug}`}>
-                              <CardImage img={item.image} />
-                              <CardContent
-                                label={getLocalizedContent(
-                                  locale,
-                                  item.subtitle,
-                                  item.subtitle_id
-                                )}
-                                title={`${getLocalizedContent(locale, item.title_en, item.title_id)}`}
-                              >
-                                <Button
-                                  variant={"link"}
-                                  className="min-w-0 cursor-pointer px-0 text-sm font-bold group-hover:underline"
+                        <div className="grid grid-cols-3 gap-6">
+                          {dataMegamenuAboutus?.map((item, i: number) => (
+                            <div key={i}>
+                              <Card href={`/${locale}${item.slug}`}>
+                                <CardImage img={item.image} />
+                                <CardContent
+                                  label={getLocalizedContent(
+                                    locale,
+                                    item.subtitle,
+                                    item.subtitle_id
+                                  )}
+                                  title={`${getLocalizedContent(locale, item.title_en, item.title_id)}`}
                                 >
-                                  <span>{t("view_detail")}</span>
+                                  <Button
+                                    variant={"link"}
+                                    className="min-w-0 cursor-pointer px-0 text-sm font-bold group-hover:underline"
+                                  >
+                                    <span>{t("view_detail")}</span>
 
-                                  <ArrowRight
-                                    size={16}
-                                    strokeWidth={2}
-                                    className="ml-1 transition-all duration-300 group-hover:ml-2"
-                                  />
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                                    <ArrowRight
+                                      size={16}
+                                      strokeWidth={2}
+                                      className="ml-1 transition-all duration-300 group-hover:ml-2"
+                                    />
+                                  </Button>
+                                </CardContent>
+                              </Card>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     {(item.label === "Our Business" ||
                       item.label === "Bisnis Kami") && (
-                      <div className="grid grid-cols-3 gap-6">
-                        {data?.data?.map((item, i) => (
-                          <div key={i}>
-                            <Card href={`/${locale}/news/${item.slug}`}>
-                              <CardImage img={`${assetUrl(item.image)}`} />
-                              <CardContent
-                                label={tNavbar("news")}
-                                title={`${getLocalizedContent(locale, item.title_en, item.title)}`}
-                              >
-                                <Button
-                                  variant={"link"}
-                                  className="min-w-0 cursor-pointer px-0 text-sm font-bold group-hover:underline"
+                        <div className="grid grid-cols-3 gap-6">
+                          {data?.data?.map((item, i) => (
+                            <div key={i}>
+                              <Card href={`/${locale}/news/${item.slug}`}>
+                                <CardImage img={`${assetUrl(item.image)}`} />
+                                <CardContent
+                                  label={tNavbar("news")}
+                                  title={`${getLocalizedContent(locale, item.title_en, item.title)}`}
                                 >
-                                  <span>{t("view_detail")}</span>
+                                  <Button
+                                    variant={"link"}
+                                    className="min-w-0 cursor-pointer px-0 text-sm font-bold group-hover:underline"
+                                  >
+                                    <span>{t("view_detail")}</span>
 
-                                  <ArrowRight
-                                    size={16}
-                                    strokeWidth={2}
-                                    className="ml-1 transition-all duration-300 group-hover:ml-2"
-                                  />
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                                    <ArrowRight
+                                      size={16}
+                                      strokeWidth={2}
+                                      className="ml-1 transition-all duration-300 group-hover:ml-2"
+                                    />
+                                  </Button>
+                                </CardContent>
+                              </Card>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     {(item.label === "Sustainability" ||
                       item.label === "Keberlanjutan") && (
-                      <div className="grid grid-cols-3 gap-6">
-                        {dataSustainability?.data?.map((item, i) => (
-                          <div key={i}>
-                            <Card
-                              href={`/${locale}/sustainability/sustainability-in-action/${item.slug}`}
-                            >
-                              <CardImage img={`${assetUrl(item.image)}`} />
-                              <CardContent
-                                label={tNavbar("sustainability")}
-                                title={`${getLocalizedContent(locale, item.title_en, item.title)}`}
+                        <div className="grid grid-cols-3 gap-6">
+                          {dataSustainability?.data?.map((item, i) => (
+                            <div key={i}>
+                              <Card
+                                href={`/${locale}/sustainability/sustainability-in-action/${item.slug}`}
                               >
-                                <Button
-                                  variant={"link"}
-                                  className="min-w-0 cursor-pointer px-0 text-sm font-bold group-hover:underline"
+                                <CardImage img={`${assetUrl(item.image)}`} />
+                                <CardContent
+                                  label={tNavbar("sustainability")}
+                                  title={`${getLocalizedContent(locale, item.title_en, item.title)}`}
                                 >
-                                  <span>{t("view_detail")}</span>
+                                  <Button
+                                    variant={"link"}
+                                    className="min-w-0 cursor-pointer px-0 text-sm font-bold group-hover:underline"
+                                  >
+                                    <span>{t("view_detail")}</span>
 
-                                  <ArrowRight
-                                    size={16}
-                                    strokeWidth={2}
-                                    className="ml-1 transition-all duration-300 group-hover:ml-2"
-                                  />
-                                </Button>
-                              </CardContent>
-                            </Card>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                                    <ArrowRight
+                                      size={16}
+                                      strokeWidth={2}
+                                      className="ml-1 transition-all duration-300 group-hover:ml-2"
+                                    />
+                                  </Button>
+                                </CardContent>
+                              </Card>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     {item.label === "Investor" && (
                       <div className="grid grid-cols-3 gap-6">
                         {dataInvestorUpdate?.data?.map(
