@@ -286,7 +286,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
       )}
       style={{ top: "var(--sticky-banner-height, 0px)" }}
     >
-      <div className="container flex h-14 items-center justify-between">
+      <div className="container flex h-16 items-center justify-between">
         <Link href={`/${locale}/`} className="flex items-center gap-2">
           <Image
             src={
@@ -300,7 +300,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
             priority
           />
         </Link>
-        <nav className="hidden items-center gap-4 lg:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           <NavigationMenu className="static">
             <NavigationMenuList className="">
               <Suspense>
@@ -315,7 +315,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
             </NavigationMenuList>
           </NavigationMenu>
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <button
             className="relative cursor-pointer"
             onClick={() => setIsOpenSearch(!isOpenSearch)}
@@ -348,7 +348,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
             <DropdownMenu>
               <DropdownMenuTrigger asChild disabled={disableLanguageSwitch}>
                 <Button
-                  className="flex w-auto flex-shrink-0 gap-[2px] px-3"
+                  className="flex w-auto flex-shrink-0 gap-[2px] px-4"
                   variant="ghost"
                   size="icon"
                   disabled={disableLanguageSwitch}
@@ -388,7 +388,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
       {isOpenSearch && (
         <div
           className="box-shadow absolute z-[100] w-full bg-white transition-all"
-          style={{ top: "calc(56px + var(--sticky-banner-height, 0px))" }}
+          style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
         >
           <div className="container relative w-full py-4">
             <Image
@@ -428,7 +428,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
           />
           <div
             className="fixed inset-0 left-0 z-10 h-full w-full bg-black/60"
-            style={{ top: "calc(56px + var(--sticky-banner-height, 0px))" }}
+            style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
           />
         </>
       )}
@@ -457,7 +457,7 @@ function NavbarMobile({
     <>
       <div
         className="fixed left-0 z-50 w-full bg-white"
-        style={{ top: "calc(56px + var(--sticky-banner-height, 0px))" }}
+        style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
       >
         <div className="mx-auto flex flex-col lg:flex-row">
           <div className="py-4">

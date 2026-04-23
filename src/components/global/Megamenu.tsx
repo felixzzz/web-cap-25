@@ -55,7 +55,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
             href={item.isOpenNewTab ? item.href : `/${locale}${item.href}`}
             target={item.isOpenNewTab ? "_blank" : "_self"}
             className={cn(
-              `py-2 lg:px-2 xl:px-2`,
+              `py-5 lg:px-2 xl:px-3`,
               isActiveLink(item.href) &&
               (backgroundWhite
                 ? "font-bold text-primary"
@@ -70,7 +70,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
           <>
             <NavigationMenuTrigger
               className={cn(
-                `py-4 hover:font-bold lg:px-2 xl:px-2`,
+                `py-5 hover:font-bold lg:px-2 xl:px-3`,
                 isActiveLink(item.href) &&
                 (backgroundWhite
                   ? "font-bold text-primary"
@@ -86,7 +86,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                   <div className="p-14">
                     <h2 className="mb-10 text-2xl font-bold">{item.label}</h2>
 
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                       {item.children?.map((item, i) => (
                         <div key={i} className="font-bold">
                           <Link
