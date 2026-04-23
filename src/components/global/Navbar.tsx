@@ -456,7 +456,7 @@ function NavbarMobile({
   return (
     <>
       <div
-        className="fixed left-0 z-50 w-full bg-white"
+        className="fixed left-0 z-50 w-full bg-white overflow-y-auto max-h-[calc(100vh-64px-var(--sticky-banner-height,0px))]"
         style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
       >
         <div className="mx-auto flex flex-col lg:flex-row">
@@ -542,9 +542,10 @@ function NavbarMobile({
       </div>
       <div
         className={clsx(
-          "fixed right-0 z-[100] h-full min-h-dvh w-full translate-x-[100%] overflow-auto bg-white transition-all duration-300",
+          "fixed right-0 z-[100] w-full translate-x-[100%] overflow-y-auto bg-white transition-all duration-300 max-h-[calc(100vh-64px-var(--sticky-banner-height,0px))]",
           childrenData && "!translate-x-0"
         )}
+        style={{ top: "calc(64px + var(--sticky-banner-height, 0px))" }}
       >
         <div className="bg-patrick-blue pb-8 pt-4">
           <div className="container">
