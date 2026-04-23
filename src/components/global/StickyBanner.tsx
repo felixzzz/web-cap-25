@@ -52,7 +52,7 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
     if (isVisible) {
       document.documentElement.style.setProperty(
         "--sticky-banner-height",
-        "64px"
+        "56px"
       )
     } else {
       document.documentElement.style.setProperty(
@@ -71,7 +71,7 @@ export default function StickyBanner({ banner }: StickyBannerProps) {
 
   return (
     <div
-      className="fixed top-0 z-[998] h-16 w-full shadow-md bg-primary overflow-hidden"
+      className="fixed top-0 z-[998] h-14 w-full shadow-md bg-primary overflow-hidden"
       style={{
         backgroundColor: "#09102B",
       }}
