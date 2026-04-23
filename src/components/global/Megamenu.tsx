@@ -82,7 +82,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
 
             <NavigationMenuContent>
               <div className="grid grid-cols-1 lg:w-screen lg:grid-cols-12">
-                <div className="col-span-4 bg-patrick-blue text-white">
+                <div className="col-span-4 max-h-[calc(100vh-100px)] overflow-y-auto bg-patrick-blue text-white">
                   <div className="p-14">
                     <h2 className="mb-10 text-2xl font-bold">{item.label}</h2>
 
