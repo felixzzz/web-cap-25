@@ -485,7 +485,10 @@ function NavbarMobile({
                     ) : (
                       <Link
                         key={item.href}
-                        href={`/${locale}${item.href}`}
+                        href={
+                          item.isOpenNewTab ? item.href : `/${locale}${item.href}`
+                        }
+                        target={item.isOpenNewTab ? "_blank" : "_self"}
                         className="hover:bg-gray-100 flex flex-row justify-between gap-2 rounded text-md font-bold text-black"
                       >
                         <div className="my-auto">{item.label}</div>
@@ -673,7 +676,8 @@ function NavbarMobile({
               <div className="my-auto">{t("news")}</div>
             </Link>
             <Link
-              href={`/${locale}/career`}
+              href="https://careers.capcx.com/"
+              target="_blank"
               className="hover:bg-gray-100 flex flex-row justify-between gap-2 rounded text-md text-black"
             >
               <div className="my-auto">{tNavbar("career")}</div>
