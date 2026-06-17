@@ -81,8 +81,8 @@ export async function Footer() {
                   Head Office
                 </div>
                 <div className="mt-2 max-w-[320px] text-sm tracking-[0.14px] text-white/70">
-                  Wisma Barito Pacific Tower A, 7th Floor Jl. Let.Jend. S.
-                  Parman kav.62-63 Jakarta 11410, Indonesia
+                  Wisma Barito Pacific Tower A, 7th Floor  <br />
+                  Jl. Let.Jend. S. Parman kav.62-63 Jakarta 11410, Indonesia
                 </div>
                 <div className="mt-2 flex flex-row">
                   <div className="w-[60px] text-sm text-white/70">
@@ -134,14 +134,7 @@ export async function Footer() {
           </div>
           <div className="flex flex-col justify-between gap-6 text-white lg:flex-row">
             <div className="text-sm text-white lg:text-xs">
-              © {new Date().getFullYear()} Chandra Asri Group. Site by{" "}
-              <Link
-                href="https://antikode.com/?utm_source=chandra-asri-footer&utm_medium=referral"
-                className="hover:underline"
-              >
-                Antikode
-              </Link>
-              .
+              © {new Date().getFullYear()} Chandra Asri Group.
             </div>
             <div className="flex flex-col gap-6 lg:flex-row lg:gap-10">
               <ul className="flex flex-row gap-4 lg:my-auto">

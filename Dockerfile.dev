@@ -1,0 +1,13 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependencies only when package.json changes
+COPY package.json package-lock.json* ./
+RUN npm install
+
+# Expose port 3000 (mapped to 3045 on host via docker-compose)
+EXPOSE 3000
+
+# Command to run in development mode with host binding
+CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0"]

@@ -3,11 +3,12 @@ import NewsDetailContent from "@/app/[locale]/news/_components/NewsDetailContent
 import NewsDetailOther from "@/app/[locale]/news/_components/NewsDetailOther"
 import { PaginationHandlerResponse } from "@/lib/types"
 import { PostNews } from "@/lib/fragment"
-import { getActiveBanners, getDetailPost, getPostList } from "@/lib/api"
+import { getActiveBanners, getDetailPost, getPage, getPostList } from "@/lib/api"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import { dateFormatter, getLocalizedContent } from "@/lib/utils"
 import { SITE_URL } from "@/lib/constant"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export async function generateStaticParams({
   params: { locale },
@@ -88,6 +89,13 @@ export default async function NewsDetailPage({
   const data: PostNews = await getDetailPost(slug)
   const banners = await getActiveBanners(slug)
 
+  let newsPageData = null
+  try {
+    newsPageData = await getPage("news")
+  } catch (error) {
+    console.error("Failed to fetch news page data:", error)
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -122,13 +130,16 @@ export default async function NewsDetailPage({
   if (!data) return notFound()
   if (data.type !== "blog") return notFound()
 
+  const shouldDisableLanguageSwitch = data.language_availability === 'en' || data.language_availability === 'id'
+
   return (
-    <div className="mt-16">
+    <div style={{ marginTop: "calc(64px + var(--sticky-banner-height, 0px))" }}>
+      {newsPageData?.id && <PageIdSetter id={newsPageData.id.toString()} />}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar isBackgroundWhite />
+      <Navbar isBackgroundWhite disableLanguageSwitch={shouldDisableLanguageSwitch} />
       <NewsDetailContent data={data} path="blog" banners={banners} />
       {relatedArticles?.data?.length > 0 && (
         <NewsDetailOther data={relatedArticles.data} />

@@ -132,3 +132,6 @@ export { default as imgDefaultNews } from "public/img/common/img_default-news.jp
 
 
 export { default as imgCircularEconomyMapLevel } from "public/img/temp/circular-economy-map-level.jpeg"
+export { default as icWhistleblowerEmail } from "public/img/icon/ic_whistleblower_email.png"
+export { default as icWhistleblowerPhone } from "public/img/icon/ic_whistleblower_phone.png"
+export { default as icWhistleblowerDropbox } from "public/img/icon/ic_whistleblower_dropbox.png"

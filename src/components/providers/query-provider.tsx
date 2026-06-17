@@ -12,7 +12,7 @@ type PageContextType = {
 
 const PageIdContext = createContext<PageContextType>({
   pageId: null,
-  setPageId: () => {},
+  setPageId: () => { },
 })
 
 export const usePageId = () => useContext(PageIdContext)

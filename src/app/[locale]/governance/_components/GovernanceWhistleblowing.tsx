@@ -3,8 +3,10 @@ import { iconNextBlue } from "@/data/images"
 import { MetaGovernanceWhistleblowing } from "@/lib/fragment"
 import { getLocalizedContent, isContentActive } from "@/lib/utils"
 import { useLocale, useTranslations } from "next-intl"
+import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
+import WhistleblowerChannels from "./WhistleblowerChannels"
 
 const listComplaint = [
   "Initial examination",
@@ -27,6 +29,12 @@ export default function GovernanceWhistleblowing({
   complaint_handling_title_en,
   complaint_handling_en,
   complaint_handling_id,
+  hotline_email_id,
+  hotline_email_en,
+  hotline_phones_id,
+  hotline_phones_en,
+  dropbox_locations_id,
+  dropbox_locations_en,
 }: MetaGovernanceWhistleblowing) {
   const locale = useLocale()
   const t = useTranslations("governance")
@@ -38,7 +46,7 @@ export default function GovernanceWhistleblowing({
       <section className="bg-white py-8 lg:py-20">
         <div className="container">
           <div className="flex flex-col lg:flex-row">
-            <div className="w-full lg:w-6/12">
+            <div className="my-auto mt-8 w-full lg:mt-0 lg:w-5/12">
               <Anim>
                 <div className="text-3xl font-bold">
                   {getLocalizedContent(locale, title_en, title_id)}
@@ -53,18 +61,8 @@ export default function GovernanceWhistleblowing({
                     ),
                   }}
                 />
-                <Link
-                  href="/governance/whistleblowing"
-                  className="mt-4 flex gap-2 text-sm font-bold text-primary"
-                >
-                  Submit your concerns
-                  <Image className="my-auto" src={iconNextBlue} alt="" />
-                </Link>
               </Anim>
-            </div>
-            <div className="w-full lg:w-1/12"></div>
-            <div className="my-auto mt-8 w-full lg:mt-0 lg:w-5/12">
-              <Anim>
+              <Anim className="mt-12">
                 <div className="text-lg uppercase tracking-[1px] text-[#BABABA]">
                   {getLocalizedContent(
                     locale,
@@ -93,6 +91,35 @@ export default function GovernanceWhistleblowing({
                     </div>
                   ))}
                 </div>
+              </Anim>
+            </div>
+            <div className="w-full lg:w-1/12"></div>
+            <div className="w-full lg:w-6/12">
+              <Anim>
+
+                <WhistleblowerChannels
+                  hotline_email={getLocalizedContent(locale, hotline_email_en, hotline_email_id) as string}
+                  hotline_phones={getLocalizedContent(locale, hotline_phones_en, hotline_phones_id) as { phone: string }[]}
+                  dropbox_locations={getLocalizedContent(locale, dropbox_locations_en, dropbox_locations_id) as { location_name: string; address: string }[]}
+                />
+
+                <Button
+                  variant={"outline-primary"}
+                  className="mt-5 min-w-0"
+                  asChild
+                >
+                  <Link
+                    href={`mailto:${getLocalizedContent(locale, hotline_email_en, hotline_email_id)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex gap-2 text-sm font-bold"
+                  >
+                    Submit your concerns
+                    <Image className="my-auto group-hover:brightness-0 group-hover:invert"
+                      src={iconNextBlue}
+                      alt="" />
+                  </Link>
+                </Button>
               </Anim>
             </div>
           </div>

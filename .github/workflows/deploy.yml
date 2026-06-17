@@ -6,7 +6,6 @@ on:
       - release
       - master
       - main
-      - sonar
   workflow_dispatch:
 
 jobs:
@@ -53,19 +52,3 @@ jobs:
             sudo docker rm -f ${{ secrets.CONTAINER }} || true
             sudo docker compose up -d
             sudo docker image prune -af
-
-  sonarqube_check:
-    if: github.ref == 'refs/heads/sonar'
-    name: SonarQube Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
-
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

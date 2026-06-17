@@ -21,6 +21,18 @@ export function EnvironmentPerformance({
   if (!isContentActive(locale, status_en, status_id)) {
     return <></>
   }
+  const title = getLocalizedContent(locale, title_en, title_id) || title_id || title_en
+  const description = getLocalizedContent(locale, description_en, description_id) || description_id || description_en
+
+  const numbers = (() => {
+    const localized = getLocalizedContent(locale, numbers_en, numbers_id)
+    if (Array.isArray(localized) && localized.length > 0) return localized
+    // Fallback: if current locale has no numbers, use the other
+    if (Array.isArray(numbers_id) && numbers_id.length > 0) return numbers_id
+    if (Array.isArray(numbers_en) && numbers_en.length > 0) return numbers_en
+    return []
+  })()
+
   return (
     <>
       <div className="relative bg-tertiary py-12 lg:py-28">
@@ -33,35 +45,33 @@ export function EnvironmentPerformance({
         />
 
         <div className="container relative z-10 text-white">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <div className="relative lg:bottom-10">
+          <div className="flex flex-col justify-center gap-6 lg:flex-row">
+            <div className="flex-1 lg:max-w-[33%]">
               <h2 className="mb-3 text-balance text-xl font-bold">
-                {getLocalizedContent(locale, title_en, title_id)}
+                {title}
               </h2>
               <div
                 className="opacity-70"
                 dangerouslySetInnerHTML={{
-                  __html: getLocalizedContent(
-                    locale,
-                    description_en,
-                    description_id
-                  ),
+                  __html: description || "",
                 }}
               ></div>
             </div>
-            {getLocalizedContent(locale, numbers_en, numbers_id)?.map(
+            {numbers?.map(
               (item, i) => (
                 <div
                   key={i}
-                  className="flex min-h-60 flex-col justify-between rounded-xl bg-blue-950 p-6"
+                  className="flex min-h-60 flex-1 flex-col justify-between rounded-xl bg-blue-950 p-6 lg:max-w-[33%]"
                 >
                   <div>
-                    <Image
-                      src={assetUrl(item?.icon || "") || ""}
-                      width={40}
-                      height={40}
-                      alt={item.title}
-                    />
+                    {item.icon && (
+                      <Image
+                        src={assetUrl(item?.icon || "") || ""}
+                        width={40}
+                        height={40}
+                        alt={item.title}
+                      />
+                    )}
                   </div>
                   <div>
                     <ScrambleText text={item.number} />

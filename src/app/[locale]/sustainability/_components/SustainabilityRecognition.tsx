@@ -41,11 +41,11 @@ export function SustainabilityRecognition({
             <h2 className="text-lg font-bold">Rating & Recognition</h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {getLocalizedContent(locale, rating_en, rating_id)?.map(
               (item, i) => (
-                <div key={i}>
-                  <Card className="rounded-xl bg-slate-50 p-6">
+                <div key={i} className="h-full">
+                  <Card className="flex h-full flex-col rounded-xl bg-slate-50 p-6">
                     <div className="relative mb-4 h-[54px]">
                       <Image
                         src={assetUrl(item.logo)!}
@@ -57,7 +57,7 @@ export function SustainabilityRecognition({
                     <h3 className="mb-3 text-center font-bold">{item.title}</h3>
                     <div className="mb-5 flex flex-col items-center justify-center rounded-xl border border-blue-tint bg-slate-200 p-2 text-blue-tint">
                       <div className="text-3xl font-bold">{item.score}</div>
-                      <div className="text-xs font-semibold">
+                      <div className="text-center text-xs font-semibold">
                         {item.score_description}
                       </div>
                     </div>

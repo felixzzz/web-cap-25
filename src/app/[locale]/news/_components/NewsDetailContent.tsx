@@ -58,7 +58,7 @@ export default function NewsDetailContent({
     } else {
       router.push(`/id/${path}/${data.slug}`)
     }
-  }, [locale])
+  }, [locale, data.slug, data.slug_en, path, router])
 
   const rawContent = getLocalizedContent(
     locale,
@@ -100,7 +100,7 @@ export default function NewsDetailContent({
           className="container mx-auto mb-5 lg:mb-[40px]"
         />
         <div
-          className={`grid grid-cols-1 items-start ${
+          className={`grid grid-cols-1 ${
             hasAnyBanner
               ? "lg:grid-cols-[230px_minmax(0,1fr)_230px] xl:grid-cols-[230px_minmax(0,1fr)_230px]"
               : "lg:grid-cols-12"

@@ -12,8 +12,9 @@ import { ProductDatasheet } from "../../_components/ProductDatasheet"
 import { ProductChemical } from "@/lib/fragment"
 import ProductList from "../../_components/ProductList"
 import { getLocalizedContent } from "@/lib/utils"
+import ProductCatalogBanners from "@/components/banners/ProductCatalogBanners"
 
-export async function generateStaticParams({ params: { locale } } : { params: { locale: string } }) {
+export async function generateStaticParams({ params: { locale } }: { params: { locale: string } }) {
   const projects: PaginationHandlerResponse<{ slug: string }[]> =
     await getPostList(`?type=products`)
 
@@ -59,7 +60,21 @@ export default async function DetailChemicalSolutionsPage({
       {dataCategories?.length > 0 && (
         <ProductList slug={slug} dataCategories={dataCategories} />
       )}
+
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} hideLoadingVertical />}
+
+      {/* Product Catalog Banners - Below Hero */}
+      {/* Fallback logic: Try default, then ID, then EN to ensure banners show even if only uploaded in one language */}
+      {(data?.meta?.product_catalog_banners || data?.meta?.product_catalog_banners_id || data?.meta?.product_catalog_banners_en) && (
+        <ProductCatalogBanners
+          banners={
+            (data?.meta?.product_catalog_banners as any) ||
+            (data?.meta?.product_catalog_banners_id as any) ||
+            (data?.meta?.product_catalog_banners_en as any)
+          }
+        />
+      )}
+
       {data?.meta?.product_datasheet && (
         <ProductSolutions {...data?.meta.product_datasheet} />
       )}
