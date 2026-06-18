@@ -30,7 +30,7 @@ export function BannerCard({
   aspectRatio,
 }: BannerCardProps) {
   const [textColor, setTextColor] = useState("white")
-  const isMobile = useMediaQuery("(max-width: 1024px)", { defaultValue: false, initializeWithValue: false })
+  const isMobile = useMediaQuery("(max-width: 1023.98px)", { defaultValue: false, initializeWithValue: false })
 
   const activeAspectRatio = (isMobile && banner?.aspect_ratio_mobile && banner.aspect_ratio_mobile !== "null" && banner.aspect_ratio_mobile.trim() !== "")
     ? banner.aspect_ratio_mobile.replace(":", "/")
