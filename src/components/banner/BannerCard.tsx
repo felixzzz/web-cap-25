@@ -40,6 +40,8 @@ export function BannerCard({
             ? banner.aspect_ratio.replace(":", "/")
             : "4/3"));
 
+  const isPortrait = activeAspectRatio === "3/4" || activeAspectRatio === "9/16";
+
   const imageUrl =
     (isMobile && banner?.image_mobile && banner.image_mobile !== "null" && banner.image_mobile.trim() !== "")
       ? assetUrl(banner.image_mobile)!
@@ -86,9 +88,11 @@ export function BannerCard({
 
   return (
     <div
-      className={`bg-gray-900 group relative block w-full overflow-hidden rounded-xl ${className}`}
+      className={`bg-gray-900 group relative block w-full overflow-hidden rounded-xl ${isPortrait && isMobile ? "mx-auto" : ""} ${className}`}
       style={{
         aspectRatio: activeAspectRatio,
+        maxHeight: isPortrait && isMobile ? "350px" : undefined,
+        maxWidth: isPortrait && isMobile ? `calc(350px * (${activeAspectRatio}))` : undefined,
       }}
     >
       {banner.html ? (
