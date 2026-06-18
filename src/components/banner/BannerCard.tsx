@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { FastAverageColor } from "fast-average-color"
 import { useEffect, useState } from "react"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
 
 interface BannerCardProps {
   banner: Banner
@@ -29,23 +30,34 @@ export function BannerCard({
   aspectRatio,
 }: BannerCardProps) {
   const [textColor, setTextColor] = useState("white")
+  const isMobile = useMediaQuery("(max-width: 1024px)", { defaultValue: false, initializeWithValue: false })
+
+  const activeAspectRatio = (isMobile && banner?.aspect_ratio_mobile && banner.aspect_ratio_mobile !== "null" && banner.aspect_ratio_mobile.trim() !== "")
+    ? banner.aspect_ratio_mobile.replace(":", "/")
+    : (aspectRatio
+        ? aspectRatio.replace(":", "/")
+        : (banner?.aspect_ratio && banner.aspect_ratio !== "null" && banner.aspect_ratio.trim() !== ""
+            ? banner.aspect_ratio.replace(":", "/")
+            : "4/3"));
 
   const imageUrl =
-    banner?.image && banner?.image !== "null"
-      ? assetUrl(banner.image)!
-      : (() => {
-          if (!banner) return ""
-          switch (banner.aspect_ratio) {
-            case "1:1":
-              return "/img/bg/default-1/1.webp"
-            case "3:4":
-              return "/img/bg/default-3/4.webp"
-            case "9:16":
-              return "/img/bg/default-9/16.webp"
-            default:
-              return "/img/bg/default-bg.webp"
-          }
-        })()
+    (isMobile && banner?.image_mobile && banner.image_mobile !== "null" && banner.image_mobile.trim() !== "")
+      ? assetUrl(banner.image_mobile)!
+      : (banner?.image && banner.image !== "null" && banner.image.trim() !== ""
+          ? assetUrl(banner.image)!
+          : (() => {
+              if (!banner) return ""
+              switch (activeAspectRatio.replace("/", ":")) {
+                case "1:1":
+                  return "/img/bg/default-1/1.webp"
+                case "3:4":
+                  return "/img/bg/default-3/4.webp"
+                case "9:16":
+                  return "/img/bg/default-9/16.webp"
+                default:
+                  return "/img/bg/default-bg.webp"
+              }
+            })())
 
   useEffect(() => {
     if (imageUrl) {
@@ -76,11 +88,7 @@ export function BannerCard({
     <div
       className={`bg-gray-900 group relative block w-full overflow-hidden rounded-xl ${className}`}
       style={{
-        aspectRatio: aspectRatio
-          ? aspectRatio.replace(":", "/")
-          : banner.aspect_ratio
-            ? banner.aspect_ratio.replace(":", "/")
-            : "4/3",
+        aspectRatio: activeAspectRatio,
       }}
     >
       {banner.html ? (
@@ -93,10 +101,14 @@ export function BannerCard({
           {/* Background Media */}
           <div className="absolute inset-0 h-full w-full">
             {(() => {
-              if (banner.video) {
+              const videoUrl = (isMobile && banner?.video_mobile && banner.video_mobile !== "null" && banner.video_mobile.trim() !== "") 
+                ? banner.video_mobile 
+                : (banner?.video && banner.video !== "null" && banner.video.trim() !== "" ? banner.video : null);
+              
+              if (videoUrl) {
                 return (
                   <video
-                    src={assetUrl(banner.video)!}
+                    src={assetUrl(videoUrl)!}
                     poster={imageUrl}
                     autoPlay
                     muted
