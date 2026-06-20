@@ -30,7 +30,7 @@ export function BannerCard({
   aspectRatio,
 }: BannerCardProps) {
   const [textColor, setTextColor] = useState("white")
-  const isMobile = useMediaQuery("(max-width: 1024px)", { defaultValue: false, initializeWithValue: false })
+  const isMobile = useMediaQuery("(max-width: 1023.98px)", { defaultValue: false, initializeWithValue: false })
 
   const activeAspectRatio = (isMobile && banner?.aspect_ratio_mobile && banner.aspect_ratio_mobile !== "null" && banner.aspect_ratio_mobile.trim() !== "")
     ? banner.aspect_ratio_mobile.replace(":", "/")
@@ -39,6 +39,8 @@ export function BannerCard({
         : (banner?.aspect_ratio && banner.aspect_ratio !== "null" && banner.aspect_ratio.trim() !== ""
             ? banner.aspect_ratio.replace(":", "/")
             : "4/3"));
+
+  const isPortrait = activeAspectRatio === "3/4" || activeAspectRatio === "9/16";
 
   const imageUrl =
     (isMobile && banner?.image_mobile && banner.image_mobile !== "null" && banner.image_mobile.trim() !== "")
@@ -86,9 +88,11 @@ export function BannerCard({
 
   return (
     <div
-      className={`bg-gray-900 group relative block w-full overflow-hidden rounded-xl ${className}`}
+      className={`bg-gray-900 group relative block w-full overflow-hidden rounded-xl ${isPortrait && isMobile ? "mx-auto" : ""} ${className}`}
       style={{
         aspectRatio: activeAspectRatio,
+        maxHeight: isPortrait && isMobile ? "350px" : undefined,
+        maxWidth: isPortrait && isMobile ? `calc(350px * (${activeAspectRatio}))` : undefined,
       }}
     >
       {banner.html ? (

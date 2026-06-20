@@ -1,6 +1,7 @@
 "use client"
 
 import { Banner } from "@/lib/types"
+import { cn } from "@/lib/utils"
 import { BannerCard } from "./BannerCard"
 import { BannerCarousel } from "./BannerCarousel"
 
@@ -27,11 +28,17 @@ export function BannerRenderer({
 }: BannerRendererProps) {
   if (!banners || banners.length === 0) return null
 
+  const sideBannerClassName =
+    position === "left" || position === "right"
+      ? "md:max-lg:mx-auto md:max-lg:w-3/4"
+      : undefined
+  const bannerClassName = cn(sideBannerClassName, className)
+
   if (banners.length === 1) {
     return (
       <BannerCard
         banner={banners[0]}
-        className={className}
+        className={bannerClassName}
         aspectRatio={aspectRatio}
       />
     )
@@ -40,7 +47,7 @@ export function BannerRenderer({
   return (
     <BannerCarousel
       banners={banners}
-      className={className}
+      className={bannerClassName}
       aspectRatio={aspectRatio}
     />
   )
