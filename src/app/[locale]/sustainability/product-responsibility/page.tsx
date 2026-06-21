@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import React from "react"
 import { Metadata } from "next"
 import Navbar from "@/components/global/Navbar"
@@ -23,6 +24,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("product-responsibility")
   return {
+    alternates: getAlternates(locale, "/sustainability/product-responsibility"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

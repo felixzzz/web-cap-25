@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { ContentLeftRightBlock } from "@/components/block/ContentLeftRightBlock"
 import { IconListhorizontalBlock } from "@/components/block/IconListhorizontalBlock"
@@ -29,6 +30,7 @@ export async function generateMetadata({
 }) {
   const data: HttpGeneralResponse<EventPageProps> = await getPage("event")
   return {
+    alternates: getAlternates(locale, "/caliber"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

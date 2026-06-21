@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import Navbar from "@/components/global/Navbar"
 import { SocialCategory } from "../_components/SocialCategory"
@@ -24,6 +25,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("social")
   return {
+    alternates: getAlternates(locale, "/sustainability/social"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import { ChemicalSolutionsProduct } from "../_components/ChemicalSolutionsProduct"
 import { ChemicalExplore } from "../_components/ChemicalExplore"
@@ -28,6 +29,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("petrochemical-solution-overview")
   return {
+    alternates: getAlternates(locale, "/our-business/chemical-solutions"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import React from "react"
 import { Metadata } from "next"
 
@@ -19,6 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("practices-of-employment")
   return {
+    alternates: getAlternates(locale, "/sustainability/practices-of-employment"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

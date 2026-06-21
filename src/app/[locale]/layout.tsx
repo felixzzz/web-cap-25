@@ -24,9 +24,22 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-export const metadata: Metadata = {
-  ...sharedMetadata,
-  // override here
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  return {
+    ...sharedMetadata,
+    alternates: {
+      canonical: `${SITE_URL}/${locale}`,
+      languages: {
+        id: `${SITE_URL}/id`,
+        en: `${SITE_URL}/en`,
+        "x-default": `${SITE_URL}/en`,
+      },
+    },
+  }
 }
 
 export default async function LocaleLayout({

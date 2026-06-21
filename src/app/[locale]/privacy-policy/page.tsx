@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import ContentBlock from "@/components/block/ContentBlock"
 import { getPage } from "@/lib/api"
@@ -18,6 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("privacy-policy")
   return {
+    alternates: getAlternates(locale, "/privacy-policy"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

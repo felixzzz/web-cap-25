@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { ContentLeftRightBlock } from "@/components/block/ContentLeftRightBlock"
 import { IconListhorizontalBlock } from "@/components/block/IconListhorizontalBlock"
@@ -35,6 +36,7 @@ export async function generateMetadata({
   const data: HttpGeneralResponse<BusinessSolutionsProp> =
     await getPage(business_line)
   return {
+    alternates: getAlternates(locale, `/our-business/${business_line}`),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

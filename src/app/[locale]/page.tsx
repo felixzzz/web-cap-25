@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { Suspense, lazy } from "react"
 import Navbar from "@/components/global/Navbar"
 import SectionJumbotron from "./_components/SectionJumbotron"
@@ -38,6 +39,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("home")
   return {
+    alternates: getAlternates(locale, "/"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

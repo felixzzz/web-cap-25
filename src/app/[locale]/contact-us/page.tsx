@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import ContactForm from "./_components/ContactForm"
 import ContactOtherCompany from "./_components/ContactOtherCompany"
@@ -19,6 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("contact-us")
   return {
+    alternates: getAlternates(locale, "/contact-us"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

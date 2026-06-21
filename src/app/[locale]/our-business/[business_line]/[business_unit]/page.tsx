@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { ContentLeftRightBlock } from "@/components/block/ContentLeftRightBlock"
 import { IconListhorizontalBlock } from "@/components/block/IconListhorizontalBlock"
@@ -34,9 +35,9 @@ export async function generateStaticParams() {
 export const revalidate = 60
 
 export async function generateMetadata({
-  params: { business_unit, locale },
+  params: { business_line, business_unit, locale },
 }: {
-  params: { business_unit: string; locale: "en" | "id" }
+  params: { business_line: string; business_unit: string; locale: "en" | "id" }
 }) {
   const data: HttpGeneralResponse<BusinessSolutionsProp> =
     await getPage(business_unit)
@@ -44,6 +45,7 @@ export async function generateMetadata({
     return notFound()
   }
   return {
+    alternates: getAlternates(locale, `/our-business/${business_line}/${business_unit}`),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

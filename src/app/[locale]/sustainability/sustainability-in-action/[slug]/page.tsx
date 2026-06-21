@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import DetailEsg from "../_components/DetailEsg"
 import EsgDetailOther from "../_components/DetailEsgOthers"
@@ -52,6 +53,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getDetailPost(slug)
   return {
+    alternates: getAlternates(locale, `/sustainability/sustainability-in-action/${slug}`),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

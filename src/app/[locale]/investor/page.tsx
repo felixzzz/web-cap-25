@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import InvestorJumbotron from "./_components/InvestorJumbotron"
 import InvestorFinancialJourney from "./_components/InvestorFinancialJourney"
@@ -25,6 +26,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("investor-overview")
   return {
+    alternates: getAlternates(locale, "/investor"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

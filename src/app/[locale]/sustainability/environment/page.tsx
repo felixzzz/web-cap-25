@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { IntroBlock } from "@/components/block/IntroBlock"
 import { MockMetaCover, MockMetaIntro } from "@/components/block/mock"
@@ -25,6 +26,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("environment-1")
   return {
+    alternates: getAlternates(locale, "/sustainability/environment"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

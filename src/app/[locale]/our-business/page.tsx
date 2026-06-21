@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import { OurBusinessOverview } from "./_components/OurBusinessOverview"
 import { HttpGeneralResponse, OurBusinessProps } from "@/lib/types"
@@ -19,6 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("business-solution")
   return {
+    alternates: getAlternates(locale, "/our-business"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

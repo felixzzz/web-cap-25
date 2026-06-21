@@ -1,3 +1,5 @@
+import { Metadata } from "next"
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import NewsHeader from "./_components/NewsHeader"
 import NewsAndPressReleases from "./_components/NewsAndPressReleases"
@@ -13,6 +15,17 @@ import { Suspense } from "react"
 import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 120
+
+
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  return {
+    alternates: getAlternates(locale, "/news"),
+  }
+}
 
 export default async function NewsPage({
   searchParams,
