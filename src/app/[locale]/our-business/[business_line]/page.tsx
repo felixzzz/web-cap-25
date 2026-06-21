@@ -36,6 +36,18 @@ export async function generateMetadata({
   const data: HttpGeneralResponse<BusinessSolutionsProp> =
     await getPage(business_line)
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
     alternates: getAlternates(locale, `/our-business/${business_line}`),
     title: getLocalizedContent(
       locale,

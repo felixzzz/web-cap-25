@@ -19,6 +19,18 @@ export async function generateMetadata({
   const data: HttpGeneralResponse<BusinessSolutionsProp> =
     await getPage("energy")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      "Policy Advocacy and Public Education",
+      "Advokasi Kebijakan dan Edukasi Publik"
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
     alternates: getAlternates(locale, "/sustainability/circular-economy-and-partnership/policy-advocacy-and-public-education"),
     title: getLocalizedContent(
       locale,

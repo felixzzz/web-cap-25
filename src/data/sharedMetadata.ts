@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import { SITE_URL } from "@/lib/constant"
 
 // setup SEO here
 const title = "Chandra Asri"
@@ -6,7 +7,7 @@ const description =
   "Chandra Asri Group is Indonesia’s leading chemical and infrastructure solutions company, operating an integrated petrochemical plant that incorporates world-class, state-of-the-art technology and supporting facilities."
 
 export const sharedMetadata: Metadata = {
-  metadataBase: new URL(`${process.env.SITE_URL}`),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${title}`,
     template: `%s | ${title}`,

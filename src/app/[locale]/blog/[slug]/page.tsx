@@ -73,6 +73,16 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_desc_id
     ),
     openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
       images: [data?.image],
       publishedTime: data?.published_at,
     },
