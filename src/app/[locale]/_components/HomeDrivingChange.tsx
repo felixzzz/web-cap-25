@@ -49,7 +49,7 @@ export default function HomeDrivingChange({
                   bg={assetUrl(item.image)}
                   cta_label={item.cta_label}
                   className="max-lg:h-[218px] max-lg:rounded-xl max-lg:px-[14px] max-lg:py-4"
-                  alt=""
+                  alt={item.title || ""}
                 />
               )
             )}

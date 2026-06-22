@@ -15,6 +15,7 @@ type Prop = {
   hideLoadingVertical?: boolean
   alt?: string
   altMobile?: string
+  priority?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 export function Jumbotron({
@@ -26,6 +27,7 @@ export function Jumbotron({
   hideLoadingVertical,
   alt,
   altMobile,
+  priority,
   ...props
 }: Prop) {
   return (
@@ -45,6 +47,7 @@ export function Jumbotron({
               bgMobile={bgMobile || bg}
               alt={alt || ""}
               altMobile={altMobile || ""}
+              priority={priority}
             />
           )}
         </div>

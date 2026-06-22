@@ -356,7 +356,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
                   <Image
                     className="mr-1 size-4 rounded-full border border-white"
                     src={locale === "id" ? icBahasa : icEnglish}
-                    alt=""
+                    alt={locale === "id" ? "Bahasa Indonesia" : "English"}
                   />
                   {locale.toUpperCase()}
                   <ChevronDown className="size-5" />
@@ -396,7 +396,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
               className="absolute left-4 top-[50%] translate-y-[-50%]"
               width={16}
               height={16}
-              alt=""
+              alt="Search"
             />
             <Input
               type="text"
@@ -412,7 +412,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
               className="absolute right-4 top-[50%] translate-y-[-50%] cursor-pointer"
               width={16}
               height={16}
-              alt=""
+              alt="Close"
               onClick={() => setIsOpenSearch(false)}
             />
           </div>
@@ -508,7 +508,7 @@ function NavbarMobile({
                     <Image
                       className="mr-1 size-4 rounded-full border border-white"
                       src={locale === "id" ? icBahasa : icEnglish}
-                      alt=""
+                      alt={locale === "id" ? "Bahasa Indonesia" : "English"}
                     />
                     {locale.toUpperCase()}
                     <ChevronDown className="size-5" />
@@ -706,7 +706,7 @@ function NavbarMobile({
                 <Image
                   className="mr-1 size-4 rounded-full border border-white"
                   src={locale === "id" ? icBahasa : icEnglish}
-                  alt=""
+                  alt={locale === "id" ? "Bahasa Indonesia" : "English"}
                 />
                 {locale.toUpperCase()}
                 <ChevronDown className="size-5" />

@@ -67,6 +67,7 @@ export default function SectionJumbotron({
         alt_text_image_mobile_en,
         alt_text_image_mobile_id
       )}
+      priority
     >
       <div className="grid lg:grid-cols-12 grid-cols-1 lg:gap-[90px]">
         <JumbotronContent
@@ -89,12 +90,13 @@ export default function SectionJumbotron({
                 }
                 alt={getLocalizedContent(
                   locale,
-                  alt_text_image_desktop_en,
-                  alt_text_image_desktop_id
-                )}
+                  alt_text_logo_en,
+                  alt_text_logo_id
+                ) || "Logo"}
                 fill
                 objectFit="contain"
                 sizes="100vw"
+                priority
               />
             </div>
           </div>
