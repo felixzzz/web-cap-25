@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import Navbar from "@/components/global/Navbar"
 import { getPage } from "@/lib/api"
@@ -17,6 +18,19 @@ export async function generateMetadata({
   const data: HttpGeneralResponse<BusinessSolutionsProp> =
     await getPage("energy")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      "End-To-End Waste Management Model",
+      "Model Pengelolaan Sampah End-To-End"
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/sustainability/circular-economy-and-partnership/end-to-end-waste-management-model"),
     title: getLocalizedContent(
       locale,
       "End-To-End Waste Management Model",

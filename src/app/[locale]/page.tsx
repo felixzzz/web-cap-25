@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { Suspense, lazy } from "react"
 import Navbar from "@/components/global/Navbar"
 import SectionJumbotron from "./_components/SectionJumbotron"
@@ -20,6 +21,7 @@ import {
 } from "@/lib/fragment"
 import { getLocalizedContent } from "@/lib/utils"
 import { BannerRenderer } from "@/components/banner/BannerRenderer"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 // import CookieConsentBanner from "@/components/global/CookieConsentBanner"
 
 import { PageIdSetter } from "@/components/providers/query-provider"
@@ -38,6 +40,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("home")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,
@@ -76,6 +91,11 @@ export default async function Home({
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="home"
+      />
       <Navbar />
       {data?.meta?.banner && <SectionJumbotron {...data?.meta.banner} />}
       {data?.meta?.intro && <SectionListCard {...data?.meta.intro} />}

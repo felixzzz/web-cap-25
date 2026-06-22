@@ -1,5 +1,5 @@
-import { strToBoolean } from "@/lib/utils"
 import { MetadataRoute } from "next"
+import { SITE_URL } from "@/lib/constant"
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: `${process.env.SITE_URL}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   }
 }

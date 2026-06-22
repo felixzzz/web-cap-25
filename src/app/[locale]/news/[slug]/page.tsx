@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import NewsDetailContent from "../_components/NewsDetailContent"
 import NewsDetailOther from "../_components/NewsDetailOther"
@@ -55,6 +56,7 @@ export async function generateMetadata({
   const data = await getDetailPost(slug)
 
   return {
+    alternates: getAlternates(locale, `/news/${slug}`),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,
@@ -66,6 +68,16 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_desc_id
     ),
     openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
       images: [data?.image],
       publishedTime: data?.published_at,
     },

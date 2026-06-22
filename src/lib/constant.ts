@@ -1,5 +1,5 @@
 export const SITE_URL =
-  process.env.SITE_URL ?? "http://localhost:8000"
+  process.env.SITE_URL ?? "https://chandra-asri.com"
 
 export const API_URL =
   process.env.API_URL ?? "http://localhost:8000"

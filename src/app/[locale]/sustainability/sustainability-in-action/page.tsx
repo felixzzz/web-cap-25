@@ -1,3 +1,5 @@
+import { Metadata } from "next"
+import { getAlternates } from "@/lib/seo"
 import { getPostCategories, getPostList } from "@/lib/api"
 import EsgInAction from "./_components/EsgInAction"
 import { Post, PostCategory } from "@/lib/fragment"
@@ -5,6 +7,17 @@ import { PaginationHandlerResponse } from "@/lib/types"
 import { notFound } from "next/navigation"
 
 export const revalidate = 120
+
+
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  return {
+    alternates: getAlternates(locale, "/sustainability/sustainability-in-action"),
+  }
+}
 
 export default async function RootPage({
   params,

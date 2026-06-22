@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import AwardsJumbotron from "./_components/AwardsJumbotron"
 import AwardsAndRecognition from "./_components/AwardsAndRecognition"
@@ -18,6 +19,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("awards-and-recognition")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/about/awards-and-recognition"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

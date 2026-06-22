@@ -11,7 +11,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function absoluteUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_APP_URL}${path}`
+  const cleanPath = path ? (path.startsWith("/") ? path : `/${path}`) : ""
+  return `${SITE_URL}${cleanPath}`
 }
 
 export function assetUrl(path: string | null) {

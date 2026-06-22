@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import GovernanceJumbotron from "./_components/GovernanceJumbotron"
 import GovernanceCorporate from "./_components/GovernanceCorporate"
@@ -14,6 +15,7 @@ import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
 import GovernanceSHERegulation from "./_components/GovernanceSHERegulation"
 import { PageIdSetter } from "@/components/providers/query-provider"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 export const revalidate = 60
 
@@ -26,6 +28,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("governance")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/governance"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,
@@ -39,7 +54,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function GovernancePage() {
+export default async function GovernancePage({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const data: HttpGeneralResponse<GovernanceProps> = await getPage("governance")
   const dataDocumentsPolicy: { data: MetaDocumentItem[] } = await getDocuments(
     "?per_page=5&document_page=governance&section=policy&order=ASC"
@@ -57,6 +76,18 @@ export default async function GovernancePage() {
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="governance"
+        customProps={{
+          description: getLocalizedContent(
+            locale,
+            data?.meta?.seo_meta?.meta_desc_en,
+            data?.meta?.seo_meta?.meta_desc_id
+          )
+        }}
+      />
       <Navbar />
       {data?.meta?.banner && <GovernanceJumbotron {...data?.meta.banner} />}
       {data?.meta?.corporate_secretary && (

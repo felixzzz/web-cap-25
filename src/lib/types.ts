@@ -63,22 +63,26 @@ import {
 } from "./fragment"
 
 export type Banner = {
-  description: any
   id: number
   banner_group_id: number
-  title: string
-  video: string
-  image: string
-  is_active: number
-  html?: string
-  aspect_ratio: string
-  created_at: string
-  updated_at: string
   order: number
+  title: string
+  description: string | null
+  image: string
+  image_mobile: string | null
+  aspect_ratio: string
+  aspect_ratio_mobile: string | null
+  video: string
+  video_mobile: string | null
+  html?: string
+  use_html?: number
   cta_url: string
   cta_label: string
   cta_gtm: string
+  created_at: string
+  updated_at: string
   is_hide_in_mobile: boolean
+  is_active?: number
 }
 
 export type BannerResponse = {
@@ -151,12 +155,16 @@ export type HomeProps = {
   small_banner?: MetaHomeSmallBanner
   news?: MetaHomeNews
   quicklink?: MetaHomeQuicklink
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type OurBusinessProps = {
   banner?: MetaCover
   intro?: MetaIntro
   business_line?: MetaBusinessLine
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type ReportsAndPublicationsProp = {
@@ -177,6 +185,7 @@ export type BusinessSolutionsProp = {
   news?: MetaNews
   quicklink?: MetaQuickLink
   seo_meta?: SeoMeta
+  seo?: any
   contant_tab: BusinessSolutionsContentTab
   environmental_performance?: MetaInNumbers
   circular_economy_intro?: MetaCircularEconomyIntro
@@ -262,6 +271,8 @@ export type ChemicalSolutionsProps = {
   product?: MetaProducts
   facilities?: MetaProducts
   embedded_video?: MetaEmbeddedVideo
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type EnvironmentPageProps = {
@@ -385,6 +396,8 @@ export type WhoWeAreProps = {
   core_values?: MetaAboutCoreValues
   milestone?: MetaAboutMilestone
   download?: MetaAboutDownload
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type ManagementAndStructureProps = {
@@ -405,6 +418,8 @@ export type InvestorProps = {
   overview_content?: MetaInvestorOverviewContent
   card?: MetaInvestorCard
   financial_calendar?: MetaFinancialCalendar
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type InvestorStocksAndBondsProps = {
@@ -423,6 +438,7 @@ export type GovernanceProps = {
   whistleblowing?: MetaGovernanceWhistleblowing
   she_regulation?: MetaGovernanceRegulation
   seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type WhistleblowingProps = {

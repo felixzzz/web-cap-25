@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import Navbar from "@/components/global/Navbar"
 import { getPage } from "@/lib/api"
@@ -18,6 +19,19 @@ export async function generateMetadata({
   const data: HttpGeneralResponse<BusinessSolutionsProp> =
     await getPage("energy")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      "Technology for Circular Products",
+      "Teknologi untuk Produk Sirkular"
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/sustainability/circular-economy-and-partnership/technology-for-circular-products"),
     title: getLocalizedContent(
       locale,
       "Technology for Circular Products",

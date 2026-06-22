@@ -1,3 +1,5 @@
+import { Metadata } from "next"
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import PolicyContent from "./_components/PolicyContent"
 import { MetaDocumentItem } from "@/lib/fragment"
@@ -6,6 +8,17 @@ import { PaginationHandlerResponse } from "@/lib/types"
 import { Suspense } from "react"
 
 export const revalidate = 60
+
+
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  return {
+    alternates: getAlternates(locale, "/governance/policy"),
+  }
+}
 
 export default async function GovernancePolicyPage() {
   const dataDocumentsPolicy: PaginationHandlerResponse<MetaDocumentItem[]> =

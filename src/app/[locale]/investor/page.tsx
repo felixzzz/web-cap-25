@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import InvestorJumbotron from "./_components/InvestorJumbotron"
 import InvestorFinancialJourney from "./_components/InvestorFinancialJourney"
@@ -13,6 +14,7 @@ import { MetaDocumentItem } from "@/lib/fragment"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
 import { PageIdSetter } from "@/components/providers/query-provider"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 export const revalidate = 60
 
@@ -25,6 +27,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("investor-overview")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/investor"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,
@@ -38,7 +53,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function InvestorOverviewPage() {
+export default async function InvestorOverviewPage({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const data: HttpGeneralResponse<InvestorProps> =
     await getPage("investor-overview")
   const dataDocuments: PaginationHandlerResponse<MetaDocumentItem[]> =
@@ -48,6 +67,11 @@ export default async function InvestorOverviewPage() {
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="investor"
+      />
       <Navbar />
       {data?.meta?.banner && <InvestorJumbotron {...data?.meta?.banner} />}
       {data?.meta?.intro && data?.meta?.overview_content && (

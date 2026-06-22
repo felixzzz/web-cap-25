@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import WhoWeAreJumbotron from "./_components/WhoWeAreJumbotron"
 import WhoWeAreChandraAsri from "./_components/WhoWeAreChandraAsri"
@@ -12,6 +13,7 @@ import { MetaDocumentItem } from "@/lib/fragment"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
 import { PageIdSetter } from "@/components/providers/query-provider"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 export const revalidate = 60
 
@@ -24,6 +26,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("about-us-who-we-are")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/about/who-we-are"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,
@@ -37,7 +52,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function WhoWeArePage() {
+export default async function WhoWeArePage({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const data: HttpGeneralResponse<WhoWeAreProps> = await getPage(
     "about-us-who-we-are"
   )
@@ -49,6 +68,11 @@ export default async function WhoWeArePage() {
     <>
       <Navbar />
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="who-we-are"
+      />
       {data?.meta?.banner && <WhoWeAreJumbotron {...data?.meta?.banner} />}
       {data?.meta?.intro && <WhoWeAreChandraAsri {...data?.meta?.intro} />}
       {data?.meta?.in_numbers && <WhoWeAreStats {...data?.meta?.in_numbers} />}

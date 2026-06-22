@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import StocksAndBondsContent from "./_components/StocksAndBondsContent"
 import { StocksAndBondsJumbotron } from "./_components/StocksAndBondsJumbotron"
@@ -19,6 +20,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("stocks-and-bonds")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/investor/stocks-and-bonds"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,

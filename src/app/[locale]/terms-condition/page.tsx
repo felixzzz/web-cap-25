@@ -1,3 +1,4 @@
+import { getAlternates } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import ContentBlock from "@/components/block/ContentBlock"
 import { getPage } from "@/lib/api"
@@ -18,6 +19,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const data = await getPage("terms-condition")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_title_en,
+      data?.meta?.seo_meta?.meta_title_id
+    ),
+      description: getLocalizedContent(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
+    },
+    alternates: getAlternates(locale, "/terms-condition"),
     title: getLocalizedContent(
       locale,
       data?.meta?.seo_meta?.meta_title_en,
