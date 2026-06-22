@@ -19,7 +19,7 @@ export const sharedMetadata: Metadata = {
     siteName: `${title}`,
     images: [
       {
-        url: `/icons/richlink.jpg`,
+        url: `${SITE_URL}/icons/richlink.jpg`,
       },
     ],
   },
@@ -35,8 +35,8 @@ export const sharedMetadata: Metadata = {
     card: "summary_large_image",
     site: `${title}`,
     creator: "Antikode",
-    images: `/icons/richlink.jpg`,
+    images: `${SITE_URL}/icons/richlink.jpg`,
   },
   description: `${description}`,
-  authors: [{ name: "Chandra Asri", url: process.env.SITE_URL }],
+  authors: [{ name: "Chandra Asri", url: SITE_URL }],
 }
