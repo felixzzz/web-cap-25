@@ -143,7 +143,7 @@ export async function Footer() {
                     href="https://www.linkedin.com/company/pt-chandra-asri"
                     target="_blank"
                   >
-                    <Image src={iconLinkedin} width={32} height={32} alt="" />
+                    <Image src={iconLinkedin} width={32} height={32} alt="LinkedIn" />
                   </a>
                 </li>
                 <li>
@@ -151,7 +151,7 @@ export async function Footer() {
                     href="https://www.instagram.com/chandraasri.id"
                     target="_blank"
                   >
-                    <Image src={iconInstagram} width={32} height={32} alt="" />
+                    <Image src={iconInstagram} width={32} height={32} alt="Instagram" />
                   </a>
                 </li>
                 <li>
@@ -159,7 +159,7 @@ export async function Footer() {
                     href="https://www.youtube.com/channel/UCoqBsqI8crt0OLCuD7f1UyQ"
                     target="_blank"
                   >
-                    <Image src={iconYoutube} width={32} height={32} alt="" />
+                    <Image src={iconYoutube} width={32} height={32} alt="YouTube" />
                   </a>
                 </li>
                 <li>
@@ -167,12 +167,12 @@ export async function Footer() {
                     href="https://www.tiktok.com/@chandraasri.id"
                     target="_blank"
                   >
-                    <Image src={iconTiktok} width={32} height={32} alt="" />
+                    <Image src={iconTiktok} width={32} height={32} alt="TikTok" />
                   </a>
                 </li>
                 <li>
                   <a href="https://x.com/ChandraasriID" target="_blank">
-                    <Image src={iconX} width={32} height={32} alt="" />
+                    <Image src={iconX} width={32} height={32} alt="X" />
                   </a>
                 </li>
                 <li>
@@ -180,7 +180,7 @@ export async function Footer() {
                     href="https://www.facebook.com/ChandraAsriGroup/"
                     target="_blank"
                   >
-                    <Image src={iconFacebook} width={32} height={32} alt="" />
+                    <Image src={iconFacebook} width={32} height={32} alt="Facebook" />
                   </a>
                 </li>
               </ul>

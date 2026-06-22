@@ -83,7 +83,7 @@ export default function SectionListCard({
                   desc={item.subtitle}
                   classNameDesc="lg:text-sm"
                   bg={assetUrl(item.image)}
-                  alt=""
+                  alt={item.title || ""}
                 />
               </div>
             )
@@ -131,7 +131,7 @@ export default function SectionListCard({
                   desc={item.subtitle}
                   bg={assetUrl(item.image)}
                   cta_label="Lihat Detail"
-                  alt=""
+                  alt={item.title || ""}
                 />
               </SwiperSlide>
             )
