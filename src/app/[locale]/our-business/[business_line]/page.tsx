@@ -17,6 +17,7 @@ import { Post } from "@/lib/fragment"
 import { getLocalizedContent, isContentActive } from "@/lib/utils"
 import ContentTab from "../_components/ContentTab"
 import { PageIdSetter } from "@/components/providers/query-provider"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 export async function generateStaticParams() {
   const business: DynamicProps[] = await getPage("dynamic")
@@ -81,6 +82,23 @@ export default async function BusinessLineProducts({
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={params.locale}
+        pageType="business-line"
+        customProps={{
+          title: getLocalizedContent(
+            params.locale,
+            data?.meta?.seo_meta?.meta_title_en,
+            data?.meta?.seo_meta?.meta_title_id
+          ),
+          description: getLocalizedContent(
+            params.locale,
+            data?.meta?.seo_meta?.meta_desc_en,
+            data?.meta?.seo_meta?.meta_desc_id
+          ),
+        }}
+      />
       <Navbar />
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
       {data?.meta?.content_left_right && (

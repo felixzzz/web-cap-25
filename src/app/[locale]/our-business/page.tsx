@@ -6,6 +6,7 @@ import { getPage } from "@/lib/api"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { getLocalizedContent } from "@/lib/utils"
 import { Metadata } from "next"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -46,13 +47,22 @@ export async function generateMetadata({
   }
 }
 
-export default async function BusinessSolutionsPage() {
+export default async function BusinessSolutionsPage({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const data: HttpGeneralResponse<OurBusinessProps> =
     await getPage("business-solution")
 
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="business-solution-overview"
+      />
       <Navbar />
 
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}

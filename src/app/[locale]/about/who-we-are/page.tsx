@@ -13,6 +13,7 @@ import { MetaDocumentItem } from "@/lib/fragment"
 import { Metadata } from "next"
 import { getLocalizedContent } from "@/lib/utils"
 import { PageIdSetter } from "@/components/providers/query-provider"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 export const revalidate = 60
 
@@ -51,7 +52,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function WhoWeArePage() {
+export default async function WhoWeArePage({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const data: HttpGeneralResponse<WhoWeAreProps> = await getPage(
     "about-us-who-we-are"
   )
@@ -63,6 +68,11 @@ export default async function WhoWeArePage() {
     <>
       <Navbar />
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="who-we-are"
+      />
       {data?.meta?.banner && <WhoWeAreJumbotron {...data?.meta?.banner} />}
       {data?.meta?.intro && <WhoWeAreChandraAsri {...data?.meta?.intro} />}
       {data?.meta?.in_numbers && <WhoWeAreStats {...data?.meta?.in_numbers} />}

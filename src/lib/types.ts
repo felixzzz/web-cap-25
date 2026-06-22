@@ -155,12 +155,16 @@ export type HomeProps = {
   small_banner?: MetaHomeSmallBanner
   news?: MetaHomeNews
   quicklink?: MetaHomeQuicklink
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type OurBusinessProps = {
   banner?: MetaCover
   intro?: MetaIntro
   business_line?: MetaBusinessLine
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type ReportsAndPublicationsProp = {
@@ -181,6 +185,7 @@ export type BusinessSolutionsProp = {
   news?: MetaNews
   quicklink?: MetaQuickLink
   seo_meta?: SeoMeta
+  seo?: any
   contant_tab: BusinessSolutionsContentTab
   environmental_performance?: MetaInNumbers
   circular_economy_intro?: MetaCircularEconomyIntro
@@ -266,6 +271,8 @@ export type ChemicalSolutionsProps = {
   product?: MetaProducts
   facilities?: MetaProducts
   embedded_video?: MetaEmbeddedVideo
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type EnvironmentPageProps = {
@@ -389,6 +396,8 @@ export type WhoWeAreProps = {
   core_values?: MetaAboutCoreValues
   milestone?: MetaAboutMilestone
   download?: MetaAboutDownload
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type ManagementAndStructureProps = {
@@ -409,6 +418,8 @@ export type InvestorProps = {
   overview_content?: MetaInvestorOverviewContent
   card?: MetaInvestorCard
   financial_calendar?: MetaFinancialCalendar
+  seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type InvestorStocksAndBondsProps = {
@@ -427,6 +438,7 @@ export type GovernanceProps = {
   whistleblowing?: MetaGovernanceWhistleblowing
   she_regulation?: MetaGovernanceRegulation
   seo_meta?: SeoMeta
+  seo?: any
 }
 
 export type WhistleblowingProps = {

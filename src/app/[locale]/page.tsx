@@ -21,6 +21,7 @@ import {
 } from "@/lib/fragment"
 import { getLocalizedContent } from "@/lib/utils"
 import { BannerRenderer } from "@/components/banner/BannerRenderer"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 // import CookieConsentBanner from "@/components/global/CookieConsentBanner"
 
 import { PageIdSetter } from "@/components/providers/query-provider"
@@ -90,6 +91,11 @@ export default async function Home({
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="home"
+      />
       <Navbar />
       {data?.meta?.banner && <SectionJumbotron {...data?.meta.banner} />}
       {data?.meta?.intro && <SectionListCard {...data?.meta.intro} />}

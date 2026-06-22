@@ -15,6 +15,7 @@ import { OurBusinessDocumentBlock } from "@/components/block/our-business/Docume
 import { MetaProduct } from "@/lib/fragment"
 import { getLocalizedContent } from "@/lib/utils"
 import { Metadata } from "next"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -55,7 +56,11 @@ export async function generateMetadata({
   }
 }
 
-export default async function ChemicalSolutionsPage() {
+export default async function ChemicalSolutionsPage({
+  params: { locale },
+}: {
+  params: { locale: string }
+}) {
   const data: HttpGeneralResponse<ChemicalSolutionsProps> = await getPage(
     "petrochemical-solution-overview"
   )
@@ -65,6 +70,23 @@ export default async function ChemicalSolutionsPage() {
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="chemical-solutions"
+        customProps={{
+          title: getLocalizedContent(
+            locale,
+            data?.meta?.seo_meta?.meta_title_en,
+            data?.meta?.seo_meta?.meta_title_id
+          ),
+          description: getLocalizedContent(
+            locale,
+            data?.meta?.seo_meta?.meta_desc_en,
+            data?.meta?.seo_meta?.meta_desc_id
+          ),
+        }}
+      />
       <Navbar />
 
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} />}
