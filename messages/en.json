@@ -64,7 +64,8 @@
     "recognition": "Recognition",
     "in_thousands": "in thousands US$",
     "read_other_news": "Read Other News",
-    "select_year": "Select Year"
+    "select_year": "Select Year",
+    "share": "Share :"
   },
   "governance": {
     "complaint_handling_mechanism": "Complaint Handling Mechanism"
