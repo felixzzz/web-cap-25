@@ -7,7 +7,7 @@ import { BannerBlock } from "@/components/block/BannerBlock"
 import PracticeContent from "../_components/PracticeContent"
 
 import { getPage } from "@/lib/api"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { MetaPraticesOfEmployment, HttpGeneralResponse } from "@/lib/types"
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -26,7 +26,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
@@ -38,7 +38,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-    description: getLocalizedContent(
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

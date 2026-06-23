@@ -5,7 +5,7 @@ import EsgDetailOther from "../_components/DetailEsgOthers"
 import { PaginationHandlerResponse } from "@/lib/types"
 import { Post } from "@/lib/fragment"
 import { getDetailPost, getPostList } from "@/lib/api"
-import { dateFormatter, getLocalizedContent } from "@/lib/utils"
+import { dateFormatter, getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
@@ -59,7 +59,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-    description: getLocalizedContent(
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
@@ -70,7 +70,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

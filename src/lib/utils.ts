@@ -142,3 +142,25 @@ export function objectToQueryParams(obj: { [key: string]: any }): string {
     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
     .join("&")
 }
+
+export function stripHtml(html: string | null | undefined): string {
+  if (!html) return ""
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
+export const getLocalizedDescription = (
+  locale: string,
+  enContent: string | null | undefined,
+  idContent: string | null | undefined
+): string => {
+  return stripHtml(getLocalizedContent(locale, enContent, idContent))
+}

@@ -11,7 +11,7 @@ import { getDocuments, getPage } from "@/lib/api"
 import { HttpGeneralResponse, WhoWeAreProps } from "@/lib/types"
 import { MetaDocumentItem } from "@/lib/fragment"
 import { Metadata } from "next"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { PageIdSetter } from "@/components/providers/query-provider"
 import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
@@ -32,7 +32,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
@@ -44,7 +44,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-    description: getLocalizedContent(
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

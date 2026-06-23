@@ -6,7 +6,7 @@ import { SustainabilityRecognition } from "./_components/SustainabilityRecogniti
 import { HttpGeneralResponse, SustainabilityProps } from "@/lib/types"
 import { getPage } from "@/lib/api"
 import { IntroContentImageBlock } from "@/components/block/IntroContentImage"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { Metadata } from "next"
 
 import { PageIdSetter } from "@/components/providers/query-provider"
@@ -28,7 +28,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
@@ -40,7 +40,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-    description: getLocalizedContent(
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

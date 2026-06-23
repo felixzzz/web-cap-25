@@ -12,7 +12,7 @@ import { notFound } from "next/navigation"
 import { ProductDatasheet } from "../../_components/ProductDatasheet"
 import { ProductChemical } from "@/lib/fragment"
 import ProductList from "../../_components/ProductList"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import ProductCatalogBanners from "@/components/banners/ProductCatalogBanners"
 
 export async function generateStaticParams({ params: { locale } }: { params: { locale: string } }) {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params: { slug, locale } }: {
       data?.meta.seo_meta?.meta_title_en,
       data?.meta.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta.seo_meta?.meta_desc_en,
       data?.meta.seo_meta?.meta_desc_id
@@ -51,7 +51,7 @@ export async function generateMetadata({ params: { slug, locale } }: {
       data?.meta.seo_meta?.meta_title_en,
       data?.meta.seo_meta?.meta_title_id
     ),
-    description: getLocalizedContent(
+    description: getLocalizedDescription(
       locale,
       data?.meta.seo_meta?.meta_desc_en,
       data?.meta.seo_meta?.meta_desc_id

@@ -13,7 +13,7 @@ import { ThreeBasicComponent } from "./_components/ThreeBasicComponent"
 import { GovernancePageProps, HttpGeneralResponse } from "@/lib/types"
 import { getPage } from "@/lib/api"
 import { InNumbersBlock } from "@/components/block/InNumbers"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { Metadata } from "next"
 import GovernancePerformance from "./_components/GovernancePerformance"
 import { PageIdSetter } from "@/components/providers/query-provider"
@@ -35,7 +35,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
@@ -47,7 +47,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-    description: getLocalizedContent(
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
