@@ -180,6 +180,10 @@ export default function NewsDetailContent({
             <h1 className="text-xl font-bold lg:text-4xl">
               {getLocalizedContent(locale, data?.title_en, data?.title)}
             </h1>
+            <p className="mt-2 text-xs font-semibold text-gray lg:text-sm">
+              {locale === "id" ? "Oleh" : "By"}{" "}
+              <span className="text-oxford-blue">Chandra Asri Group Editorial Team</span>
+            </p>
             <div className="mt-4 text-sm tracking-[0.16px] lg:mt-8 lg:text-md">
               {(() => {
                 const regex = /###banner###(\d+)###banner###/g
