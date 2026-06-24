@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { IntroBlock } from "@/components/block/IntroBlock"
 import { MockMetaCover, MockMetaIntro } from "@/components/block/mock"
@@ -39,11 +39,7 @@ export async function generateMetadata({
     ),
     },
     alternates: getAlternates(locale, "/sustainability/environment"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,

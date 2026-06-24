@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import React from "react"
 import { Metadata } from "next"
 import Navbar from "@/components/global/Navbar"
@@ -37,11 +37,7 @@ export async function generateMetadata({
     ),
     },
     alternates: getAlternates(locale, "/sustainability/product-responsibility"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,

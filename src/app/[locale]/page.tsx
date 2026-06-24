@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import { Suspense, lazy } from "react"
 import Navbar from "@/components/global/Navbar"
 import SectionJumbotron from "./_components/SectionJumbotron"
@@ -53,11 +53,7 @@ export async function generateMetadata({
     ),
     },
     alternates: getAlternates(locale, "/"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,

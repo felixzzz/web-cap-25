@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import WhistleblowingForm from "./_components/WhistleblowingForm"
 import { getDetailPost, getPage } from "@/lib/api"
@@ -32,11 +32,7 @@ export async function generateMetadata({
     ),
     },
     alternates: getAlternates(locale, "/governance/whistleblowing"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,

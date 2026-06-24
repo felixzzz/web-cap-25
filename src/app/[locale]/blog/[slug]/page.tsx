@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import NewsDetailContent from "@/app/[locale]/news/_components/NewsDetailContent"
 import NewsDetailOther from "@/app/[locale]/news/_components/NewsDetailOther"
@@ -62,11 +62,7 @@ export async function generateMetadata({
 
   return {
     alternates: getAlternates(locale, `/blog/${slug}`),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,

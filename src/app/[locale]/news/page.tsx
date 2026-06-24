@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import NewsHeader from "./_components/NewsHeader"
 import NewsAndPressReleases from "./_components/NewsAndPressReleases"
@@ -39,11 +39,7 @@ export async function generateMetadata({
       ),
     },
     alternates: getAlternates(locale, "/news"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,

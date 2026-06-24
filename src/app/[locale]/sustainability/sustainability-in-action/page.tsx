@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import { getPage, getPostCategories, getPostList } from "@/lib/api"
 import EsgInAction from "./_components/EsgInAction"
 import { Post, PostCategory } from "@/lib/fragment"
@@ -37,11 +37,7 @@ export async function generateMetadata({
       ),
     },
     alternates: getAlternates(locale, "/sustainability/sustainability-in-action"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,

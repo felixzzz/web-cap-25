@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import { ChemicalSolutionsProduct } from "../_components/ChemicalSolutionsProduct"
 import { ChemicalExplore } from "../_components/ChemicalExplore"
@@ -43,11 +43,7 @@ export async function generateMetadata({
     ),
     },
     alternates: getAlternates(locale, "/our-business/chemical-solutions"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,

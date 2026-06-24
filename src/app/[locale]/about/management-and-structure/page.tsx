@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import AboutManagementJumbotron from "./_components/AboutManagementJumbotron"
 import AboutManagementStructure from "./_components/AboutManagementStructure"
@@ -39,11 +39,7 @@ export async function generateMetadata({
     ),
     },
     alternates: getAlternates(locale, "/about/management-and-structure"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+    title: getSeoTitle(locale, data),
     description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
