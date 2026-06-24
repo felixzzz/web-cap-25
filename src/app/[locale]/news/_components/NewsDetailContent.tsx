@@ -306,8 +306,12 @@ export default function NewsDetailContent({
                 <button
                   onClick={() => {
                     const articleTitle = getLocalizedContent(locale, data?.title_en, data?.title) || ""
+                    const shareHeader = locale === "id"
+                      ? "Baca artikel ini dari Chandra Asri Group"
+                      : "Read this article from Chandra Asri Group"
+                    const shareText = `${shareHeader}\n\n${articleTitle}\n${shareUrl}`
                     window.open(
-                      `https://api.whatsapp.com/send?text=${encodeURIComponent(articleTitle + " " + shareUrl)}`,
+                      `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`,
                       "_blank"
                     )
                   }}
@@ -323,8 +327,12 @@ export default function NewsDetailContent({
                 {/* Facebook Share Button */}
                 <button
                   onClick={() => {
+                    const articleTitle = getLocalizedContent(locale, data?.title_en, data?.title) || ""
+                    const shareHeader = locale === "id"
+                      ? "Baca artikel ini dari Chandra Asri Group"
+                      : "Read this article from Chandra Asri Group"
                     window.open(
-                      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+                      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareHeader + ": " + articleTitle)}`,
                       "_blank"
                     )
                   }}
@@ -341,8 +349,12 @@ export default function NewsDetailContent({
                 <button
                   onClick={() => {
                     const articleTitle = getLocalizedContent(locale, data?.title_en, data?.title) || ""
+                    const shareHeader = locale === "id"
+                      ? "Baca artikel ini dari Chandra Asri Group"
+                      : "Read this article from Chandra Asri Group"
+                    const shareText = `${shareHeader}: ${articleTitle}`
                     window.open(
-                      `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(articleTitle)}`,
+                      `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`,
                       "_blank"
                     )
                   }}
