@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { ContentLeftRightBlock } from "@/components/block/ContentLeftRightBlock"
 import { IconListhorizontalBlock } from "@/components/block/IconListhorizontalBlock"
@@ -14,7 +14,7 @@ import {
 import { notFound } from "next/navigation"
 import RelatedArticles from "../our-business/_components/RelatedArticles"
 import { Post } from "@/lib/fragment"
-import { getLocalizedContent, isContentActive } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription, isContentActive } from "@/lib/utils"
 import ContentTab from "../our-business/_components/ContentTab"
 import ResponsibilityTitle from "../sustainability/product-responsibility/_components/ResponsibilityTitle"
 import ResponsibilityList from "../sustainability/product-responsibility/_components/ResponsibilityList"
@@ -36,19 +36,15 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
     ),
     },
     alternates: getAlternates(locale, "/caliber"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
-    description: getLocalizedContent(
+    title: getSeoTitle(locale, data),
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

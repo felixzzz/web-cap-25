@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { ContentLeftRightBlock } from "@/components/block/ContentLeftRightBlock"
 import { IconListhorizontalBlock } from "@/components/block/IconListhorizontalBlock"
@@ -15,7 +15,7 @@ import { EnvironmentPerformance } from "./_components/CircularPerformance"
 import { BusinessSolutionsProp, HttpGeneralResponse } from "@/lib/types"
 import { SmallPopup } from "@/lib/fragment"
 import { notFound } from "next/navigation"
-import { getLocalizedContent, isContentActive, assetUrl } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription, isContentActive, assetUrl } from "@/lib/utils"
 
 const ENVIROMENTAL_PERFORMANCE_DUMMY_DATA = {
   title_en: "Environmental Performance for Sustainability",
@@ -65,19 +65,15 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
     ),
     },
     alternates: getAlternates(locale, "/sustainability/circular-economy-and-partnership"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
-    description: getLocalizedContent(
+    title: getSeoTitle(locale, data),
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

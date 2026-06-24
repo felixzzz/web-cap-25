@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import { PublicationJumbotron } from "../_components/PublicationJumbotron"
 import PublicationDownloads from "../_components/PublicationDownloads"
@@ -6,7 +6,7 @@ import { CategoryDocument, MetaDocumentItem } from "@/lib/fragment"
 import { PaginationHandlerResponse } from "@/lib/types"
 import { getDocuments, getDocumentsCategories, getPage } from "@/lib/api"
 import { Suspense } from "react"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { Metadata } from "next"
 
 import { PageIdSetter } from "@/components/providers/query-provider"
@@ -28,19 +28,15 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
     ),
     },
     alternates: getAlternates(locale, "/investor/publication"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
-    description: getLocalizedContent(
+    title: getSeoTitle(locale, data),
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import React from "react"
 import { Metadata } from "next"
 import Navbar from "@/components/global/Navbar"
@@ -9,7 +9,7 @@ import ResponsibilityContent from "./_components/ResponsibilityContent"
 import ResponsibilityList from "./_components/ResponsibilityList"
 
 import { getPage } from "@/lib/api"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { ProductResponsibility, HttpGeneralResponse } from "@/lib/types"
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -30,19 +30,15 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
     ),
     },
     alternates: getAlternates(locale, "/sustainability/product-responsibility"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
-    description: getLocalizedContent(
+    title: getSeoTitle(locale, data),
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

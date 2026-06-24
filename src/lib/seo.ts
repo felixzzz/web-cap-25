@@ -1,5 +1,6 @@
 import { SITE_URL } from "./constant"
 import { Metadata } from "next"
+import { stripHtml } from "./utils"
 
 export function getAlternates(locale: string, path: string): Metadata["alternates"] {
   // Ensure path starts with a slash if not empty and does not end with a slash unless it's just '/'
@@ -20,3 +21,31 @@ export function getAlternates(locale: string, path: string): Metadata["alternate
     },
   }
 }
+
+export function getSeoTitle(
+  locale: string,
+  data?: any,
+  fallbackTitle?: string
+): Metadata["title"] {
+  const seoMeta = data?.meta?.seo_meta;
+  const metaTitle = locale === "id"
+    ? seoMeta?.meta_title_id
+    : seoMeta?.meta_title_en;
+
+  if (metaTitle && metaTitle.trim() !== "") {
+    return {
+      absolute: stripHtml(metaTitle),
+    };
+  }
+
+  if (fallbackTitle) {
+    return stripHtml(fallbackTitle);
+  }
+
+  const resolvedFallback = locale === "id"
+    ? (data?.meta?.banner?.title_id || data?.title || data?.name)
+    : (data?.meta?.banner?.title_en || data?.title || data?.name);
+
+  return resolvedFallback ? stripHtml(resolvedFallback) : undefined;
+}
+

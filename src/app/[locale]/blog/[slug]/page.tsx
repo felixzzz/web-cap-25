@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import NewsDetailContent from "@/app/[locale]/news/_components/NewsDetailContent"
 import NewsDetailOther from "@/app/[locale]/news/_components/NewsDetailOther"
@@ -7,7 +7,7 @@ import { PostNews } from "@/lib/fragment"
 import { getActiveBanners, getDetailPost, getPage, getPostList } from "@/lib/api"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
-import { dateFormatter, getLocalizedContent } from "@/lib/utils"
+import { dateFormatter, getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { SITE_URL } from "@/lib/constant"
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -62,12 +62,8 @@ export async function generateMetadata({
 
   return {
     alternates: getAlternates(locale, `/blog/${slug}`),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
-    description: getLocalizedContent(
+    title: getSeoTitle(locale, data),
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
@@ -78,7 +74,7 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

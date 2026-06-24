@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
 import NewsHeader from "./_components/NewsHeader"
 import NewsAndPressReleases from "./_components/NewsAndPressReleases"
@@ -13,6 +13,8 @@ import {
 } from "@/lib/api"
 import { Suspense } from "react"
 import { PageIdSetter } from "@/components/providers/query-provider"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 export const revalidate = 120
 
@@ -22,8 +24,27 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
+  const data = await getPage("news")
   return {
+    openGraph: {
+      title: getLocalizedContent(
+        locale,
+        data?.meta?.seo_meta?.meta_title_en,
+        data?.meta?.seo_meta?.meta_title_id
+      ),
+      description: getLocalizedDescription(
+        locale,
+        data?.meta?.seo_meta?.meta_desc_en,
+        data?.meta?.seo_meta?.meta_desc_id
+      ),
+    },
     alternates: getAlternates(locale, "/news"),
+    title: getSeoTitle(locale, data),
+    description: getLocalizedDescription(
+      locale,
+      data?.meta?.seo_meta?.meta_desc_en,
+      data?.meta?.seo_meta?.meta_desc_id
+    ),
   }
 }
 
@@ -58,6 +79,11 @@ export default async function NewsPage({
 
   return (
     <>
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="home"
+      />
       <div style={{ marginTop: "calc(64px + var(--sticky-banner-height, 0px))" }}>
         <Navbar isBackgroundWhite />
         {data?.id && <PageIdSetter id={data.id.toString()} />}

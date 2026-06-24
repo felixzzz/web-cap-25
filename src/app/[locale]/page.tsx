@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import { Suspense, lazy } from "react"
 import Navbar from "@/components/global/Navbar"
 import SectionJumbotron from "./_components/SectionJumbotron"
@@ -19,7 +19,7 @@ import {
   MetaNewsDetail,
   SmallPopup,
 } from "@/lib/fragment"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { BannerRenderer } from "@/components/banner/BannerRenderer"
 import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 // import CookieConsentBanner from "@/components/global/CookieConsentBanner"
@@ -46,19 +46,15 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
     ),
     },
     alternates: getAlternates(locale, "/"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
-    description: getLocalizedContent(
+    title: getSeoTitle(locale, data),
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id

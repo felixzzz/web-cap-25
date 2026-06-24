@@ -1,4 +1,4 @@
-import { assetUrl, cn, getLocalizedContent } from "@/lib/utils"
+import { assetUrl, cn, getLocalizedContent, absoluteUrl } from "@/lib/utils"
 import {
   NavigationMenuContent,
   NavigationMenuItem,
@@ -52,7 +52,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
       <NavigationMenuItem key={item.href}>
         {!item.isMegaMenu && (
           <NavigationMenuLink
-            href={item.isOpenNewTab ? item.href : `/${locale}${item.href}`}
+            href={item.isOpenNewTab ? item.href : absoluteUrl(`/${locale}${item.href}`)}
             target={item.isOpenNewTab ? "_blank" : "_self"}
             className={cn(
               `py-5 lg:px-2 xl:px-3`,
@@ -90,7 +90,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                       {item.children?.map((item, i) => (
                         <div key={i} className="font-bold">
                           <Link
-                            href={`/${locale}${item.href}`}
+                            href={absoluteUrl(`/${locale}${item.href}`)}
                             className="cursor-pointer hover:underline"
                           >
                             {item.label}
@@ -131,7 +131,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                         <div className="grid grid-cols-3 gap-6">
                           {dataMegamenuAboutus?.map((item, i: number) => (
                             <div key={i}>
-                              <Card href={`/${locale}${item.slug}`}>
+                              <Card href={absoluteUrl(`/${locale}${item.slug}`)}>
                                 <CardImage img={item.image} />
                                 <CardContent
                                   label={getLocalizedContent(
@@ -164,7 +164,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                         <div className="grid grid-cols-3 gap-6">
                           {data?.data?.map((item, i) => (
                             <div key={i}>
-                              <Card href={`/${locale}/news/${item.slug}`}>
+                              <Card href={absoluteUrl(`/${locale}/news/${item.slug}`)}>
                                 <CardImage img={`${assetUrl(item.image)}`} />
                                 <CardContent
                                   label={tNavbar("news")}
@@ -194,7 +194,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                           {dataSustainability?.data?.map((item, i) => (
                             <div key={i}>
                               <Card
-                                href={`/${locale}/sustainability/sustainability-in-action/${item.slug}`}
+                                href={absoluteUrl(`/${locale}/sustainability/sustainability-in-action/${item.slug}`)}
                               >
                                 <CardImage img={`${assetUrl(item.image)}`} />
                                 <CardContent
@@ -224,7 +224,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
                         {dataInvestorUpdate?.data?.map(
                           (item: MetaDocumentItem, i: number) => (
                             <div key={i}>
-                              <Card href={`/${locale}/investor/reports`}>
+                              <Card href={absoluteUrl(`/${locale}/investor/reports`)}>
                                 {item.image && (
                                   <CardImage img={`${assetUrl(item.image!)}`} />
                                 )}

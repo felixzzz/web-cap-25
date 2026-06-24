@@ -1,4 +1,4 @@
-import { getAlternates } from "@/lib/seo"
+import { getAlternates, getSeoTitle } from "@/lib/seo"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import Navbar from "@/components/global/Navbar"
 import ReportContent from "./_components/ReportContent"
@@ -10,7 +10,7 @@ import {
 import { getDocuments, getDocumentsCategories, getPage } from "@/lib/api"
 import { MetaDocumentItem } from "@/lib/fragment"
 import { notFound } from "next/navigation"
-import { getLocalizedContent } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { Metadata } from "next"
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -31,19 +31,15 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_title_en,
       data?.meta?.seo_meta?.meta_title_id
     ),
-      description: getLocalizedContent(
+      description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
     ),
     },
     alternates: getAlternates(locale, "/sustainability/reports-and-publications"),
-    title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
-    description: getLocalizedContent(
+    title: getSeoTitle(locale, data),
+    description: getLocalizedDescription(
       locale,
       data?.meta?.seo_meta?.meta_desc_en,
       data?.meta?.seo_meta?.meta_desc_id
