@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Button } from "../ui/button"
 import Image from "next/image"
+import { absoluteUrl } from "@/lib/utils"
 import {
   iconFacebook,
   iconInstagram,
@@ -104,7 +105,7 @@ export async function Footer() {
                     className="w-full lg:max-w-[200px]"
                     asChild
                   >
-                    <Link href={`/${locale}/contact-us`}>
+                    <Link href={absoluteUrl(`/${locale}/contact-us`)}>
                       {tNavbar("contact_us")}
                     </Link>
                   </Button>
@@ -112,7 +113,7 @@ export async function Footer() {
                     {linkFooter.map((item) => (
                       <li key={item.label}>
                         <Link
-                          href={`/${locale}${item.url}`}
+                          href={absoluteUrl(`/${locale}${item.url}`)}
                           className="group mt-[10px] flex gap-2 text-sm text-white hover:text-white/90"
                         >
                           {item.label}
@@ -186,25 +187,25 @@ export async function Footer() {
               </ul>
               <div className="flex flex-col justify-between gap-5 *:text-sm *:text-white lg:my-auto lg:flex-row lg:gap-4 lg:*:text-xs">
                 <Link
-                  href={`/${locale}/terms-condition`}
+                  href={absoluteUrl(`/${locale}/terms-condition`)}
                   className="hover:underline"
                 >
                   {tNavbar("terms_&_conditions")}
                 </Link>
                 <Link
-                  href={`/${locale}/privacy-policy`}
+                  href={absoluteUrl(`/${locale}/privacy-policy`)}
                   className="hover:underline"
                 >
                   {tNavbar("privacy_policy")}
                 </Link>
                 <Link
-                  href={`/${locale}/cookies-consent`}
+                  href={absoluteUrl(`/${locale}/cookies-consent`)}
                   className="hover:underline"
                 >
                   {tNavbar("cookies_consent")}
                 </Link>
                 <Link
-                  href={`/${locale}/disclaimer`}
+                  href={absoluteUrl(`/${locale}/disclaimer`)}
                   className="hover:underline"
                 >
                   {tNavbar("disclaimer")}

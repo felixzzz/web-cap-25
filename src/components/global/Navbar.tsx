@@ -39,7 +39,7 @@ import {
 import { useLocale, useTranslations } from "next-intl"
 import { useNavbarArticle, useNavbarOurBusiness } from "@/lib/hooks"
 import { Card, CardContent, CardImage } from "./card/Card"
-import { assetUrl, getLocalizedContent } from "@/lib/utils"
+import { assetUrl, getLocalizedContent, absoluteUrl } from "@/lib/utils"
 import { Megamenu } from "./Megamenu"
 import { z } from "zod"
 
@@ -287,7 +287,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
       style={{ top: "var(--sticky-banner-height, 0px)" }}
     >
       <div className="container flex h-16 items-center justify-between">
-        <Link href={`/${locale}/`} className="flex items-center gap-2">
+        <Link href={absoluteUrl(`/${locale}/`)} className="flex items-center gap-2">
           <Image
             src={
               backgroundWhite || isOpenNavbarMobile
@@ -486,7 +486,7 @@ function NavbarMobile({
                       <Link
                         key={item.href}
                         href={
-                          item.isOpenNewTab ? item.href : `/${locale}${item.href}`
+                          item.isOpenNewTab ? item.href : absoluteUrl(`/${locale}${item.href}`)
                         }
                         target={item.isOpenNewTab ? "_blank" : "_self"}
                         className="hover:bg-gray-100 flex flex-row justify-between gap-2 rounded text-md font-bold text-black"
@@ -535,7 +535,7 @@ function NavbarMobile({
                 </DropdownMenuContent>
               </DropdownMenu>
               <Button className="w-full" variant="outline-primary" asChild>
-                <Link href={`/${locale}/contact-us`}>
+                <Link href={absoluteUrl(`/${locale}/contact-us`)}>
                   {tNavbar("get_in_touch")}
                 </Link>
               </Button>
@@ -577,7 +577,7 @@ function NavbarMobile({
               {childrenData?.children?.map((item, i) => (
                 <div key={i} className="font-bold text-white">
                   <Link
-                    href={`/${locale}${item.href}`}
+                    href={absoluteUrl(`/${locale}${item.href}`)}
                     className="hover:underline"
                   >
                     {item.label}
@@ -612,7 +612,7 @@ function NavbarMobile({
           <div className="flex flex-col gap-6">
             {data?.data?.map((item, i) => (
               <div key={i}>
-                <Card href={`/${locale}/news/${item.slug}`}>
+                <Card href={absoluteUrl(`/${locale}/news/${item.slug}`)}>
                   <CardImage img={`${assetUrl(item.image)}`} />
                   <CardContent
                     label="NEWS"
@@ -670,7 +670,7 @@ function NavbarMobile({
           <hr className="my-6 border-input" />
           <div className="flex flex-col gap-6">
             <Link
-              href={`/${locale}/news`}
+              href={absoluteUrl(`/${locale}/news`)}
               className="hover:bg-gray-100 flex flex-row justify-between gap-2 rounded text-md text-black"
             >
               <div className="my-auto">{t("news")}</div>
@@ -683,7 +683,7 @@ function NavbarMobile({
               <div className="my-auto">{tNavbar("career")}</div>
             </Link>
             <Link
-              href={`/${locale}/contact-us`}
+              href={absoluteUrl(`/${locale}/contact-us`)}
               className="hover:bg-gray-100 flex flex-row justify-between gap-2 rounded text-md text-black"
             >
               <div className="my-auto">{tNavbar("contact_us")}</div>
@@ -733,7 +733,7 @@ function NavbarMobile({
             </DropdownMenuContent>
           </DropdownMenu>
           <Button className="w-full" variant="outline-primary" asChild>
-            <Link href={`/${locale}/contact-us`}>
+            <Link href={absoluteUrl(`/${locale}/contact-us`)}>
               {tNavbar("get_in_touch")}
             </Link>
           </Button>
