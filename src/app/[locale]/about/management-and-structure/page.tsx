@@ -14,6 +14,7 @@ import { MetaDocumentItem, MetaTopics, PostManagement } from "@/lib/fragment"
 import { Suspense } from "react"
 import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { PageIdSetter } from "@/components/providers/query-provider"
+import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
 export const revalidate = 60
 
@@ -50,8 +51,10 @@ export async function generateMetadata({
 
 export default async function ManagementAndStructurePage({
   searchParams,
+  params: { locale },
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
+  params: { locale: string }
 }) {
   const pageDownload = searchParams?.page_download ? Number(searchParams.page_download) : 1
   const data: HttpGeneralResponse<ManagementAndStructureProps> = await getPage(
@@ -66,6 +69,11 @@ export default async function ManagementAndStructurePage({
   return (
     <>
       {data?.id && <PageIdSetter id={data.id.toString()} />}
+      <JsonLdRenderer
+        meta={data?.meta}
+        locale={locale as "en" | "id"}
+        pageType="home"
+      />
       <Navbar />
       {data?.meta?.banner && (
         <AboutManagementJumbotron {...data?.meta.banner} />
