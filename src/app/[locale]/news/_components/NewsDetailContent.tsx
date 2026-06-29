@@ -172,20 +172,18 @@ export default function NewsDetailContent({
             ) : hasAnyBanner ? (
               <div className="hidden lg:block" />
             ) : null}
+            {data?.published_at && (
+              <p className="mb-1 text-xs font-semibold tracking-[0.8px] text-gray lg:text-md">
+                {dateFormater(data?.published_at)}
+              </p>
+            )}
             <h1 className="text-xl font-bold lg:text-4xl">
               {getLocalizedContent(locale, data?.title_en, data?.title)}
             </h1>
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-gray lg:text-sm">
-              <p>
-                {locale === "id" ? "Oleh" : "By"}{" "}
-                <span className="text-oxford-blue">Chandra Asri Group Editorial Team</span>
-              </p>
-              {data?.published_at && (
-                <p className="tracking-[0.8px]">
-                  {dateFormater(data?.published_at)}
-                </p>
-              )}
-            </div>
+            <p className="mt-2 text-xs font-semibold text-gray lg:text-sm">
+              {locale === "id" ? "Oleh" : "By"}{" "}
+              <span className="text-oxford-blue">Chandra Asri Group Editorial Team</span>
+            </p>
             <div className="mt-4 text-sm tracking-[0.16px] lg:mt-8 lg:text-md">
               {(() => {
                 const regex = /###banner###(\d+)###banner###/g

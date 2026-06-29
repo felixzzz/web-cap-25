@@ -191,7 +191,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
       },
       { href: "/news", label: tNavbar("news"), isOpenNewTab: false },
       {
-        href: "https://careers.capcx.com/",
+        href: "https://careers.chandra-asri.com/",
         label: tNavbar("career"),
         isOpenNewTab: true,
       },
@@ -676,7 +676,7 @@ function NavbarMobile({
               <div className="my-auto">{t("news")}</div>
             </Link>
             <Link
-              href="https://careers.capcx.com/"
+              href="https://careers.chandra-asri.com/"
               target="_blank"
               className="hover:bg-gray-100 flex flex-row justify-between gap-2 rounded text-md text-black"
             >
