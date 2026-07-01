@@ -158,7 +158,7 @@ export default function JsonLdRenderer({
       const pageDesc = customProps?.description ?? ""
       schemaObj = {
         "@context": "https://schema.org",
-        "@type": "Product",
+        "@type": "Service",
         "name": pageTitle,
         "description": pageDesc,
         "brand": {
