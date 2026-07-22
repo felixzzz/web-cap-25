@@ -3,35 +3,29 @@ name: Deployment and Code Analysis
 on:
   push:
     branches:
+      - development
       - release
-      - master
       - main
   workflow_dispatch:
 
 jobs:
-  deploy_staging:
-    if: github.ref == 'refs/heads/release'
-    name: Deploy to Staging
+  deploy_dev:
+    if: github.ref == 'refs/heads/development'
+    name: Deploy to Development
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Staging Server
+      - name: Deploy to Dev Server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.STG_HOST }}
-          username: ${{ secrets.STG_USER }}
-          key: ${{ secrets.STG_SSH_PRIVATE_KEY }}
-          port: ${{ secrets.STG_PORT }}
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USER }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          port: ${{ secrets.DEV_PORT }}
           script: |
-            cd ${{ secrets.STG_PATH }}
-            sudo git fetch --all
-            sudo git reset --hard origin/release
-            sudo git pull
-            sudo rm -rf .next
-            sudo npm run build
-            sudo pm2 reload ${{ secrets.PROJECT_NAME }} --update-env
+            echo "${{ secrets.DEV_SUDO_PASSWORD }}" | sudo -S sh -c "cd /web/chandra-asri/ && git fetch --all && git reset --hard origin/development && git pull && docker compose build && docker compose up -d && docker image prune -af"
 
   deploy_prod:
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     name: Deploy to Production
     runs-on: ubuntu-latest
     steps:

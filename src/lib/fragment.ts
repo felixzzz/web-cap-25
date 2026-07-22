@@ -732,6 +732,11 @@ type ProductDatasheet = {
   card_title: string | null
   delivery_method: string | null
   application: string | null
+  thickness?: string | null
+  film_width?: string | null
+  printing?: string | null
+  optional_additive?: string | null
+  optional_feature?: string | null
   datasheet_name: string | null
   datasheet_file: string | null
   datasheet_name2: string | null

@@ -184,6 +184,71 @@ export function ProductSolutions({
                               }}
                             ></div>
                           )}
+                          {activeContent?.thickness && (
+                            <div>
+                              <h5 className="text-xs opacity-50">
+                                {locale === "id" ? "Ketebalan" : "Thickness"}
+                              </h5>
+                              <div
+                                className="prose text-sm"
+                                dangerouslySetInnerHTML={{
+                                  __html: activeContent?.thickness!,
+                                }}
+                              ></div>
+                            </div>
+                          )}
+                          {activeContent?.film_width && (
+                            <div>
+                              <h5 className="text-xs opacity-50">
+                                {locale === "id" ? "Lebar Film" : "Film Width"}
+                              </h5>
+                              <div
+                                className="prose text-sm"
+                                dangerouslySetInnerHTML={{
+                                  __html: activeContent?.film_width!,
+                                }}
+                              ></div>
+                            </div>
+                          )}
+                          {activeContent?.printing && (
+                            <div>
+                              <h5 className="text-xs opacity-50">
+                                {locale === "id" ? "Printing" : "Printing"}
+                              </h5>
+                              <div
+                                className="prose text-sm"
+                                dangerouslySetInnerHTML={{
+                                  __html: activeContent?.printing!,
+                                }}
+                              ></div>
+                            </div>
+                          )}
+                          {activeContent?.optional_additive && (
+                            <div>
+                              <h5 className="text-xs opacity-50">
+                                {locale === "id" ? "Aditif Opsional" : "Optional Additive"}
+                              </h5>
+                              <div
+                                className="prose text-sm"
+                                dangerouslySetInnerHTML={{
+                                  __html: activeContent?.optional_additive!,
+                                }}
+                              ></div>
+                            </div>
+                          )}
+                          {activeContent?.optional_feature && (
+                            <div>
+                              <h5 className="text-xs opacity-50">
+                                {locale === "id" ? "Fitur Tambahan" : "Optional Feature"}
+                              </h5>
+                              <div
+                                className="prose text-sm"
+                                dangerouslySetInnerHTML={{
+                                  __html: activeContent?.optional_feature!,
+                                }}
+                              ></div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </CardContent>
