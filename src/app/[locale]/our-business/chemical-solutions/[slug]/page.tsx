@@ -14,6 +14,7 @@ import { ProductChemical } from "@/lib/fragment"
 import ProductList from "../../_components/ProductList"
 import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import ProductCatalogBanners from "@/components/banners/ProductCatalogBanners"
+import ProductProfileSection from "../../_components/ProductProfileSection"
 
 export async function generateStaticParams({ params: { locale } }: { params: { locale: string } }) {
   const projects: PaginationHandlerResponse<{ slug: string }[]> =
@@ -72,6 +73,18 @@ export default async function DetailChemicalSolutionsPage({
       )}
 
       {data?.meta?.banner && <BannerBlock {...data?.meta.banner} hideLoadingVertical />}
+
+      {/* Product Profile Section - Below Hero Banner */}
+      {(data?.meta?.product_profile || data?.meta?.product_profile_id || data?.meta?.product_profile_en || data?.meta?.intro) && (
+        <ProductProfileSection
+          profile={
+            data?.meta?.product_profile ||
+            data?.meta?.product_profile_id ||
+            data?.meta?.product_profile_en ||
+            data?.meta?.intro
+          }
+        />
+      )}
 
       {/* Product Catalog Banners - Below Hero */}
       {/* Fallback logic: Try default, then ID, then EN to ensure banners show even if only uploaded in one language */}

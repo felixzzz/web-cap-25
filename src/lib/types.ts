@@ -358,6 +358,10 @@ export type DisclaimerProps = {
 
 export type DetailChemicalSolutionsProps = {
   banner?: MetaCover
+  product_profile?: MetaProductProfile
+  product_profile_id?: MetaProductProfile
+  product_profile_en?: MetaProductProfile
+  intro?: MetaProductProfile
   product_datasheet?: MetaProductDatasheet
   product_datasheet2: MetaProductDatasheet2
   product_catalog_banners?: ProductCatalogBanner[] | string
@@ -365,6 +369,24 @@ export type DetailChemicalSolutionsProps = {
   product_catalog_banners_en?: ProductCatalogBanner[] | string
   seo_meta?: SeoMeta
   // product_datasheet3?: MetaProductDatasheet
+}
+
+export type MetaProductProfile = {
+  status?: string | null
+  status_id?: string | null
+  status_en?: string | null
+  title?: string | null
+  title_id?: string | null
+  title_en?: string | null
+  description?: string | null
+  description_id?: string | null
+  description_en?: string | null
+  image?: string | null
+  image_id?: string | null
+  image_en?: string | null
+  alt_text_image?: string | null
+  alt_text_image_id?: string | null
+  alt_text_image_en?: string | null
 }
 
 export type ProductCatalogBanner = {
