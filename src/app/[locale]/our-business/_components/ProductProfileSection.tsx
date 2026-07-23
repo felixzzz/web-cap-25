@@ -60,10 +60,10 @@ export function ProductProfileSection({ profile }: ProductProfileSectionProps) {
         </h2>
       )}
 
-      {/* Under title: split into 2 sections (Left: Description, Right: 8:3 Image) */}
-      <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
-        {/* Left Column: Description */}
-        <div className={`flex flex-col justify-center ${imageUrl ? "lg:col-span-6" : "lg:col-span-12"}`}>
+      {/* Under title: split into 2 sections (Left: Description top-aligned, Right: 8:3 Image) */}
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-12">
+        {/* Left Column: Description (Top Vertically Aligned) */}
+        <div className={`flex flex-col justify-start ${imageUrl ? "lg:col-span-6" : "lg:col-span-12"}`}>
           {description && (
             <div
               className="prose max-w-none text-base text-gray-700 sm:text-lg leading-relaxed space-y-3"
