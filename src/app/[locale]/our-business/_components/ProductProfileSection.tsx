@@ -53,37 +53,33 @@ export function ProductProfileSection({ profile }: ProductProfileSectionProps) {
 
   return (
     <section className="container mx-auto px-4 py-8 lg:py-14">
-      <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
-        {/* Left Text Column */}
-        <div className="flex flex-col justify-center space-y-4 lg:col-span-7">
-          {title && (
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
-              {title}
-            </h2>
-          )}
-          {description && (
-            <div
-              className="text-base text-gray-700 sm:text-lg leading-relaxed whitespace-pre-line"
-              dangerouslySetInnerHTML={{ __html: description }}
-            />
-          )}
-        </div>
+      {/* 1. Section Title */}
+      {title && (
+        <h2 className="mb-6 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
+          {title}
+        </h2>
+      )}
 
-        {/* Right Image Column */}
-        {imageUrl && (
-          <div className="lg:col-span-5">
-            <div className="relative w-full overflow-hidden rounded-2xl shadow-md aspect-[16/9] sm:aspect-[2/1] lg:aspect-[4/3] bg-gray-100">
-              <Image
-                src={imageUrl}
-                alt={altText}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 45vw"
-              />
-            </div>
-          </div>
-        )}
-      </div>
+      {/* 2. Profile Image below Title (8:3 aspect ratio) */}
+      {imageUrl && (
+        <div className="relative mb-8 w-full overflow-hidden rounded-2xl shadow-md aspect-[8/3] bg-gray-100">
+          <Image
+            src={imageUrl}
+            alt={altText}
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+        </div>
+      )}
+
+      {/* 3. Description (Rich Text Editor output) */}
+      {description && (
+        <div
+          className="prose max-w-none text-base text-gray-700 sm:text-lg leading-relaxed space-y-4"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
+      )}
     </section>
   )
 }
