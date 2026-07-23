@@ -34,9 +34,8 @@ export function ProductProfileSection({ profile }: ProductProfileSectionProps) {
 
   const rawImage =
     getLocalizedContent(locale, profile.image_en, profile.image_id) ||
+    (locale === "en" ? profile.image_en || profile.image_id : profile.image_id || profile.image_en) ||
     profile.image ||
-    profile.image_id ||
-    profile.image_en ||
     ""
 
   const imageUrl = assetUrl(rawImage)
