@@ -3,7 +3,7 @@ import { CardItem } from "@/components/global/CardItem"
 import { imgTempCardItem2 } from "@/data/images"
 import { MetaProduct, MetaProducts } from "@/lib/fragment"
 import { assetUrl, getLocalizedContent, isContentActive } from "@/lib/utils"
-import { useLocale } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { MetaEmbeddedVideo } from "@/lib/fragment"
 
 export function ChemicalSolutionsProduct({
@@ -19,6 +19,7 @@ export function ChemicalSolutionsProduct({
 } & MetaProducts &
   React.HTMLAttributes<HTMLDivElement>) {
   const locale = useLocale()
+  const t = useTranslations("global")
 
   if (!isContentActive(locale, status_en, status_id)) {
     return <></>
@@ -51,7 +52,7 @@ export function ChemicalSolutionsProduct({
                     )}
                     bg={assetUrl(item.meta.banner.thumbnail_image_id)}
                     href={`chemical-solutions/${item.slug}`}
-                    cta_label="Lihat Detail"
+                    cta_label={t("view_details")}
                     alt={getLocalizedContent(
                       locale,
                       item.meta.banner.alt_text_thumbnail_image_en,

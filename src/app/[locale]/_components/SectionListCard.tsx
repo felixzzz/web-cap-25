@@ -4,7 +4,7 @@ import Anim from "@/components/global/Anim"
 import { CardItem } from "@/components/global/CardItem"
 import { MetaHomeIntro } from "@/lib/fragment"
 import { assetUrl, getLocalizedContent, isContentActive } from "@/lib/utils"
-import { useLocale } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 export default function SectionListCard({
@@ -20,6 +20,7 @@ export default function SectionListCard({
   label_discover_en,
 }: MetaHomeIntro) {
   const locale = useLocale()
+  const t = useTranslations("global")
 
   if (!isContentActive(locale, status_en, status_id)) {
     return <></>
@@ -130,7 +131,7 @@ export default function SectionListCard({
                   title={item.title}
                   desc={item.subtitle}
                   bg={assetUrl(item.image)}
-                  cta_label="Lihat Detail"
+                  cta_label={t("view_details")}
                   alt={item.title || ""}
                 />
               </SwiperSlide>
