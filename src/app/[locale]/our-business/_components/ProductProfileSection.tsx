@@ -2,6 +2,7 @@
 
 import React from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { useLocale } from "next-intl"
 import { MetaProductProfile } from "@/lib/types"
 import { assetUrl, getLocalizedContent } from "@/lib/utils"
@@ -38,7 +39,7 @@ export function ProductProfileSection({ profile }: ProductProfileSectionProps) {
     profile.image ||
     ""
 
-  const imageUrl = assetUrl(rawImage)
+  const imageUrl = assetUrl(rawImage) || ""
 
   const altText =
     getLocalizedContent(locale, profile.alt_text_image_en, profile.alt_text_image_id) ||
@@ -46,9 +47,39 @@ export function ProductProfileSection({ profile }: ProductProfileSectionProps) {
     title ||
     "Product Profile"
 
+  const rawImageUrl =
+    getLocalizedContent(locale, profile.image_url_en, profile.image_url_id) ||
+    profile.image_url ||
+    ""
+
+  const imageLink = rawImageUrl ? assetUrl(rawImageUrl) || rawImageUrl : ""
+
+  const rawOpenNewTab =
+    getLocalizedContent(locale, profile.open_new_tab_en, profile.open_new_tab_id) ||
+    profile.open_new_tab ||
+    "no"
+
+  const isNewTab =
+    rawOpenNewTab === "yes" ||
+    rawOpenNewTab === "Yes" ||
+    rawOpenNewTab === "_blank" ||
+    rawOpenNewTab === "true"
+
   if (!title && !description && !imageUrl) {
     return null
   }
+
+  const renderImageContent = () => (
+    <div className="relative w-full overflow-hidden rounded-2xl shadow-md aspect-[8/3] bg-gray-100 group">
+      <Image
+        src={imageUrl}
+        alt={altText}
+        fill
+        className={`object-cover ${imageLink ? "transition-transform duration-500 group-hover:scale-105" : ""}`}
+        sizes="(max-width: 1024px) 100vw, 50vw"
+      />
+    </div>
+  )
 
   return (
     <section className="container mx-auto px-4 py-8 lg:py-14">
@@ -74,15 +105,18 @@ export function ProductProfileSection({ profile }: ProductProfileSectionProps) {
         {/* Right Column: Image with 8:3 ratio */}
         {imageUrl && (
           <div className={`w-full ${description ? "lg:col-span-6" : "lg:col-span-12"}`}>
-            <div className="relative w-full overflow-hidden rounded-2xl shadow-md aspect-[8/3] bg-gray-100">
-              <Image
-                src={imageUrl}
-                alt={altText}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            {imageLink ? (
+              <Link
+                href={imageLink}
+                target={isNewTab ? "_blank" : undefined}
+                rel={isNewTab ? "noopener noreferrer" : undefined}
+                className="block"
+              >
+                {renderImageContent()}
+              </Link>
+            ) : (
+              renderImageContent()
+            )}
           </div>
         )}
       </div>

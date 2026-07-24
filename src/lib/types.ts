@@ -387,6 +387,12 @@ export type MetaProductProfile = {
   alt_text_image?: string | null
   alt_text_image_id?: string | null
   alt_text_image_en?: string | null
+  image_url?: string | null
+  image_url_id?: string | null
+  image_url_en?: string | null
+  open_new_tab?: string | null
+  open_new_tab_id?: string | null
+  open_new_tab_en?: string | null
 }
 
 export type ProductCatalogBanner = {
