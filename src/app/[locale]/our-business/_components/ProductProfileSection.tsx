@@ -83,17 +83,15 @@ export function ProductProfileSection({ profile }: ProductProfileSectionProps) {
 
   return (
     <section className="container mx-auto px-4 py-8 lg:py-14">
-      {/* Profile Title at the top */}
-      {title && (
-        <h2 className="mb-6 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
-          {title}
-        </h2>
-      )}
-
-      {/* Under title: split into 2 sections (Left: Description top-aligned, Right: 8:3 Image) */}
+      {/* 2 Column Layout (Left: Title + Description top-aligned, Right: 8:3 Image) */}
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-12">
-        {/* Left Column: Description (Top Vertically Aligned) */}
-        <div className={`flex flex-col justify-start ${imageUrl ? "lg:col-span-6" : "lg:col-span-12"}`}>
+        {/* Left Column: Title + Description */}
+        <div className={`flex flex-col justify-start space-y-4 ${imageUrl ? "lg:col-span-6" : "lg:col-span-12"}`}>
+          {title && (
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
+              {title}
+            </h2>
+          )}
           {description && (
             <div
               className="prose max-w-none text-base text-gray-700 sm:text-lg leading-relaxed space-y-3"
@@ -104,7 +102,7 @@ export function ProductProfileSection({ profile }: ProductProfileSectionProps) {
 
         {/* Right Column: Image with 8:3 ratio */}
         {imageUrl && (
-          <div className={`w-full ${description ? "lg:col-span-6" : "lg:col-span-12"}`}>
+          <div className={`w-full ${description || title ? "lg:col-span-6" : "lg:col-span-12"}`}>
             {imageLink ? (
               <Link
                 href={imageLink}
