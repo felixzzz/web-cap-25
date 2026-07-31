@@ -287,7 +287,7 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
       style={{ top: "var(--sticky-banner-height, 0px)" }}
     >
       <div className="container flex h-16 items-center justify-between">
-        <Link href={absoluteUrl(`/${locale}/`)} className="flex items-center gap-2">
+        <Link href={absoluteUrl(`/${locale}`)} className="flex items-center gap-2">
           <Image
             src={
               backgroundWhite || isOpenNavbarMobile
@@ -486,7 +486,11 @@ function NavbarMobile({
                       <Link
                         key={item.href}
                         href={
-                          item.isOpenNewTab ? item.href : absoluteUrl(`/${locale}${item.href}`)
+                          item.isOpenNewTab
+                            ? item.href
+                            : absoluteUrl(
+                                `/${locale}${item.href === "/" ? "" : item.href}`
+                              )
                         }
                         target={item.isOpenNewTab ? "_blank" : "_self"}
                         className="hover:bg-gray-100 flex flex-row justify-between gap-2 rounded text-md font-bold text-black"

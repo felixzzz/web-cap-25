@@ -42,7 +42,7 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
   const pathname = usePathname()
 
   const isActiveLink = (href: string) => {
-    if (href === "/") return pathname === "/"
+    if (href === "/") return pathname === `/${locale}` || pathname === `/${locale}/` || pathname === "/"
 
     return pathname.startsWith(`/${locale}${href}`)
   }
@@ -52,7 +52,13 @@ export function Megamenu({ item, backgroundWhite }: Prop) {
       <NavigationMenuItem key={item.href}>
         {!item.isMegaMenu && (
           <NavigationMenuLink
-            href={item.isOpenNewTab ? item.href : absoluteUrl(`/${locale}${item.href}`)}
+            href={
+              item.isOpenNewTab
+                ? item.href
+                : absoluteUrl(
+                    `/${locale}${item.href === "/" ? "" : item.href}`
+                  )
+            }
             target={item.isOpenNewTab ? "_blank" : "_self"}
             className={cn(
               `py-5 lg:px-2 xl:px-3`,
