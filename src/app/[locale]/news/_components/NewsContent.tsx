@@ -102,7 +102,7 @@ export default function NewsContent({
       )} */}
 
           {data?.data?.map((item, i) => {
-            const en_slug = item?.slug_en !== null ? item?.slug_en : item?.slug
+            const en_slug = item?.slug_en || item?.slug
             return (
               <div key={i}>
                 <Card

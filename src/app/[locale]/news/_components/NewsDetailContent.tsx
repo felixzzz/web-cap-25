@@ -58,12 +58,9 @@ export default function NewsDetailContent({
   }, [])
 
   useEffect(() => {
-    if (locale === "en" && data.slug_en !== null) {
-      router.push(`/en/${path}/${data.slug_en}`)
-    } else if (locale === "en" && data.slug_en === null) {
-      router.push(`/en/${path}/${data.slug}`)
-    } else {
-      router.push(`/id/${path}/${data.slug}`)
+    const targetSlug = locale === "en" ? (data.slug_en || data.slug) : data.slug
+    if (targetSlug) {
+      router.push(`/${locale}/${path}/${targetSlug}`)
     }
   }, [locale, data.slug, data.slug_en, path, router])
 

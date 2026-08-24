@@ -42,7 +42,7 @@ export default function NewsHeader({ featuredPost }: NewsHeaderProps) {
               alt_image,
               alt_image_en,
             }) => {
-              const en_slug = slug_en !== null ? slug_en : slug
+              const en_slug = slug_en || slug
               return (
                 <SwiperSlide key={id}>
                   <div className="text-xl font-bold lg:text-5xl">

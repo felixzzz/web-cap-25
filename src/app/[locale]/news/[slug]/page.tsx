@@ -27,7 +27,7 @@ export async function generateStaticParams({
         `?type=news&limit=${perPage}&page=${currentPage}&sort=published_at&order=DESC&lang=${locale}`
       )
       const pageSlugs = posts.data.map((item) => ({
-        slug: item.slug,
+        slug: locale === "en" ? item?.slug_en || item?.slug : item?.slug,
         locale,
       }))
       allSlugs.push(...pageSlugs)

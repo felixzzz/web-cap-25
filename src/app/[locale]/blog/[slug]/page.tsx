@@ -29,9 +29,8 @@ export async function generateStaticParams({
         )
         if (posts?.data?.length) {
           const pageSlugs = posts.data.map((item) => {
-            const en_slug = item?.slug_en !== null ? item?.slug_en : item?.slug
             const activeSlug =
-              locale === "en" ? en_slug || item.slug : item.slug
+              locale === "en" ? item?.slug_en || item?.slug : item?.slug
             return {
               slug: activeSlug,
               locale,

@@ -50,7 +50,7 @@ export default function NewsDetailOther({
           className="mt-6 !overflow-visible"
         >
           {data?.map((item, i) => {
-            const en_slug = item?.slug_en !== null ? item?.slug_en : item?.slug
+            const en_slug = item?.slug_en || item?.slug
             const postType = path ?? (item.type === "blog" ? "blog" : "news")
             return (
               <SwiperSlide key={i}>

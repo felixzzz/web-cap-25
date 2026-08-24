@@ -55,7 +55,7 @@ async function generatePaginatedSitemap(
 
     routes.push(
       ...posts.data.map((item) => ({
-        url: `${SITE_URL}/${locale}/${baseUrl}/${locale === "en" ? item.slug_en : item.slug}`,
+        url: `${SITE_URL}/${locale}/${baseUrl}/${locale === "en" ? item.slug_en || item.slug : item.slug}`,
         lastModified: new Date(item.updated_at).toISOString(),
       }))
     );

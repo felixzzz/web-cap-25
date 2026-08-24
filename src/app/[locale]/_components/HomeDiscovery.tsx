@@ -167,7 +167,7 @@ export default function HomeDiscovery({
                       variant="outline-blue"
                     >
                       <Link
-                        href={`/${locale}/news?category=${getLocalizedContent(locale, category.slug_en, category.slug)}`}
+                        href={`/${locale}/news?category=${getLocalizedContent(locale, category.slug_en || category.slug, category.slug)}`}
                       >
                         {getLocalizedContent(
                           locale,

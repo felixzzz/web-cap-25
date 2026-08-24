@@ -108,7 +108,8 @@ export async function getPostList(query: string) {
 }
 
 export async function getDetailPost(slug: string) {
-  const data = await fetchAPI(`posts/${slug}`, "GET")
+  const safeSlug = encodeURIComponent(decodeURIComponent(slug))
+  const data = await fetchAPI(`posts/${safeSlug}`, "GET")
   return data
 }
 
@@ -139,7 +140,8 @@ export async function postContactUs(body: BodyContactUs) {
 
 export async function getActiveBanners(slug: string) {
   try {
-    const data = await fetchAPI(`banner/${slug}`, "GET", undefined, {
+    const safeSlug = encodeURIComponent(decodeURIComponent(slug))
+    const data = await fetchAPI(`banner/${safeSlug}`, "GET", undefined, {
       next: { tags: ["active-banners"], revalidate: 60 },
     })
     return data ?? null

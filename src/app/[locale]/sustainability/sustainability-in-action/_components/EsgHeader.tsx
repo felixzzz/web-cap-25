@@ -76,7 +76,7 @@ export default function EsgHeader({ post }: Prop) {
             )}
             {slug && (
               <Link
-                href={`/${locale}/sustainability/sustainability-in-action/${getLocalizedContent(locale, slug_en, slug)}`}
+                href={`/${locale}/sustainability/sustainability-in-action/${getLocalizedContent(locale, slug_en || slug, slug)}`}
                 className="mt-4 flex gap-2 text-sm font-bold text-primary underline-offset-4 hover:underline"
               >
                 Read more{" "}
