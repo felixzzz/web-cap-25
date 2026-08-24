@@ -18,6 +18,7 @@ import { ChangeEvent, Suspense, useEffect, useMemo, useState } from "react"
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -235,11 +236,23 @@ export default function PublicationDownloads({
                       <Pagination className="mt-12">
                         <PaginationContent>
                           {data.links.map((item, index) => {
+                            const isPrevious =
+                              item.label.toLowerCase().includes("previous") ||
+                              item.label.includes("&laquo;")
+                            const isNext =
+                              item.label.toLowerCase().includes("next") ||
+                              item.label.includes("&raquo;")
+                            const isEllipsis = item.label.includes("...")
+                            const pageNum = parseInt(item.label, 10)
+                            const isNumber =
+                              !isPrevious &&
+                              !isNext &&
+                              !isEllipsis &&
+                              !isNaN(pageNum)
+
                             return (
                               <PaginationItem key={`${item.label}-${index}`}>
-                                {item.label
-                                  .toLowerCase()
-                                  .includes("previous") && (
+                                {isPrevious && (
                                   <PaginationPrevious
                                     isDisabled={data.current_page === 1}
                                     onClick={() =>
@@ -248,23 +261,18 @@ export default function PublicationDownloads({
                                     }
                                   />
                                 )}
-                                {item.label === "..." && index === 3 && (
-                                  <PaginationLink>...</PaginationLink>
-                                )}
-                                {!isNaN(parseInt(item.label)) && (
+                                {isEllipsis && <PaginationEllipsis />}
+                                {isNumber && (
                                   <PaginationLink
                                     isActive={item.active}
                                     onClick={() =>
-                                      handlePageChange(parseInt(item.label))
+                                      handlePageChange(pageNum)
                                     }
                                   >
                                     {item.label}
                                   </PaginationLink>
                                 )}
-                                {item.label === "..." && index === 11 && (
-                                  <PaginationLink>...</PaginationLink>
-                                )}
-                                {item.label.toLowerCase().includes("next") && (
+                                {isNext && (
                                   <PaginationNext
                                     isDisabled={
                                       data.current_page === data.last_page

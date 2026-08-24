@@ -7,7 +7,13 @@ import { assetUrl, dateFormater, getLocalizedContent } from "@/lib/utils"
 import { useLocale, useTranslations } from "next-intl"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-export default function NewsDetailOther({ data }: { data?: PostNews[] }) {
+export default function NewsDetailOther({
+  data,
+  path,
+}: {
+  data?: PostNews[]
+  path?: string
+}) {
   const locale = useLocale()
   const t = useTranslations("global")
 
@@ -45,11 +51,12 @@ export default function NewsDetailOther({ data }: { data?: PostNews[] }) {
         >
           {data?.map((item, i) => {
             const en_slug = item?.slug_en !== null ? item?.slug_en : item?.slug
+            const postType = path ?? (item.type === "blog" ? "blog" : "news")
             return (
               <SwiperSlide key={i}>
                 <div key={i}>
                   <Card
-                    href={`/${locale}/news/${getLocalizedContent(locale, en_slug, item.slug)}`}
+                    href={`/${locale}/${postType}/${getLocalizedContent(locale, en_slug, item.slug)}`}
                   >
                     <CardImage
                       className="rounded-2xl"

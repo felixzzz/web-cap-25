@@ -17,7 +17,7 @@ export async function generateStaticParams({
   params: { locale: string }
 }) {
   try {
-    const allSlugs: { slug: string }[] = []
+    const allSlugs: { slug: string; locale: string }[] = []
     let currentPage = 1
     let hasMorePages = true
     const perPage = 10
@@ -27,13 +27,20 @@ export async function generateStaticParams({
         const posts: PaginationHandlerResponse<PostNews[]> = await getPostList(
           `?type=blog&limit=${perPage}&page=${currentPage}&sort=published_at&order=DESC&lang=${locale}`
         )
-        const pageSlugs = posts.data.map((item) => ({
-          slug: item.slug,
-          locale,
-        }))
-        allSlugs.push(...pageSlugs)
+        if (posts?.data?.length) {
+          const pageSlugs = posts.data.map((item) => {
+            const en_slug = item?.slug_en !== null ? item?.slug_en : item?.slug
+            const activeSlug =
+              locale === "en" ? en_slug || item.slug : item.slug
+            return {
+              slug: activeSlug,
+              locale,
+            }
+          })
+          allSlugs.push(...pageSlugs)
+        }
 
-        hasMorePages = currentPage < posts.last_page
+        hasMorePages = posts?.last_page ? currentPage < posts.last_page : false
         currentPage++
       } catch (error) {
         console.error(`Error fetching blog posts page ${currentPage}:`, error)
@@ -95,6 +102,9 @@ export default async function NewsDetailPage({
   params: { slug, locale },
 }: Readonly<{ params: { slug: string; locale: string } }>) {
   const data: PostNews = await getDetailPost(slug)
+
+  if (!data || data.type !== "blog") return notFound()
+
   const banners = await getActiveBanners(slug)
 
   let newsPageData = null
@@ -130,15 +140,20 @@ export default async function NewsDetailPage({
     dateModified: data?.updated_at,
   }
 
-  const relatedArticles: PaginationHandlerResponse<PostNews[]> =
-    await getPostList(
-      `?limit=3&lang=${locale}&page=1&sort=id&order=DESC&categories[]=${data?.category[0]?.id}&type=blog`
+  const categoryParam = data?.category?.[0]?.id
+    ? `&categories[]=${data.category[0].id}`
+    : ""
+  let relatedArticles: PaginationHandlerResponse<PostNews[]> | null = null
+  try {
+    relatedArticles = await getPostList(
+      `?limit=3&lang=${locale}&page=1&sort=id&order=DESC${categoryParam}&type=blog`
     )
+  } catch (error) {
+    console.error("Failed to fetch related blog posts:", error)
+  }
 
-  if (!data) return notFound()
-  if (data.type !== "blog") return notFound()
-
-  const shouldDisableLanguageSwitch = data.language_availability === 'en' || data.language_availability === 'id'
+  const shouldDisableLanguageSwitch =
+    data.language_availability === "en" || data.language_availability === "id"
 
   return (
     <div style={{ marginTop: "calc(64px + var(--sticky-banner-height, 0px))" }}>
@@ -147,10 +162,13 @@ export default async function NewsDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar isBackgroundWhite disableLanguageSwitch={shouldDisableLanguageSwitch} />
+      <Navbar
+        isBackgroundWhite
+        disableLanguageSwitch={shouldDisableLanguageSwitch}
+      />
       <NewsDetailContent data={data} path="blog" banners={banners} />
-      {relatedArticles?.data?.length > 0 && (
-        <NewsDetailOther data={relatedArticles.data} />
+      {relatedArticles?.data && relatedArticles.data.length > 0 && (
+        <NewsDetailOther data={relatedArticles.data} path="blog" />
       )}
     </div>
   )

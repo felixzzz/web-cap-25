@@ -64,14 +64,14 @@ export default async function NewsPage({
     `?type=news&limit=10&sort=id&order=ASC`
   )
   const news: PaginationHandlerResponse<Post[]> = await getPostList(
-    `?limit=12&lang=${locale}&page=1&sort=published_at&order=DESC&type=news&page=${searchParams.page || 1}&${searchParams["categories[]"] ? `categories%5B%5D=${searchParams["categories[]"] || ""}` : ""}`
+    `?limit=12&lang=${locale}&sort=published_at&order=DESC&type=news&page=${searchParams.page || 1}&${searchParams["categories[]"] ? `categories%5B%5D=${searchParams["categories[]"] || ""}` : ""}`
   )
   const dataDocuments: PaginationHandlerResponse<MetaDocumentItem[]> =
     await getDocuments(
       `?per_page=10&document_page=news&order=DESC&sort=published_at&page=${searchParams.page || 1}&search=${searchParams.search || ""}`
     )
   const blogs: PaginationHandlerResponse<Post[]> = await getPostList(
-    `?limit=12&lang=${locale}&page=1&sort=published_at&order=DESC&type=blog&page=${searchParams.page || 1}&${searchParams["categories[]"] ? `categories%5B%5D=${searchParams["categories[]"] || ""}` : ""}`
+    `?limit=12&lang=${locale}&sort=published_at&order=DESC&type=blog&page=${searchParams.page || 1}&${searchParams["categories[]"] ? `categories%5B%5D=${searchParams["categories[]"] || ""}` : ""}`
   )
   const data: HttpGeneralResponse<unknown> = await getPage("news")
 
