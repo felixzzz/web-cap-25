@@ -46,7 +46,7 @@ export default function GovernancePolicy({
               </div>
             ))}
             <Link
-              href="/governance/policy"
+              href={`/${locale}/governance/policy`}
               className="mt-5 flex max-w-min gap-2 text-nowrap text-sm font-bold text-primary"
             >
               View All <Image className="my-auto" src={iconNextBlue} alt="" />
