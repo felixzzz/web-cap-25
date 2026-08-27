@@ -54,7 +54,7 @@ export async function adjustSearchParams(
   searchParams: ReadonlyURLSearchParams,
   router: AppRouterInstance,
   key: string,
-  value: string | string[],
+  value: string | string[] | undefined | null,
   isScrolling: boolean = false
 ): Promise<boolean> {
   const newParams = new URLSearchParams(searchParams.toString())
@@ -63,10 +63,12 @@ export async function adjustSearchParams(
     newParams.delete(key)
 
     value.forEach((val) => {
-      newParams.append(key, val)
+      if (val && val !== "undefined") {
+        newParams.append(key, val)
+      }
     })
   } else {
-    if (value === "") {
+    if (!value || value === "" || value === "undefined") {
       newParams.delete(key)
     } else {
       newParams.set(key, value)

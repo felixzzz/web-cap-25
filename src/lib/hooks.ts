@@ -100,13 +100,17 @@ export function useManagements({
   options,
   page,
   category_slug,
-}: AboutUsManagementsProp & { page: number; category_slug: string }) {
+}: AboutUsManagementsProp & { page: number; category_slug?: string }) {
   const getManagements = (page = 1, category_slug?: string) =>
     API.get(
-      "/posts?limit=16&sort=sort&order=ASC&type=managements&page=" +
-        page +
-        "&category_slug=" +
-        category_slug
+      `/posts?${urlEncodedString({
+        limit: 16,
+        sort: "sort",
+        order: "ASC",
+        type: "managements",
+        page,
+        category_slug,
+      })}`
     ).then((res) => res.data.data)
 
   return useQuery({

@@ -61,9 +61,11 @@ export default function AboutManagementStructure({
   const locale = useLocale()
   const t = useTranslations("global")
   const router = useRouter()
-  const [tab, setTab] = useState("management")
-  const [tabManagement, setTabManagement] = useState(dataCategories?.[0]?.slug)
   const searchParams = useSearchParams()
+  const [tab, setTab] = useState(searchParams.get("tab") || "management")
+  const [tabManagement, setTabManagement] = useState(
+    searchParams.get("management_type") || dataCategories?.[0]?.slug
+  )
   const [page, setPage] = useState(1)
   const [popupManagement, setPopupManagement] = useState<PostManagement | null>(
     null
@@ -100,7 +102,15 @@ export default function AboutManagementStructure({
   }
 
   useEffect(() => {
-    adjustSearchParams(searchParams, router, "management_type", tabManagement)
+    if (!tabManagement && dataCategories?.[0]?.slug) {
+      setTabManagement(dataCategories[0].slug)
+    }
+  }, [dataCategories, tabManagement])
+
+  useEffect(() => {
+    if (tabManagement && tabManagement !== "undefined") {
+      adjustSearchParams(searchParams, router, "management_type", tabManagement)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabManagement])
 
