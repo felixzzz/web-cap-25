@@ -108,8 +108,13 @@ export async function getPostList(query: string) {
 }
 
 export async function getDetailPost(slug: string) {
-  const safeSlug = encodeURIComponent(decodeURIComponent(slug))
-  const data = await fetchAPI(`posts/${safeSlug}`, "GET")
+  const [path, query] = slug.split("?")
+  const safePath = path
+    .split("/")
+    .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
+    .join("/")
+  const fullPath = query ? `${safePath}?${query}` : safePath
+  const data = await fetchAPI(`posts/${fullPath}`, "GET")
   return data
 }
 
@@ -140,8 +145,13 @@ export async function postContactUs(body: BodyContactUs) {
 
 export async function getActiveBanners(slug: string) {
   try {
-    const safeSlug = encodeURIComponent(decodeURIComponent(slug))
-    const data = await fetchAPI(`banner/${safeSlug}`, "GET", undefined, {
+    const [path, query] = slug.split("?")
+    const safePath = path
+      .split("/")
+      .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
+      .join("/")
+    const fullPath = query ? `${safePath}?${query}` : safePath
+    const data = await fetchAPI(`banner/${fullPath}`, "GET", undefined, {
       next: { tags: ["active-banners"], revalidate: 60 },
     })
     return data ?? null

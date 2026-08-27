@@ -75,6 +75,10 @@ export async function adjustSearchParams(
     }
   }
 
+  if (newParams.toString() === searchParams.toString()) {
+    return true
+  }
+
   router.push(`?${newParams.toString()}`, {
     scroll: isScrolling ? true : false,
   })
