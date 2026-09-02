@@ -293,7 +293,11 @@ export default function SearchContent() {
                               <div>{item.type}</div>
                               {item.type === "article" && item.published_at && (
                                 <div className="ml-auto text-sm font-normal tracking-normal text-[#828282]">
-                                  {dateFormater(item.published_at)}
+                                  {dateFormater(
+                                    item.published_at,
+                                    "dd-MMM-yyyy",
+                                    locale
+                                  )}
                                 </div>
                               )}
                             </div>

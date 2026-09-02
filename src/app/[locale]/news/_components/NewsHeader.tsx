@@ -73,7 +73,7 @@ export default function NewsHeader({ featuredPost }: NewsHeaderProps) {
                     <div className="my-auto flex max-w-[566px] flex-shrink-0 flex-col content-center">
                       {published_at && (
                         <div className="text-sm font-semibold uppercase tracking-[0.8px] text-gray lg:text-md">
-                          {dateFormater(published_at)}
+                          {dateFormater(published_at, "dd-MMM-yyyy", locale)}
                         </div>
                       )}
                       <Link

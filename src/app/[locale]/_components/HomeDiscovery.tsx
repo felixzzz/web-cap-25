@@ -60,7 +60,11 @@ export default function HomeDiscovery({
                   <Link href={`/${locale}/news/${news?.[0].slug}`}>
                     <div className="relative flex h-[421px] flex-col justify-end rounded-2xl bg-gradient-to-b from-transparent via-transparent to-black/70 px-5 py-8 lg:h-[741px] lg:rounded-3xl lg:p-10">
                       <div className="flex w-full justify-start text-left text-xs font-semibold uppercase tracking-[1.4px] text-white/70 lg:text-sm">
-                        {dateFormater(news?.[0]?.created_at, "dd-MMM-yyyy")}
+                        {dateFormater(
+                          news?.[0]?.published_at || news?.[0]?.created_at,
+                          "dd-MMM-yyyy",
+                          locale
+                        )}
                       </div>
                       <div className="mt-2 text-lg font-bold text-white lg:text-2xl">
                         {getLocalizedContent(
@@ -96,7 +100,11 @@ export default function HomeDiscovery({
                   <Link href={`/${locale}/news/${news?.[1].slug}`}>
                     <div className="relative flex h-[301px] flex-col justify-end rounded-2xl bg-gradient-to-b from-transparent via-transparent to-black/70 px-5 py-8 lg:h-[551px] lg:rounded-3xl lg:p-10">
                       <div className="flex w-full justify-start text-left text-xs font-semibold uppercase tracking-[1.4px] text-white/70 lg:text-sm">
-                        {dateFormater(news?.[1]?.created_at, "dd-MMM-yyyy")}
+                        {dateFormater(
+                          news?.[1]?.published_at || news?.[1]?.created_at,
+                          "dd-MMM-yyyy",
+                          locale
+                        )}
                       </div>
                       <div className="mt-2 text-lg font-bold text-white lg:text-2xl">
                         {getLocalizedContent(

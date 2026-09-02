@@ -59,7 +59,8 @@ export default function EsgDetailOther({ data }: Prop) {
                   />
                   <CardContent
                     label={
-                      item?.published_at && dateFormater(item?.published_at)
+                      item?.published_at &&
+                      dateFormater(item?.published_at, "dd-MMM-yyyy", locale)
                     }
                     title={item?.title}
                   >

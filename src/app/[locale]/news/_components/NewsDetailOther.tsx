@@ -69,7 +69,8 @@ export default function NewsDetailOther({
                     />
                     <CardContent
                       label={
-                        item.published_at && dateFormater(item.published_at)
+                        item.published_at &&
+                        dateFormater(item.published_at, "dd-MMM-yyyy", locale)
                       }
                       title={getLocalizedContent(
                         locale,

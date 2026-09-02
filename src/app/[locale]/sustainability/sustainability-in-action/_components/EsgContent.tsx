@@ -173,7 +173,11 @@ export default function EsgContent({ data, categories }: Prop) {
                       img={assetUrl(item.image)!}
                     />
                     <CardContent
-                      label={dateFormater(item.published_at)}
+                      label={dateFormater(
+                        item.published_at,
+                        "dd-MMM-yyyy",
+                        locale
+                      )}
                       title={getLocalizedContent(
                         locale,
                         item.title_en,

@@ -64,7 +64,7 @@ export default function EsgHeader({ post }: Prop) {
           </div>
           <div className="my-auto flex max-w-[566px] flex-shrink-0 flex-col content-center">
             <div className="text-sm font-semibold uppercase tracking-[0.8px] text-gray lg:text-md">
-              {dateFormater(published_at)}
+              {dateFormater(published_at, "dd-MMM-yyyy", locale)}
             </div>
             <h1 className="mt-2 text-lg font-bold lg:text-xl">
               {getLocalizedContent(locale, title_en, title)}

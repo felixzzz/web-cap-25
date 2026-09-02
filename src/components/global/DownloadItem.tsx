@@ -129,7 +129,7 @@ export default function DownloadItem({
         )}
         {isHaveCheckbox && published_at && (
           <div className="text-sm font-semibold uppercase tracking-[1.4px] text-gray">
-            {dateFormater(published_at, "dd-MM-yyyy")}
+            {dateFormater(published_at, "dd-MMM-yyyy", locale)}
           </div>
         )}
         <div className="mt-1 w-full max-w-[660px]">
