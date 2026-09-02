@@ -52,8 +52,8 @@ export default function DetailEsg({ data }: Prop) {
             </AspectRatio>
           )}
           {data?.published_at && (
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.8px] text-gray lg:text-md">
-              {dateFormater(data?.published_at, "dd-MMM-yyyy", locale)}
+            <p className="mb-1 text-xs font-semibold tracking-[0.8px] text-gray lg:text-md">
+              {dateFormater(data?.published_at)}
             </p>
           )}
           <h1 className="text-xl font-bold lg:text-4xl">

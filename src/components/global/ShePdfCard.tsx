@@ -129,7 +129,7 @@ export default function ShePdfCard({
         )}
         {isHaveCheckbox && published_at && (
           <div className="text-sm font-semibold uppercase tracking-[1.4px] text-gray">
-            {dateFormater(published_at, "dd-MMM-yyyy", locale)}
+            {dateFormater(published_at, "dd-MM-yyyy")}
           </div>
         )}
         <div className="mt-1 w-full max-w-[660px]">

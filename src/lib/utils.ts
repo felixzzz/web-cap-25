@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { API_URL, IMAGE_URL, SITE_URL } from "./constant"
 import { parseISO, format } from "date-fns"
-import { enUS, id } from "date-fns/locale"
+import { enUS } from "date-fns/locale"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 
@@ -42,27 +42,12 @@ export const getLocalizedContent = <T = unknown>(
   return locale === "en" ? enContent! : idContent!
 }
 
-export function dateFormater(
-  date: string | null | undefined,
-  formatDate: string = "dd-MMM-yyyy",
-  locale?: string
-) {
-  if (!date) return "-"
-
-  try {
-    let parsedDate = parseISO(date)
-    if (isNaN(parsedDate.getTime())) {
-      parsedDate = new Date(date)
-    }
-    if (isNaN(parsedDate.getTime())) {
-      return "-"
-    }
-    return format(parsedDate, formatDate, {
-      locale: locale === "id" ? id : enUS,
-    })
-  } catch {
-    return "-"
+export function dateFormater(date: string, formatDate: string = "dd-MM-yyyy") {
+  if (date) {
+    return format(parseISO(date), formatDate)
   }
+
+  return "-"
 }
 
 export async function adjustSearchParams(

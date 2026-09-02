@@ -43,11 +43,7 @@ export default function RelatedArticles({
                     img={assetUrl(item.image)!}
                   />
                   <CardContent
-                    label={dateFormater(
-                      item.published_at || item.created_at,
-                      "dd-MMM-yyyy",
-                      locale
-                    )}
+                    label={dateFormater(item.created_at)}
                     title={getLocalizedContent(
                       locale,
                       item.title_en,
