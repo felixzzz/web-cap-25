@@ -31,6 +31,8 @@ export const pathnames: Pathnames<typeof locales> = {
   "/sustainability/environment": "/sustainability/environment",
   "/terms-condition": "/terms-condition",
   "/caliber": "/caliber",
+  "/test/product-flow": "/test/product-flow",
+  "/test/product-flow-2": "/test/product-flow-2",
 }
 
 export const localePrefix: LocalePrefix<typeof locales> = "always"
