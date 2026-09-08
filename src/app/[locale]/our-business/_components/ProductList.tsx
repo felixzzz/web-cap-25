@@ -34,7 +34,7 @@ export default function ProductList({
           {dataCategories?.map((item) => (
             <Button
               key={item.id}
-              className="w-full text-sm lg:w-auto lg:text-md"
+              className="w-full text-sm lg:w-auto lg:text-md px-4"
               variant={item.slug === slug ? "blue" : "outline-blue"}
               ref={item.slug === slug ? activeButtonRef : null}
             >
