@@ -63,15 +63,29 @@ export default async function NewsPage({
   const categories: PostCategory[] = await getPostCategories(
     `?type=news&limit=10&sort=id&order=ASC`
   )
+  const blogCategories: PostCategory[] = await getPostCategories(
+    `?type=blog&limit=10&sort=id&order=ASC`
+  )
+
+  const currentTab = searchParams.tab || "news"
+  const newsCategoryQuery =
+    currentTab === "news" && searchParams["categories[]"]
+      ? `&categories%5B%5D=${searchParams["categories[]"]}`
+      : ""
+  const blogCategoryQuery =
+    currentTab === "blog" && searchParams["categories[]"]
+      ? `&categories%5B%5D=${searchParams["categories[]"]}`
+      : ""
+
   const news: PaginationHandlerResponse<Post[]> = await getPostList(
-    `?limit=12&lang=${locale}&sort=published_at&order=DESC&type=news&page=${searchParams.page || 1}&${searchParams["categories[]"] ? `categories%5B%5D=${searchParams["categories[]"] || ""}` : ""}`
+    `?limit=12&lang=${locale}&sort=published_at&order=DESC&type=news&page=${searchParams.page || 1}${newsCategoryQuery}`
   )
   const dataDocuments: PaginationHandlerResponse<MetaDocumentItem[]> =
     await getDocuments(
       `?per_page=10&document_page=news&order=DESC&sort=published_at&page=${searchParams.page || 1}&search=${searchParams.search || ""}`
     )
   const blogs: PaginationHandlerResponse<Post[]> = await getPostList(
-    `?limit=12&lang=${locale}&sort=published_at&order=DESC&type=blog&page=${searchParams.page || 1}&${searchParams["categories[]"] ? `categories%5B%5D=${searchParams["categories[]"] || ""}` : ""}`
+    `?limit=12&lang=${locale}&sort=published_at&order=DESC&type=blog&page=${searchParams.page || 1}${blogCategoryQuery}`
   )
   const data: HttpGeneralResponse<unknown> = await getPage("news")
 
@@ -94,6 +108,7 @@ export default async function NewsPage({
           <NewsAndPressReleases
             data={news}
             categories={categories}
+            blogCategories={blogCategories}
             dataDocuments={dataDocuments}
             blogs={blogs}
           />

@@ -13,11 +13,13 @@ export default function NewsAndPressReleases({
   data,
   dataDocuments,
   categories,
+  blogCategories = [],
   blogs,
 }: {
   data: PaginationHandlerResponse<Post[]>
   dataDocuments: PaginationHandlerResponse<MetaDocumentItem[]>
-  categories: PostCategory[],
+  categories: PostCategory[]
+  blogCategories?: PostCategory[]
   blogs: PaginationHandlerResponse<Post[]>
 }) {
   const locale = useLocale()
@@ -46,6 +48,7 @@ export default function NewsAndPressReleases({
     const currentQuery = new URLSearchParams(window.location.search)
     currentQuery.set("tab", value)
     currentQuery.set("page", "1")
+    currentQuery.delete("categories[]")
     router.push(`/${locale}/news?${currentQuery.toString()}`, {
       scroll: false,
     })
@@ -110,7 +113,7 @@ export default function NewsAndPressReleases({
             <PressReleasesContent data={dataDocuments} />
           </TabsContent>
           <TabsContent value="blog">
-            <NewsContent categories={[]} data={blogs} />
+            <NewsContent categories={blogCategories} data={blogs} />
           </TabsContent>
         </Tabs>
       </div>
