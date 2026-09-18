@@ -114,6 +114,8 @@ export type Post = {
   storage_url: string
   alt_image: string
   alt_image_en: string
+  caption_image?: string
+  caption_image_en?: string
   language_availability?: 'en' | 'id' | 'both'
 }
 
@@ -157,6 +159,8 @@ export type PostNews = {
   author_admin: AuthorAdmin
   alt_image: string
   alt_image_en: string
+  caption_image?: string
+  caption_image_en?: string
   language_availability?: 'en' | 'id' | 'both'
 }
 

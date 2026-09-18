@@ -70,6 +70,11 @@ export default function NewsDetailContent({
     data?.meta.news_content?.content_id || data?.meta?.blog_content?.content_id
   )
 
+  const imageCaption =
+    getLocalizedContent(locale, data?.caption_image_en, data?.caption_image) ||
+    data?.caption_image ||
+    data?.caption_image_en
+
   const { part1, part2 } = useMemo(() => {
     if (banners?.center && banners.center.length > 0) {
       return splitContent(rawContent || "")
@@ -127,28 +132,35 @@ export default function NewsDetailContent({
           >
             {/* Removed top center banner renderer */}
             {data?.image && (
-              <AspectRatio ratio={16 / 9} className="mb-6">
-                <Image
-                  src={
-                    data?.image
-                      ? assetUrl(data?.image)!
-                      : "/img/common/img_default-news.jpg"
-                  }
-                  alt={
-                    getLocalizedContent(
-                      locale,
-                      data.alt_image_en,
-                      data.alt_image
-                    ) || ""
-                  }
-                  fill
-                  className="rounded-3xl object-cover"
-                  onError={(event: any) => {
-                    event.target.id = "/img/common/img_default-news.jpg"
-                    event.target.srcset = "/img/common/img_default-news.jpg"
-                  }}
-                />
-              </AspectRatio>
+              <figure className="mb-6">
+                <AspectRatio ratio={16 / 9}>
+                  <Image
+                    src={
+                      data?.image
+                        ? assetUrl(data?.image)!
+                        : "/img/common/img_default-news.jpg"
+                    }
+                    alt={
+                      getLocalizedContent(
+                        locale,
+                        data.alt_image_en,
+                        data.alt_image
+                      ) || ""
+                    }
+                    fill
+                    className="rounded-3xl object-cover"
+                    onError={(event: any) => {
+                      event.target.id = "/img/common/img_default-news.jpg"
+                      event.target.srcset = "/img/common/img_default-news.jpg"
+                    }}
+                  />
+                </AspectRatio>
+                {imageCaption && (
+                  <figcaption className="mt-2.5 text-center text-xs italic text-neutral-500 sm:text-sm">
+                    {imageCaption}
+                  </figcaption>
+                )}
+              </figure>
             )}
             {hasLeft ? (
               <div
