@@ -34,9 +34,16 @@ export function Card({ href, children, className, ...props }: CardProp) {
 type CardImageProp = {
   img: StaticImageData | string
   alt?: string
+  imageClassName?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
-export function CardImage({ img, className, alt, ...props }: CardImageProp) {
+export function CardImage({
+  img,
+  className,
+  imageClassName,
+  alt,
+  ...props
+}: CardImageProp) {
   return (
     <>
       <div
@@ -54,7 +61,7 @@ export function CardImage({ img, className, alt, ...props }: CardImageProp) {
             event.target.srcset = "/img/common/img_default-news.jpg"
           }}
           fill
-          className="object-cover"
+          className={cn("object-cover object-top", imageClassName)}
         />
       </div>
     </>
