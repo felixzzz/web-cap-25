@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import { BannerRenderer } from "@/components/banner/BannerRenderer"
 import { EmbeddedBanner } from "./EmbeddedBanner"
 import { CustomBreadcrumb } from "@/components/global/CustomBreadcrumb"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { SITE_URL } from "@/lib/constant"
 import { PostNews } from "@/lib/fragment"
 import { BannerResponse } from "@/lib/types"
@@ -133,7 +132,7 @@ export default function NewsDetailContent({
             {/* Removed top center banner renderer */}
             {data?.image && (
               <figure className="mb-6">
-                <AspectRatio ratio={16 / 9}>
+                <div className="relative w-full overflow-hidden rounded-3xl">
                   <Image
                     src={
                       data?.image
@@ -147,14 +146,17 @@ export default function NewsDetailContent({
                         data.alt_image
                       ) || ""
                     }
-                    fill
-                    className="rounded-3xl object-cover"
+                    width={1200}
+                    height={675}
+                    sizes="(max-width: 1024px) 100vw, 850px"
+                    className="h-auto w-full rounded-3xl object-cover"
+                    priority
                     onError={(event: any) => {
                       event.target.id = "/img/common/img_default-news.jpg"
                       event.target.srcset = "/img/common/img_default-news.jpg"
                     }}
                   />
-                </AspectRatio>
+                </div>
                 {imageCaption && (
                   <figcaption className="mt-2.5 text-center text-xs italic text-neutral-500 sm:text-sm">
                     {imageCaption}
