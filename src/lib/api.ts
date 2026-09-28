@@ -201,3 +201,18 @@ export async function getBannerPage(
     .then((res) => res.data ?? null)
     .catch(() => null)
 }
+
+export async function getLlmsContent(): Promise<{
+  llms_txt: string
+  llms_full_txt: string
+} | null> {
+  try {
+    const data = await fetchAPI("llms", "GET", undefined, {
+      next: { tags: ["llms"], revalidate: 60 },
+    })
+    return data ?? null
+  } catch (e) {
+    return null
+  }
+}
+
