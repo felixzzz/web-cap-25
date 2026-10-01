@@ -39,7 +39,7 @@ export default function WhoWeAreVisionMission({
         <div className="container">
           <Anim>
             <div className="flex flex-col gap-4 lg:flex-row lg:gap-0">
-              <div className="my-auto w-full lg:w-5/12">
+              <div className="my-auto w-full lg:w-6/12">
                 <div className="text-md font-bold uppercase text-gray lg:text-lg">
                   {getLocalizedContent(
                     locale,
@@ -58,8 +58,8 @@ export default function WhoWeAreVisionMission({
                   }}
                 />
               </div>
-              <div className="w-full lg:w-2/12"></div>
-              <div className="w-full lg:w-3/12">
+              <div className="w-full lg:w-1/12"></div>
+              <div className="w-full lg:w-5/12">
                 <AspectRatio ratio={1 / 1} className="mb-4">
                   <Image
                     src={
