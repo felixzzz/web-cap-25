@@ -216,3 +216,15 @@ export async function getLlmsContent(): Promise<{
   }
 }
 
+export async function getRobotsContent(): Promise<{
+  robots_txt: string
+} | null> {
+  try {
+    const data = await fetchAPI("robots", "GET", undefined, {
+      next: { tags: ["robots"], revalidate: 60 },
+    })
+    return data ?? null
+  } catch (e) {
+    return null
+  }
+}
