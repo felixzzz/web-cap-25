@@ -113,7 +113,9 @@ export default function NewsAndPressReleases({
             <PressReleasesContent data={dataDocuments} />
           </TabsContent>
           <TabsContent value="blog">
-            <NewsContent categories={blogCategories} data={blogs} />
+            {/* Temporary hide blog category tab */}
+            {/* <NewsContent categories={blogCategories} data={blogs} /> */}
+            <NewsContent categories={[]} data={blogs} />
           </TabsContent>
         </Tabs>
       </div>
