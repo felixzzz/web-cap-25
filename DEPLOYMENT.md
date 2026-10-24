@@ -69,7 +69,7 @@ The project was originally configured for **GitLab CI**. If you are migrating to
 The project includes a `Dockerfile` and `docker-compose.yml`.
 
 **Dockerfile Overview:**
-- Base Image: `node:20-alpine`
+- Base Image: `node:22.23.4-alpine`
 - Exposes Port: `3045`
 - Command: `npm start`
 

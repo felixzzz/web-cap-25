@@ -1,5 +1,5 @@
 # Stage 1: Install dependencies
-FROM node:20-alpine AS deps
+FROM node:22.23.4-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -7,7 +7,7 @@ COPY package.json package-lock.json* ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 
 # Stage 2: Build the application
-FROM node:20-alpine AS builder
+FROM node:22.23.4-alpine AS builder
 WORKDIR /app
 
 # Cap V8 heap to 1.5GB to prevent OOM on low-RAM servers (4GB)
@@ -24,7 +24,7 @@ COPY . .
 RUN --mount=type=cache,target=/app/.next/cache npm run build
 
 # Stage 3: Production runner (minimal image)
-FROM node:20-alpine AS runner
+FROM node:22.23.4-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
