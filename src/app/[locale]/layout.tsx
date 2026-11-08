@@ -88,6 +88,13 @@ export default async function LocaleLayout({
       style={{ "--sticky-banner-height": "0px" } as React.CSSProperties}
     >
       <GoogleTagManager gtmId={process.env.GTM_ID || ""} />
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var _n=window.next;if(_n&&typeof _n==='object'){try{delete _n.version}catch(e){}}Object.defineProperty(window,'next',{configurable:true,enumerable:true,get:function(){return _n},set:function(v){if(v&&typeof v==='object'){try{delete v.version;Object.defineProperty(v,'version',{get:function(){return undefined},set:function(){},configurable:true})}catch(e){}}_n=v}})}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body
         className={`${plusJakartaSans.variable} min-h-screen bg-background font-sans antialiased`}
       >
