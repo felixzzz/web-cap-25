@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import Navbar from "@/components/global/Navbar"
 import { ProductFlow2Container } from "./_components/ProductFlow2Container"
-import { PRODUCT_FLOW_DATA } from "../product-flow/_data/productFlowData"
+import { PRODUCT_FLOW_2_DATA } from "./_data/productFlow2Data"
 
 export async function generateMetadata({
   params: { locale },
@@ -10,17 +10,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const isId = locale === "id"
   const title = isId
-    ? `${PRODUCT_FLOW_DATA.meta.title.id} (XYFlow Engine)`
-    : `${PRODUCT_FLOW_DATA.meta.title.en} (XYFlow Engine)`
+    ? `${PRODUCT_FLOW_2_DATA.meta.title.id} | Chandra Asri Group`
+    : `${PRODUCT_FLOW_2_DATA.meta.title.en} | Chandra Asri Group`
   const description = isId
-    ? PRODUCT_FLOW_DATA.meta.description.id
-    : PRODUCT_FLOW_DATA.meta.description.en
+    ? PRODUCT_FLOW_2_DATA.meta.description.id
+    : PRODUCT_FLOW_2_DATA.meta.description.en
 
   return {
-    title: `${title} | Chandra Asri Group`,
+    title,
     description,
     openGraph: {
-      title: `${title} | Chandra Asri Group`,
+      title,
       description,
     },
   }
