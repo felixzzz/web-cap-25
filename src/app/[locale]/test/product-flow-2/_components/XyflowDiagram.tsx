@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo, useCallback, useState, useEffect } from "react"
+import React, { useMemo, useState, useEffect } from "react"
 import {
   ReactFlow,
   Background,
@@ -14,17 +14,17 @@ import {
   BackgroundVariant,
   useReactFlow,
   ReactFlowProvider,
+  MarkerType,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 
-import { PRODUCT_FLOW_DATA, NodeCategory } from "../../product-flow/_data/productFlowData"
-import { SquareNode, ProductNode, PillNode, ZoneBarNode, FlowNodeData } from "./CustomNodes"
-import { FlowStepEdge } from "./CustomEdge"
-import { Compass, Lock, Unlock, Move, RotateCcw, Hand } from "lucide-react"
+import { PRODUCT_FLOW_2_DATA, Flow2Zone } from "../_data/productFlow2Data"
+import { FlowProductNode, FlowPlantNode, FlowZoneBarNode, Flow2NodeData } from "./CustomNodes2"
+import { Compass, RotateCcw } from "lucide-react"
 
 interface XyflowDiagramProps {
   locale: "id" | "en"
-  activeCategory: NodeCategory | "all"
+  activeZone: Flow2Zone | "all"
   selectedNodeId: string | null
   hoveredNodeId: string | null
   onHoverNode: (id: string | null) => void
@@ -32,32 +32,26 @@ interface XyflowDiagramProps {
 }
 
 const nodeTypes = {
-  squareNode: SquareNode,
-  productNode: ProductNode,
-  pillNode: PillNode,
-  zoneBar: ZoneBarNode,
-}
-
-const edgeTypes = {
-  flowStep: FlowStepEdge,
+  productNode: FlowProductNode,
+  plantNode: FlowPlantNode,
+  zoneBar: FlowZoneBarNode,
 }
 
 const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   locale,
-  activeCategory,
+  activeZone,
   selectedNodeId,
   hoveredNodeId,
   onHoverNode,
   onSelectNode,
 }) => {
-  const { fitView, zoomIn, zoomOut } = useReactFlow()
+  const { fitView } = useReactFlow()
   const [showMiniMap, setShowMiniMap] = useState<boolean>(true)
-  const [isLocked, setIsLocked] = useState<boolean>(false)
 
   const activeFocusId = hoveredNodeId || selectedNodeId
-  const activeFocusNode = activeFocusId ? PRODUCT_FLOW_DATA.nodes[activeFocusId] : null
+  const activeFocusNode = activeFocusId ? PRODUCT_FLOW_2_DATA.nodes[activeFocusId] : null
 
-  // Set of connected nodes for highlighting
+  // Set of connected node IDs for interactive highlighting
   const connectedNodeIds = useMemo(() => {
     if (!activeFocusNode) return new Set<string>()
     const set = new Set<string>([activeFocusNode.id])
@@ -66,51 +60,62 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
     return set
   }, [activeFocusNode])
 
-  // Build React Flow Nodes
+  // Initial nodes layout matching the user's slide
   const initialNodes: Node[] = useMemo(() => {
-    const rawNodes = PRODUCT_FLOW_DATA.nodes
+    const rawNodes = PRODUCT_FLOW_2_DATA.nodes
 
     const nList: Node[] = [
-      // ---------------- COLUMN 1: FEEDSTOCKS & REFINERY ----------------
+      // ---------------- COL 1: FEEDSTOCKS ----------------
       {
         id: "crude-oil",
-        type: "squareNode",
-        position: { x: 40, y: 390 },
+        type: "productNode",
+        position: { x: 40, y: 350 },
         data: {
-          id: "crude-oil",
-          name: rawNodes["crude-oil"].name,
-          fullName: rawNodes["crude-oil"].fullName,
-          icon: rawNodes["crude-oil"].icon,
-          category: rawNodes["crude-oil"].category,
+          ...rawNodes["crude-oil"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
       {
-        id: "refinery-complex",
-        type: "squareNode",
-        position: { x: 210, y: 385 },
+        id: "natural-gas",
+        type: "productNode",
+        position: { x: 40, y: 610 },
         data: {
-          id: "refinery-complex",
-          name: rawNodes["refinery-complex"].name,
-          fullName: rawNodes["refinery-complex"].fullName,
-          icon: rawNodes["refinery-complex"].icon,
-          category: rawNodes["refinery-complex"].category,
+          ...rawNodes["natural-gas"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
 
-      // ---------------- COLUMN 2: 8 FUEL & OIL PRODUCTS ----------------
+      // ---------------- COL 2: PRE-TREATMENT PLANTS ----------------
+      {
+        id: "refinery-plant",
+        type: "plantNode",
+        position: { x: 230, y: 348 },
+        data: {
+          ...rawNodes["refinery-plant"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "gas-separation-unit",
+        type: "plantNode",
+        position: { x: 230, y: 608 },
+        data: {
+          ...rawNodes["gas-separation-unit"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+
+      // ---------------- COL 3: REFINERY & GSU OUTPUTS ----------------
       {
         id: "lpg",
         type: "productNode",
-        position: { x: 430, y: 25 },
+        position: { x: 440, y: 280 },
         data: {
-          id: "lpg",
-          name: rawNodes["lpg"].name,
-          icon: rawNodes["lpg"].icon,
-          category: rawNodes["lpg"].category,
+          ...rawNodes["lpg"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
@@ -118,327 +123,217 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "naphtha",
         type: "productNode",
-        position: { x: 430, y: 120 },
+        position: { x: 440, y: 400 },
         data: {
-          id: "naphtha",
-          name: rawNodes["naphtha"].name,
-          icon: rawNodes["naphtha"].icon,
-          category: rawNodes["naphtha"].category,
+          ...rawNodes["naphtha"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
       {
-        id: "hydrowax",
+        id: "condensate",
         type: "productNode",
-        position: { x: 430, y: 215 },
+        position: { x: 440, y: 610 },
         data: {
-          id: "hydrowax",
-          name: rawNodes["hydrowax"].name,
-          icon: rawNodes["hydrowax"].icon,
-          category: rawNodes["hydrowax"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "gas-oil",
-        type: "productNode",
-        position: { x: 430, y: 310 },
-        data: {
-          id: "gas-oil",
-          name: rawNodes["gas-oil"].name,
-          icon: rawNodes["gas-oil"].icon,
-          category: rawNodes["gas-oil"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "mogas",
-        type: "productNode",
-        position: { x: 430, y: 405 },
-        data: {
-          id: "mogas",
-          name: rawNodes["mogas"].name,
-          icon: rawNodes["mogas"].icon,
-          category: rawNodes["mogas"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "jet-fuel",
-        type: "productNode",
-        position: { x: 430, y: 500 },
-        data: {
-          id: "jet-fuel",
-          name: rawNodes["jet-fuel"].name,
-          icon: rawNodes["jet-fuel"].icon,
-          category: rawNodes["jet-fuel"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "base-oil",
-        type: "productNode",
-        position: { x: 430, y: 595 },
-        data: {
-          id: "base-oil",
-          name: rawNodes["base-oil"].name,
-          icon: rawNodes["base-oil"].icon,
-          category: rawNodes["base-oil"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "bitumen-fuel-oil",
-        type: "productNode",
-        position: { x: 430, y: 690 },
-        data: {
-          id: "bitumen-fuel-oil",
-          name: rawNodes["bitumen-fuel-oil"].name,
-          icon: rawNodes["bitumen-fuel-oil"].icon,
-          category: rawNodes["bitumen-fuel-oil"].category,
+          ...rawNodes["condensate"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
 
-      // ---------------- COLUMN 3: ETHYLENE CRACKER & BUKOM CUSTOMERS ----------------
+      // ---------------- COL 4: ETHYLENE CRACKER PLANT ----------------
       {
-        id: "ethylene-cracker",
-        type: "squareNode",
-        position: { x: 640, y: 160 },
+        id: "ethylene-cracker-plant",
+        type: "plantNode",
+        position: { x: 650, y: 440 },
         data: {
-          id: "ethylene-cracker",
-          name: rawNodes["ethylene-cracker"].name,
-          fullName: rawNodes["ethylene-cracker"].fullName,
-          icon: rawNodes["ethylene-cracker"].icon,
-          category: rawNodes["ethylene-cracker"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "customers-bukom",
-        type: "squareNode",
-        position: { x: 640, y: 540 },
-        data: {
-          id: "customers-bukom",
-          name: rawNodes["customers-bukom"].name,
-          fullName: rawNodes["customers-bukom"].fullName,
-          icon: rawNodes["customers-bukom"].icon,
-          category: rawNodes["customers-bukom"].category,
+          ...rawNodes["ethylene-cracker-plant"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
 
-      // ---------------- COLUMN 4: 4 BASE CHEMICALS (JURONG) ----------------
+      // ---------------- COL 5: CRACKER OUTPUTS ----------------
       {
         id: "ethylene",
-        type: "pillNode",
-        position: { x: 860, y: 35 },
+        type: "productNode",
+        position: { x: 860, y: 120 },
         data: {
-          id: "ethylene",
-          name: rawNodes["ethylene"].name,
-          icon: rawNodes["ethylene"].icon,
-          category: rawNodes["ethylene"].category,
+          ...rawNodes["ethylene"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
       {
         id: "propylene",
-        type: "pillNode",
-        position: { x: 860, y: 95 },
+        type: "productNode",
+        position: { x: 860, y: 330 },
         data: {
-          id: "propylene",
-          name: rawNodes["propylene"].name,
-          icon: rawNodes["propylene"].icon,
-          category: rawNodes["propylene"].category,
+          ...rawNodes["propylene"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
       {
-        id: "benzene",
-        type: "pillNode",
-        position: { x: 860, y: 155 },
+        id: "raw-c4",
+        type: "productNode",
+        position: { x: 860, y: 450 },
         data: {
-          id: "benzene",
-          name: rawNodes["benzene"].name,
-          icon: rawNodes["benzene"].icon,
-          category: rawNodes["benzene"].category,
+          ...rawNodes["raw-c4"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "pygas",
+        type: "productNode",
+        position: { x: 860, y: 565 },
+        data: {
+          ...rawNodes["pygas"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "pfo",
+        type: "productNode",
+        position: { x: 860, y: 675 },
+        data: {
+          ...rawNodes["pfo"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+
+      // ---------------- COL 6: INTERMEDIATE PLANTS ----------------
+      {
+        id: "polyethylene-plant",
+        type: "plantNode",
+        position: { x: 1140, y: 45 },
+        data: {
+          ...rawNodes["polyethylene-plant"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "styrene-monomer-plant",
+        type: "plantNode",
+        position: { x: 1140, y: 235 },
+        data: {
+          ...rawNodes["styrene-monomer-plant"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "polypropylene-plant",
+        type: "plantNode",
+        position: { x: 1140, y: 495 },
+        data: {
+          ...rawNodes["polypropylene-plant"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "butadiene-plant",
+        type: "plantNode",
+        position: { x: 1140, y: 775 },
+        data: {
+          ...rawNodes["butadiene-plant"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+
+      // ---------------- COL 7: DOWNSTREAM PRODUCTS ----------------
+      {
+        id: "hdpe",
+        type: "productNode",
+        position: { x: 1360, y: 15 },
+        data: {
+          ...rawNodes["hdpe"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "lldpe",
+        type: "productNode",
+        position: { x: 1360, y: 95 },
+        data: {
+          ...rawNodes["lldpe"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "styrene-monomer",
+        type: "productNode",
+        position: { x: 1360, y: 205 },
+        data: {
+          ...rawNodes["styrene-monomer"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "toluene",
+        type: "productNode",
+        position: { x: 1360, y: 280 },
+        data: {
+          ...rawNodes["toluene"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "homo-pp",
+        type: "productNode",
+        position: { x: 1360, y: 435 },
+        data: {
+          ...rawNodes["homo-pp"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "random-pp",
+        type: "productNode",
+        position: { x: 1360, y: 515 },
+        data: {
+          ...rawNodes["random-pp"],
+          onSelect: onSelectNode,
+          onHover: onHoverNode,
+        },
+      },
+      {
+        id: "impact-pp",
+        type: "productNode",
+        position: { x: 1360, y: 595 },
+        data: {
+          ...rawNodes["impact-pp"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
       {
         id: "butadiene",
-        type: "pillNode",
-        position: { x: 860, y: 215 },
+        type: "productNode",
+        position: { x: 1360, y: 740 },
         data: {
-          id: "butadiene",
-          name: rawNodes["butadiene"].name,
-          icon: rawNodes["butadiene"].icon,
-          category: rawNodes["butadiene"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-
-      // ---------------- COLUMN 5: INTERMEDIATE FACILITIES (JURONG) ----------------
-      {
-        id: "meg-facility",
-        type: "squareNode",
-        position: { x: 1040, y: 65 },
-        data: {
-          id: "meg-facility",
-          name: rawNodes["meg-facility"].name,
-          fullName: rawNodes["meg-facility"].fullName,
-          icon: rawNodes["meg-facility"].icon,
-          category: rawNodes["meg-facility"].category,
+          ...rawNodes["butadiene"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
       },
       {
-        id: "smpo-facility",
-        type: "squareNode",
-        position: { x: 1040, y: 535 },
+        id: "raff-1",
+        type: "productNode",
+        position: { x: 1360, y: 815 },
         data: {
-          id: "smpo-facility",
-          name: rawNodes["smpo-facility"].name,
-          fullName: rawNodes["smpo-facility"].fullName,
-          icon: rawNodes["smpo-facility"].icon,
-          category: rawNodes["smpo-facility"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-
-      // ---------------- COLUMN 6: DERIVATIVES & HDPE (JURONG) ----------------
-      {
-        id: "ethoxylates",
-        type: "pillNode",
-        position: { x: 1230, y: 30 },
-        data: {
-          id: "ethoxylates",
-          name: rawNodes["ethoxylates"].name,
-          icon: rawNodes["ethoxylates"].icon,
-          category: rawNodes["ethoxylates"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "hpeo",
-        type: "pillNode",
-        position: { x: 1230, y: 115 },
-        data: {
-          id: "hpeo",
-          name: rawNodes["hpeo"].name,
-          icon: rawNodes["hpeo"].icon,
-          category: rawNodes["hpeo"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "meg-product",
-        type: "pillNode",
-        position: { x: 1230, y: 200 },
-        data: {
-          id: "meg-product",
-          name: rawNodes["meg-product"].name,
-          icon: rawNodes["meg-product"].icon,
-          category: rawNodes["meg-product"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "po",
-        type: "pillNode",
-        position: { x: 1230, y: 440 },
-        data: {
-          id: "po",
-          name: rawNodes["po"].name,
-          icon: rawNodes["po"].icon,
-          category: rawNodes["po"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "sm",
-        type: "pillNode",
-        position: { x: 1230, y: 505 },
-        data: {
-          id: "sm",
-          name: rawNodes["sm"].name,
-          icon: rawNodes["sm"].icon,
-          category: rawNodes["sm"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "mpg",
-        type: "pillNode",
-        position: { x: 1230, y: 570 },
-        data: {
-          id: "mpg",
-          name: rawNodes["mpg"].name,
-          icon: rawNodes["mpg"].icon,
-          category: rawNodes["mpg"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "polyols",
-        type: "pillNode",
-        position: { x: 1230, y: 635 },
-        data: {
-          id: "polyols",
-          name: rawNodes["polyols"].name,
-          icon: rawNodes["polyols"].icon,
-          category: rawNodes["polyols"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-      {
-        id: "hdpe",
-        type: "pillNode",
-        position: { x: 1230, y: 730 },
-        data: {
-          id: "hdpe",
-          name: rawNodes["hdpe"].name,
-          footnote: PRODUCT_FLOW_DATA.meta.footnotes[0][locale],
-          icon: rawNodes["hdpe"].icon,
-          category: rawNodes["hdpe"].category,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      },
-
-      // ---------------- COLUMN 7: JURONG CUSTOMERS ----------------
-      {
-        id: "customers-jurong",
-        type: "squareNode",
-        position: { x: 1420, y: 310 },
-        data: {
-          id: "customers-jurong",
-          name: rawNodes["customers-jurong"].name,
-          fullName: rawNodes["customers-jurong"].fullName,
-          icon: rawNodes["customers-jurong"].icon,
-          category: rawNodes["customers-jurong"].category,
+          ...rawNodes["raff-1"],
           onSelect: onSelectNode,
           onHover: onHoverNode,
         },
@@ -446,637 +341,242 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
 
       // ---------------- BOTTOM ZONE BARS ----------------
       {
-        id: "zone-bukom",
+        id: "zone-bar-upstream",
         type: "zoneBar",
-        position: { x: 40, y: 810 },
-        selectable: false,
+        position: { x: 30, y: 940 },
         draggable: false,
+        selectable: false,
         data: {
-          title: PRODUCT_FLOW_DATA.zones[0].name[locale],
-          width: 600,
+          title: "UPSTREAM INDUSTRY",
+          width: 950,
         },
       },
       {
-        id: "zone-subsea",
+        id: "zone-bar-intermediate",
         type: "zoneBar",
-        position: { x: 670, y: 810 },
-        selectable: false,
+        position: { x: 1040, y: 940 },
         draggable: false,
-        data: {
-          title: PRODUCT_FLOW_DATA.zones[1].name[locale],
-          width: 160,
-        },
-      },
-      {
-        id: "zone-jurong",
-        type: "zoneBar",
-        position: { x: 860, y: 810 },
         selectable: false,
-        draggable: false,
         data: {
-          title: PRODUCT_FLOW_DATA.zones[2].name[locale],
-          width: 670,
+          title: "INTERMEDIATE INDUSTRY",
+          width: 440,
         },
       },
     ]
 
     return nList
-  }, [locale, onSelectNode, onHoverNode])
+  }, [onSelectNode, onHoverNode])
 
-  // Build React Flow Edges
+  // Initial Edges matching the slide diagram
   const initialEdges: Edge[] = useMemo(() => {
-    return [
-      // Crude Oil -> Refinery
-      {
-        id: "e-crude-refinery",
-        source: "crude-oil",
-        sourceHandle: "source-right",
-        target: "refinery-complex",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
+    const rawEdges: Array<{
+      id: string
+      source: string
+      target: string
+    }> = [
+      // Crude Oil & Natural Gas feeds
+      { id: "e-crude-refinery", source: "crude-oil", target: "refinery-plant" },
+      { id: "e-gas-gsu", source: "natural-gas", target: "gas-separation-unit" },
 
-      // Refinery -> 8 Fuel & Oil Products
-      {
-        id: "e-ref-lpg",
-        source: "refinery-complex",
-        sourceHandle: "source-right",
-        target: "lpg",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-ref-naphtha",
-        source: "refinery-complex",
-        sourceHandle: "source-right",
-        target: "naphtha",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-ref-hydrowax",
-        source: "refinery-complex",
-        sourceHandle: "source-right",
-        target: "hydrowax",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-ref-gasoil",
-        source: "refinery-complex",
-        sourceHandle: "source-right",
-        target: "gas-oil",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-ref-mogas",
-        source: "refinery-complex",
-        sourceHandle: "source-right",
-        target: "mogas",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-ref-jetfuel",
-        source: "refinery-complex",
-        sourceHandle: "source-right",
-        target: "jet-fuel",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-ref-baseoil",
-        source: "refinery-complex",
-        sourceHandle: "source-right",
-        target: "base-oil",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-ref-bitumen",
-        source: "refinery-complex",
-        sourceHandle: "source-right",
-        target: "bitumen-fuel-oil",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
+      // Refinery outputs
+      { id: "e-refinery-lpg", source: "refinery-plant", target: "lpg" },
+      { id: "e-refinery-naphtha", source: "refinery-plant", target: "naphtha" },
 
-      // Top 4 Fuel Products -> Ethylene Cracker Complex
-      {
-        id: "e-lpg-cracker",
-        source: "lpg",
-        sourceHandle: "source-right",
-        target: "ethylene-cracker",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-naphtha-cracker",
-        source: "naphtha",
-        sourceHandle: "source-right",
-        target: "ethylene-cracker",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-hydrowax-cracker",
-        source: "hydrowax",
-        sourceHandle: "source-right",
-        target: "ethylene-cracker",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-gasoil-cracker",
-        source: "gas-oil",
-        sourceHandle: "source-right",
-        target: "ethylene-cracker",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
+      // GSU outputs
+      { id: "e-gsu-condensate", source: "gas-separation-unit", target: "condensate" },
 
-      // Bottom 4 Fuel Products -> Bukom Customers
-      {
-        id: "e-mogas-cust",
-        source: "mogas",
-        sourceHandle: "source-right",
-        target: "customers-bukom",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-      {
-        id: "e-jetfuel-cust",
-        source: "jet-fuel",
-        sourceHandle: "source-right",
-        target: "customers-bukom",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-      {
-        id: "e-baseoil-cust",
-        source: "base-oil",
-        sourceHandle: "source-right",
-        target: "customers-bukom",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-      {
-        id: "e-bitumen-cust",
-        source: "bitumen-fuel-oil",
-        sourceHandle: "source-right",
-        target: "customers-bukom",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
+      // Feeds into Ethylene Cracker
+      { id: "e-lpg-cracker", source: "lpg", target: "ethylene-cracker-plant" },
+      { id: "e-naphtha-cracker", source: "naphtha", target: "ethylene-cracker-plant" },
+      { id: "e-condensate-cracker", source: "condensate", target: "ethylene-cracker-plant" },
 
-      // Ethylene Cracker -> Bukom Customers
-      {
-        id: "e-cracker-cust",
-        source: "ethylene-cracker",
-        sourceHandle: "source-bottom",
-        target: "customers-bukom",
-        targetHandle: "target-top",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
+      // Ethylene Cracker outputs (fanning out)
+      { id: "e-cracker-ethylene", source: "ethylene-cracker-plant", target: "ethylene" },
+      { id: "e-cracker-propylene", source: "ethylene-cracker-plant", target: "propylene" },
+      { id: "e-cracker-rawc4", source: "ethylene-cracker-plant", target: "raw-c4" },
+      { id: "e-cracker-pygas", source: "ethylene-cracker-plant", target: "pygas" },
+      { id: "e-cracker-pfo", source: "ethylene-cracker-plant", target: "pfo" },
 
-      // Ethylene Cracker -> 4 Base Chemicals (via Subsea Pipeline)
-      {
-        id: "e-cracker-ethylene",
-        source: "ethylene-cracker",
-        sourceHandle: "source-right",
-        target: "ethylene",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "subsea", showArrowBadge: true },
-      },
-      {
-        id: "e-cracker-propylene",
-        source: "ethylene-cracker",
-        sourceHandle: "source-right",
-        target: "propylene",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "subsea", showArrowBadge: true },
-      },
-      {
-        id: "e-cracker-benzene",
-        source: "ethylene-cracker",
-        sourceHandle: "source-right",
-        target: "benzene",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "subsea", showArrowBadge: true },
-      },
-      {
-        id: "e-cracker-butadiene",
-        source: "ethylene-cracker",
-        sourceHandle: "source-right",
-        target: "butadiene",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "subsea", showArrowBadge: true },
-      },
+      // Chemical outputs to Intermediate Plants
+      { id: "e-ethylene-pe", source: "ethylene", target: "polyethylene-plant" },
+      { id: "e-ethylene-sm", source: "ethylene", target: "styrene-monomer-plant" },
+      { id: "e-propylene-pp", source: "propylene", target: "polypropylene-plant" },
+      { id: "e-rawc4-bd", source: "raw-c4", target: "butadiene-plant" },
 
-      // 4 Base Chemicals -> MEG Facility (Dark Navy Trunk Line)
-      {
-        id: "e-ethylene-meg",
-        source: "ethylene",
-        sourceHandle: "source-right",
-        target: "meg-facility",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "navy", showArrowBadge: true },
-      },
-      {
-        id: "e-propylene-meg",
-        source: "propylene",
-        sourceHandle: "source-right",
-        target: "meg-facility",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "navy", showArrowBadge: true },
-      },
-      {
-        id: "e-benzene-meg",
-        source: "benzene",
-        sourceHandle: "source-right",
-        target: "meg-facility",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "navy", showArrowBadge: true },
-      },
-      {
-        id: "e-butadiene-meg",
-        source: "butadiene",
-        sourceHandle: "source-right",
-        target: "meg-facility",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "navy", showArrowBadge: true },
-      },
+      // PE Plant outputs
+      { id: "e-pe-hdpe", source: "polyethylene-plant", target: "hdpe" },
+      { id: "e-pe-lldpe", source: "polyethylene-plant", target: "lldpe" },
 
-      // 4 Base Chemicals -> SMPO & PO Derivatives Complex (Dark Navy Trunk Line)
-      {
-        id: "e-ethylene-smpo",
-        source: "ethylene",
-        sourceHandle: "source-right",
-        target: "smpo-facility",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "navy", showArrowBadge: true },
-      },
-      {
-        id: "e-propylene-smpo",
-        source: "propylene",
-        sourceHandle: "source-right",
-        target: "smpo-facility",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "navy", showArrowBadge: true },
-      },
-      {
-        id: "e-benzene-smpo",
-        source: "benzene",
-        sourceHandle: "source-right",
-        target: "smpo-facility",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "navy", showArrowBadge: true },
-      },
-      {
-        id: "e-butadiene-smpo",
-        source: "butadiene",
-        sourceHandle: "source-right",
-        target: "smpo-facility",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "navy", showArrowBadge: true },
-      },
+      // SM Plant outputs
+      { id: "e-sm-styrene", source: "styrene-monomer-plant", target: "styrene-monomer" },
+      { id: "e-sm-toluene", source: "styrene-monomer-plant", target: "toluene" },
 
-      // MEG Facility -> Ethoxylates, HPEO, MEG (Product)
-      {
-        id: "e-meg-ethoxylates",
-        source: "meg-facility",
-        sourceHandle: "source-right",
-        target: "ethoxylates",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-meg-hpeo",
-        source: "meg-facility",
-        sourceHandle: "source-right",
-        target: "hpeo",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-meg-megprod",
-        source: "meg-facility",
-        sourceHandle: "source-right",
-        target: "meg-product",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
+      // PP Plant outputs
+      { id: "e-pp-homo", source: "polypropylene-plant", target: "homo-pp" },
+      { id: "e-pp-random", source: "polypropylene-plant", target: "random-pp" },
+      { id: "e-pp-impact", source: "polypropylene-plant", target: "impact-pp" },
 
-      // SMPO Facility -> PO, SM, MPG, Polyols
-      {
-        id: "e-smpo-po",
-        source: "smpo-facility",
-        sourceHandle: "source-right",
-        target: "po",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-smpo-sm",
-        source: "smpo-facility",
-        sourceHandle: "source-right",
-        target: "sm",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-smpo-mpg",
-        source: "smpo-facility",
-        sourceHandle: "source-right",
-        target: "mpg",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-      {
-        id: "e-smpo-polyols",
-        source: "smpo-facility",
-        sourceHandle: "source-right",
-        target: "polyols",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "blue", showArrowBadge: true },
-      },
-
-      // MEG Derivatives -> Jurong Customers
-      {
-        id: "e-ethoxylates-cust",
-        source: "ethoxylates",
-        sourceHandle: "source-right",
-        target: "customers-jurong",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-      {
-        id: "e-hpeo-cust",
-        source: "hpeo",
-        sourceHandle: "source-right",
-        target: "customers-jurong",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-      {
-        id: "e-megprod-cust",
-        source: "meg-product",
-        sourceHandle: "source-right",
-        target: "customers-jurong",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-
-      // SMPO Derivatives -> Jurong Customers
-      {
-        id: "e-po-cust",
-        source: "po",
-        sourceHandle: "source-right",
-        target: "customers-jurong",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-      {
-        id: "e-sm-cust",
-        source: "sm",
-        sourceHandle: "source-right",
-        target: "customers-jurong",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-      {
-        id: "e-mpg-cust",
-        source: "mpg",
-        sourceHandle: "source-right",
-        target: "customers-jurong",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-      {
-        id: "e-polyols-cust",
-        source: "polyols",
-        sourceHandle: "source-right",
-        target: "customers-jurong",
-        targetHandle: "target-left",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
-
-      // HDPE¹ -> Jurong Customers (Bottom Entrance)
-      {
-        id: "e-hdpe-cust",
-        source: "hdpe",
-        sourceHandle: "source-right",
-        target: "customers-jurong",
-        targetHandle: "target-bottom",
-        type: "flowStep",
-        data: { variant: "cyan", showArrowBadge: true },
-      },
+      // Butadiene Plant outputs
+      { id: "e-bd-butadiene", source: "butadiene-plant", target: "butadiene" },
+      { id: "e-bd-raff1", source: "butadiene-plant", target: "raff-1" },
     ]
+
+    return rawEdges.map((e) => ({
+      id: e.id,
+      source: e.source,
+      target: e.target,
+      sourceHandle: "source-right",
+      targetHandle: "target-left",
+      type: "straight",
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: "#0082C8",
+        width: 14,
+        height: 14,
+      },
+      style: {
+        stroke: "#0082C8",
+        strokeWidth: 2,
+      },
+    }))
   }, [])
 
-  // In-memory node & edge state for interactive dragging (not saved permanently)
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
-  // Sync with initial layout on locale change or reset
+  // Update nodes with highlight / focus / dimming states
   useEffect(() => {
-    setNodes((currentNodes) =>
-      initialNodes.map((initNode) => {
-        const existing = currentNodes.find((n) => n.id === initNode.id)
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.type === "zoneBar") return node
+
+        const nodeData = node.data as unknown as Flow2NodeData
+        const isFocused = node.id === activeFocusId
+        const isHighlighted = activeFocusId ? connectedNodeIds.has(node.id) : false
+
+        // Zone filtering
+        const matchesZone =
+          activeZone === "all" ||
+          (nodeData.zone && nodeData.zone === activeZone)
+
+        const isDimmed = !matchesZone || (Boolean(activeFocusId) && !isHighlighted)
+
         return {
-          ...initNode,
-          position: existing ? existing.position : initNode.position,
+          ...node,
+          data: {
+            ...nodeData,
+            isFocused,
+            isHighlighted,
+            isDimmed,
+            onSelect: onSelectNode,
+            onHover: onHoverNode,
+          },
         }
       })
     )
-    setEdges(initialEdges)
-  }, [initialNodes, initialEdges, setNodes, setEdges])
+  }, [activeFocusId, connectedNodeIds, activeZone, onSelectNode, onHoverNode, setNodes])
 
-  // Reset layout callback
-  const handleResetLayout = useCallback(() => {
-    setNodes(initialNodes)
-    setEdges(initialEdges)
-    fitView({ duration: 400 })
-  }, [initialNodes, initialEdges, setNodes, setEdges, fitView])
+  // Update edge styling on hover / selection
+  useEffect(() => {
+    setEdges((eds) =>
+      eds.map((edge) => {
+        const isConnected =
+          activeFocusId &&
+          (edge.source === activeFocusId || edge.target === activeFocusId)
 
-  // Dynamic nodes with active states (dimmed, highlighted, focused)
-  const dynamicNodes = useMemo(() => {
-    return nodes.map((node) => {
-      if (node.type === "zoneBar") return node
+        const isDimmed = Boolean(activeFocusId) && !isConnected
 
-      const nodeData = node.data as unknown as FlowNodeData
-      const isCategoryFiltered = activeCategory !== "all" && (nodeData.category as string) !== activeCategory
-      const isFocused = activeFocusId === node.id
-      const isConnected = activeFocusId ? connectedNodeIds.has(node.id) : true
-
-      const isDimmed = isCategoryFiltered || (activeFocusId !== null && !isConnected)
-      const isHighlighted = isFocused || (activeFocusId !== null && isConnected)
-
-      return {
-        ...node,
-        data: {
-          ...nodeData,
-          isDimmed,
-          isHighlighted,
-          isFocused,
-          onSelect: onSelectNode,
-          onHover: onHoverNode,
-        },
-      }
-    })
-  }, [nodes, activeCategory, activeFocusId, connectedNodeIds, onSelectNode, onHoverNode])
-
-  // Dynamic edges with active states
-  const dynamicEdges = useMemo(() => {
-    return edges.map((edge) => {
-      const isSourceConnected = activeFocusId ? connectedNodeIds.has(edge.source) : false
-      const isTargetConnected = activeFocusId ? connectedNodeIds.has(edge.target) : false
-      const isHighlighted = activeFocusId !== null && isSourceConnected && isTargetConnected
-      const isDimmed = activeFocusId !== null && !isHighlighted
-
-      return {
-        ...edge,
-        data: {
-          ...(edge.data || {}),
-          isHighlighted,
-          isDimmed,
-        },
-      }
-    })
-  }, [edges, activeFocusId, connectedNodeIds])
+        return {
+          ...edge,
+          style: {
+            stroke: isConnected ? "#0284c7" : "#0082C8",
+            strokeWidth: isConnected ? 3.5 : 2,
+            opacity: isDimmed ? 0.2 : 1,
+            transition: "all 0.25s ease",
+          },
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: isConnected ? "#0284c7" : "#0082C8",
+            width: isConnected ? 16 : 14,
+            height: isConnected ? 16 : 14,
+          },
+        }
+      })
+    )
+  }, [activeFocusId, setEdges])
 
   return (
-    <div className="w-full h-[760px] md:h-[840px] rounded-3xl overflow-hidden border border-sky-100 shadow-inner bg-gradient-to-b from-sky-50/40 via-white to-sky-50/30 relative">
+    <div className="relative w-full h-[720px] sm:h-[800px] md:h-[860px] rounded-2xl overflow-hidden bg-white border border-slate-200/90 shadow-inner">
       <ReactFlow
-        nodes={dynamicNodes}
-        edges={dynamicEdges}
+        nodes={nodes}
+        edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
         fitView
-        fitViewOptions={{ padding: 0.15 }}
-        minZoom={0.3}
-        maxZoom={2}
-        nodesDraggable={!isLocked}
-        nodesConnectable={false}
-        elementsSelectable={true}
-        panOnDrag={!isLocked}
-        zoomOnScroll={!isLocked}
-        zoomOnPinch={true}
-        className="touch-none"
+        fitViewOptions={{ padding: 0.08, duration: 400 }}
+        minZoom={0.35}
+        maxZoom={1.8}
+        defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
+        attributionPosition="bottom-left"
+        proOptions={{ hideAttribution: true }}
       >
-        <Background color="rgba(0, 163, 224, 0.2)" gap={24} size={1} variant={BackgroundVariant.Dots} />
-
-        {/* Floating Top Control Panel */}
-        <Panel position="top-right" className="bg-white/95 backdrop-blur-md p-2 rounded-2xl border border-slate-200 shadow-md flex items-center gap-1">
-          <button
-            onClick={() => fitView({ duration: 400 })}
-            className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-            title={locale === "id" ? "Pusatkan Tampilan (Fit View)" : "Fit View"}
-          >
-            <Compass className="w-4 h-4 text-[#0082C8]" />
-          </button>
-          <button
-            onClick={handleResetLayout}
-            className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-            title={locale === "id" ? "Kembalikan Posisi Default (Reset Layout)" : "Reset Node Positions to Default"}
-          >
-            <RotateCcw className="w-4 h-4 text-emerald-600" />
-          </button>
-          <button
-            onClick={() => setIsLocked(!isLocked)}
-            className={`p-2 rounded-xl transition-colors ${
-              isLocked ? "bg-amber-100 text-amber-800" : "text-slate-600 hover:bg-slate-100"
-            }`}
-            title={isLocked ? "Unlock Canvas Pan & Zoom" : "Lock Canvas"}
-          >
-            {isLocked ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
-          </button>
-          <button
-            onClick={() => setShowMiniMap(!showMiniMap)}
-            className={`p-2 rounded-xl transition-colors ${
-              showMiniMap ? "bg-sky-100 text-[#0082C8]" : "text-slate-600 hover:bg-slate-100"
-            }`}
-            title={showMiniMap ? "Hide MiniMap" : "Show MiniMap"}
-          >
-            <Move className="w-4 h-4" />
-          </button>
-        </Panel>
-
-        {/* Floating Bottom Left Instructions */}
-        <Panel position="bottom-left" className="bg-white/90 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-slate-200 shadow-sm text-xs text-slate-600 hidden sm:flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>
-            {locale === "id"
-              ? "Simpul dapat digeser bebas untuk demonstrasi interaktif (perubahan posisi tidak disimpan permanen)"
-              : "All nodes can be freely dragged for interactive demo (positions are not saved permanently)"}
-          </span>
-        </Panel>
-
-        <Controls position="bottom-right" className="bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl overflow-hidden shadow-md" />
+        <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#E2E8F0" />
+        <Controls
+          showInteractive={false}
+          className="!bg-white !border !border-slate-200 !rounded-xl !shadow-md overflow-hidden"
+        />
 
         {showMiniMap && (
           <MiniMap
-            position="top-left"
-            className="!bg-white/90 !border !border-slate-200 !rounded-2xl !shadow-md !overflow-hidden hidden md:block"
             nodeColor={(node) => {
-              if (node.id.includes("customers")) return "#0F172A"
-              if (node.id.includes("cracker") || node.id.includes("refinery") || node.id.includes("facility"))
-                return "#0082C8"
-              if (node.type === "zoneBar") return "#E2E8F0"
-              return "#00A3E0"
+              if (node.type === "plantNode") return "#ffffff"
+              if (node.type === "zoneBar") return "#0082C8"
+              return "#0082C8"
             }}
-            maskColor="rgba(240, 249, 255, 0.6)"
+            nodeStrokeColor={() => "#0082C8"}
+            nodeStrokeWidth={2}
+            nodeBorderRadius={8}
+            maskColor="rgba(241, 245, 249, 0.75)"
+            className="!border !border-slate-200 !rounded-xl !shadow-sm overflow-hidden"
             zoomable
             pannable
           />
         )}
+
+        {/* Top-Right Helper Panel */}
+        <Panel position="top-right" className="flex items-center gap-2">
+          <button
+            onClick={() => fitView({ padding: 0.08, duration: 400 })}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/95 hover:bg-slate-50 text-xs font-semibold text-[#062C48] border border-slate-200 shadow-xs backdrop-blur-xs transition-colors"
+            title="Reset View"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-[#0082C8]" />
+            <span className="hidden sm:inline">{locale === "id" ? "Pusatkan" : "Center View"}</span>
+          </button>
+          <button
+            onClick={() => setShowMiniMap(!showMiniMap)}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/95 hover:bg-slate-50 text-xs font-semibold text-[#062C48] border border-slate-200 shadow-xs backdrop-blur-xs transition-colors"
+            title="Toggle MiniMap"
+          >
+            <Compass className="w-3.5 h-3.5 text-[#0082C8]" />
+            <span className="hidden sm:inline">Minimap</span>
+          </button>
+        </Panel>
+
+        {/* Bottom-Left Quick Legend */}
+        <Panel position="bottom-left" className="m-3">
+          <div className="p-2.5 rounded-xl bg-white/95 backdrop-blur-xs border border-slate-200 shadow-sm flex items-center gap-4 text-xs font-medium text-slate-600">
+            <div className="flex items-center gap-1.5">
+              <span className="w-3.5 h-3.5 rounded-md bg-[#0082C8] inline-block border border-[#0070ad]" />
+              <span>{locale === "id" ? "Bahan Baku / Produk" : "Product / Chemical"}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3.5 h-3.5 rounded-md bg-white border-2 border-[#0082C8] inline-block" />
+              <span>{locale === "id" ? "Fasilitas Pabrik" : "Plant / Facility"}</span>
+            </div>
+          </div>
+        </Panel>
       </ReactFlow>
     </div>
   )
