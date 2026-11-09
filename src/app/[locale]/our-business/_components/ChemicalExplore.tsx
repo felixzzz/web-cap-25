@@ -4,6 +4,7 @@ import { MetaProductionFlow } from "@/lib/fragment"
 import { assetUrl, getLocalizedContent, isContentActive } from "@/lib/utils"
 import { useLocale } from "next-intl"
 import Image from "next/image"
+import { ChemicalProductionFlowInteractive } from "./ChemicalProductionFlowInteractive"
 
 export function ChemicalExplore({
   big_image_en,
@@ -82,6 +83,9 @@ export function ChemicalExplore({
                   />
                 </div>
               )}
+
+              {/* Interactive Product Flow Diagram (Production Flow 2) */}
+              <ChemicalProductionFlowInteractive locale={locale as "id" | "en"} />
             </div>
           </Anim>
         </div>

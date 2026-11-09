@@ -29,6 +29,7 @@ interface XyflowDiagramProps {
   hoveredNodeId: string | null
   onHoverNode: (id: string | null) => void
   onSelectNode: (id: string) => void
+  isLocked?: boolean
 }
 
 const nodeTypes = {
@@ -44,9 +45,25 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   hoveredNodeId,
   onHoverNode,
   onSelectNode,
+  isLocked = true,
 }) => {
   const { fitView } = useReactFlow()
-  const [showMiniMap, setShowMiniMap] = useState<boolean>(true)
+  const [showMiniMap, setShowMiniMap] = useState<boolean>(!isLocked)
+
+  // Auto-fit on window resize and mount
+  useEffect(() => {
+    const handleResize = () => {
+      fitView({ padding: 0.05, duration: 250 })
+    }
+    window.addEventListener("resize", handleResize)
+    const timer = setTimeout(() => {
+      fitView({ padding: 0.05, duration: 300 })
+    }, 150)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      clearTimeout(timer)
+    }
+  }, [fitView])
 
   const activeFocusId = hoveredNodeId || selectedNodeId
   const activeFocusNode = activeFocusId ? PRODUCT_FLOW_2_DATA.nodes[activeFocusId] : null
@@ -514,18 +531,29 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         fitView
-        fitViewOptions={{ padding: 0.08, duration: 400 }}
-        minZoom={0.35}
-        maxZoom={1.8}
-        defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
+        fitViewOptions={{ padding: 0.05, duration: 400 }}
+        minZoom={0.3}
+        maxZoom={1.5}
+        nodesDraggable={!isLocked}
+        nodesConnectable={false}
+        elementsSelectable={true}
+        panOnDrag={!isLocked}
+        panOnScroll={false}
+        zoomOnScroll={false}
+        zoomOnPinch={false}
+        zoomOnDoubleClick={false}
+        preventScrolling={false}
         attributionPosition="bottom-left"
         proOptions={{ hideAttribution: true }}
       >
         <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#E2E8F0" />
-        <Controls
-          showInteractive={false}
-          className="!bg-white !border !border-slate-200 !rounded-xl !shadow-md overflow-hidden"
-        />
+        
+        {!isLocked && (
+          <Controls
+            showInteractive={false}
+            className="!bg-white !border !border-slate-200 !rounded-xl !shadow-md overflow-hidden"
+          />
+        )}
 
         {showMiniMap && (
           <MiniMap
@@ -544,25 +572,27 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
           />
         )}
 
-        {/* Top-Right Helper Panel */}
-        <Panel position="top-right" className="flex items-center gap-2">
-          <button
-            onClick={() => fitView({ padding: 0.08, duration: 400 })}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/95 hover:bg-slate-50 text-xs font-semibold text-[#062C48] border border-slate-200 shadow-xs backdrop-blur-xs transition-colors"
-            title="Reset View"
-          >
-            <RotateCcw className="w-3.5 h-3.5 text-[#0082C8]" />
-            <span className="hidden sm:inline">{locale === "id" ? "Pusatkan" : "Center View"}</span>
-          </button>
-          <button
-            onClick={() => setShowMiniMap(!showMiniMap)}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/95 hover:bg-slate-50 text-xs font-semibold text-[#062C48] border border-slate-200 shadow-xs backdrop-blur-xs transition-colors"
-            title="Toggle MiniMap"
-          >
-            <Compass className="w-3.5 h-3.5 text-[#0082C8]" />
-            <span className="hidden sm:inline">Minimap</span>
-          </button>
-        </Panel>
+        {/* Top-Right Helper Panel (shown if not locked) */}
+        {!isLocked && (
+          <Panel position="top-right" className="flex items-center gap-2">
+            <button
+              onClick={() => fitView({ padding: 0.05, duration: 400 })}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/95 hover:bg-slate-50 text-xs font-semibold text-[#062C48] border border-slate-200 shadow-xs backdrop-blur-xs transition-colors"
+              title="Reset View"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-[#0082C8]" />
+              <span className="hidden sm:inline">{locale === "id" ? "Pusatkan" : "Center View"}</span>
+            </button>
+            <button
+              onClick={() => setShowMiniMap(!showMiniMap)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/95 hover:bg-slate-50 text-xs font-semibold text-[#062C48] border border-slate-200 shadow-xs backdrop-blur-xs transition-colors"
+              title="Toggle MiniMap"
+            >
+              <Compass className="w-3.5 h-3.5 text-[#0082C8]" />
+              <span className="hidden sm:inline">Minimap</span>
+            </button>
+          </Panel>
+        )}
 
         {/* Bottom-Left Quick Legend */}
         <Panel position="bottom-left" className="m-3">

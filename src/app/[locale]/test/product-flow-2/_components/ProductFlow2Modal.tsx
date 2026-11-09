@@ -1,9 +1,10 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import { PRODUCT_FLOW_2_DATA, Flow2Node } from "../_data/productFlow2Data"
 import { Flow2Icon } from "./Flow2Icons"
-import { X, ArrowRight, ArrowLeft, Layers, BookOpen, Target, Sparkles, Building2, Beaker } from "lucide-react"
+import { X, ArrowRight, ArrowLeft, BookOpen, Target, Sparkles, Building2, Beaker } from "lucide-react"
 
 interface ProductFlow2ModalProps {
   nodeId: string | null
@@ -18,7 +19,12 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
   onClose,
   onSelectNode,
 }) => {
+  const [mounted, setMounted] = useState(false)
   const node: Flow2Node | undefined = nodeId ? PRODUCT_FLOW_2_DATA.nodes[nodeId] : undefined
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -36,7 +42,7 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
     }
   }, [node, onClose])
 
-  if (!node) return null
+  if (!node || !mounted) return null
 
   const isFacility = node.category === "facility"
   const isFeedstock = node.category === "feedstock"
@@ -53,22 +59,28 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
     .map((id) => PRODUCT_FLOW_2_DATA.nodes[id])
     .filter(Boolean) as Flow2Node[]
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+  const modalContent = (
+    <div
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      aria-modal="true"
+      role="dialog"
+    >
       {/* Backdrop */}
-      <div className="absolute inset-0" onClick={onClose} />
+      <div
+        className="fixed inset-0 w-full h-full cursor-pointer"
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
       {/* Modal Card */}
       <div
-        className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-10 animate-in zoom-in-95 duration-200"
-        role="dialog"
-        aria-modal="true"
+        className="relative w-full max-w-2xl max-h-[88vh] flex flex-col bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-10 animate-in zoom-in-95 duration-200"
       >
         {/* Top Accent Ribbon */}
-        <div className="h-2.5 w-full bg-gradient-to-r from-[#0082C8] via-[#00A3E0] to-[#0082C8]" />
+        <div className="h-2.5 w-full bg-gradient-to-r from-[#0082C8] via-[#00A3E0] to-[#0082C8] shrink-0" />
 
         {/* Modal Header */}
-        <div className="p-6 pb-4 border-b border-slate-100 flex items-start justify-between gap-4">
+        <div className="p-6 pb-4 border-b border-slate-100 flex items-start justify-between gap-4 shrink-0 bg-white">
           <div className="flex items-center gap-4">
             <div
               className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border ${
@@ -146,7 +158,7 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="p-6 space-y-5 overflow-y-auto max-h-[calc(90vh-160px)]">
+        <div className="p-6 space-y-5 overflow-y-auto flex-1">
           {/* Definition Section (if present) */}
           {definitionText && (
             <div className="p-4 rounded-xl bg-gradient-to-br from-sky-50/70 to-blue-50/40 border border-sky-100 space-y-2">
@@ -246,7 +258,7 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+        <div className="p-4 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 shrink-0">
           <span className="inline-flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#0082C8]" />
             {locale === "id"
@@ -263,5 +275,6 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
       </div>
     </div>
   )
-}
 
+  return createPortal(modalContent, document.body)
+}
