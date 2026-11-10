@@ -3,6 +3,13 @@ import { localePrefix, defaultLocale, locales, pathnames } from "./config"
 import { NextRequest, NextResponse } from "next/server";
 
 export default async function middleware(request: NextRequest) {
+  const handleI18nRouting = createMiddleware({
+    locales,
+    defaultLocale,
+    localePrefix,
+    localeDetection: false,
+  });
+  const response = handleI18nRouting(request);
   const { pathname, search } = request.nextUrl
 
   // 1. Redirect duplicated or misplaced language segment in /our-business/ (SEO 301)

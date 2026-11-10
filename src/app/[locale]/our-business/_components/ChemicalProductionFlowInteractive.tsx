@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { XyflowDiagram } from "../../test/product-flow-2/_components/XyflowDiagram"
 import { ProductFlow2Modal } from "../../test/product-flow-2/_components/ProductFlow2Modal"
 
@@ -13,24 +13,32 @@ export const ChemicalProductionFlowInteractive: React.FC<ChemicalProductionFlowI
 }) => {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
+  const [coordinates, setCoordinates] = useState<Record<string, { x: number; y: number }> | null>(null)
+  const [customNodes, setCustomNodes] = useState<Record<string, any> | null>(null)
+
+  // Fetch coordinates and node texts saved from CMS
+  useEffect(() => {
+    async function fetchLayout() {
+      try {
+        const res = await fetch("/api/product-flow/layout", { cache: "no-store" })
+        if (res.ok) {
+          const json = await res.json()
+          if (json?.data?.coordinates && Object.keys(json.data.coordinates).length > 0) {
+            setCoordinates(json.data.coordinates)
+          }
+          if (json?.data?.nodes && Object.keys(json.data.nodes).length > 0) {
+            setCustomNodes(json.data.nodes)
+          }
+        }
+      } catch {
+        // Fallback to default positions handled inside XyflowDiagram
+      }
+    }
+    fetchLayout()
+  }, [])
 
   return (
-    <div className="w-full space-y-3 pt-6">
-      {/* Top hint bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 px-1">
-        <span className="flex items-center gap-1.5 font-medium">
-          <span className="w-2 h-2 rounded-full bg-[#0082C8] animate-pulse" />
-          {locale === "id"
-            ? "Diagram Interaktif Alur Produk: Klik simpul untuk melihat fungsi utama & definisi"
-            : "Interactive Product Flow: Click any node to view definition & main functions"}
-        </span>
-        <span className="hidden sm:inline text-slate-400">
-          {locale === "id"
-            ? "Arahkan kursor ke simpul untuk menelusuri alur proses"
-            : "Hover over nodes to trace active process flow"}
-        </span>
-      </div>
-
+    <div className="w-full pt-4">
       {/* Interactive Diagram Canvas (Locked & Auto-fitted to Device) */}
       <XyflowDiagram
         locale={locale}
@@ -40,6 +48,8 @@ export const ChemicalProductionFlowInteractive: React.FC<ChemicalProductionFlowI
         onHoverNode={setHoveredNodeId}
         onSelectNode={setSelectedNodeId}
         isLocked={true}
+        customCoordinates={coordinates}
+        showLegend={false}
       />
 
       {/* Node Detail Modal */}
@@ -48,6 +58,7 @@ export const ChemicalProductionFlowInteractive: React.FC<ChemicalProductionFlowI
         locale={locale}
         onClose={() => setSelectedNodeId(null)}
         onSelectNode={setSelectedNodeId}
+        customNodesData={customNodes}
       />
     </div>
   )
