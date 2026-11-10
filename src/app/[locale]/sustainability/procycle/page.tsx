@@ -1,6 +1,5 @@
 import { getAlternates, getSeoTitle } from "@/lib/seo"
 import Navbar from "@/components/global/Navbar"
-import { PageIdSetter } from "@/components/providers/query-provider"
 import { getPage } from "@/lib/api"
 import { HttpGeneralResponse } from "@/lib/types"
 import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
@@ -75,7 +74,6 @@ export default async function ProCyclePage({
 
   return (
     <>
-      {pageId && <PageIdSetter id={pageId} />}
       <Navbar isBackgroundWhite />
       <ProCycleContainer data={pageData} />
     </>

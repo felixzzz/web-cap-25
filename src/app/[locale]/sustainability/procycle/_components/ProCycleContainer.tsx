@@ -2,11 +2,14 @@
 
 import React, { useState, useMemo } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useLocale } from "next-intl"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, ArrowUpRight } from "lucide-react"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { cn, getLocalizedContent } from "@/lib/utils"
+import { logoChandraAsriWhite } from "@/data/images"
+import { cn, getLocalizedContent, assetUrl } from "@/lib/utils"
+import { DEFAULT_PROCYCLE_DATA } from "../_data/procycleData"
 
 export interface ProCycleCategoryItem {
   status?: string
@@ -27,6 +30,7 @@ interface ProCycleContainerProps {
     intro?: any
     our_approach?: any
     product_datasheet?: any
+    bottom_banner?: any
   }
 }
 
@@ -37,6 +41,23 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
   const intro = data?.intro
   const approach = data?.our_approach
   const productDatasheet = data?.product_datasheet
+  const bottomBanner = data?.bottom_banner
+
+  // Fallback banner to ensure images resolve cleanly if empty or only uploaded in one language
+  const bannerData = useMemo(() => {
+    if (!banner) return null
+    const defaultDesktop = DEFAULT_PROCYCLE_DATA.banner.image_desktop_en
+    const defaultMobile = DEFAULT_PROCYCLE_DATA.banner.image_mobile_en
+    return {
+      ...banner,
+      image_desktop_id: banner.image_desktop_id || defaultDesktop,
+      image_desktop_en:
+        banner.image_desktop_en || banner.image_desktop_id || defaultDesktop,
+      image_mobile_id: banner.image_mobile_id || defaultMobile,
+      image_mobile_en:
+        banner.image_mobile_en || banner.image_mobile_id || defaultMobile,
+    }
+  }, [banner])
 
   // Extract categories list based on active locale
   const categories: ProCycleCategoryItem[] = useMemo(() => {
@@ -107,12 +128,71 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
       ? "Chandra Asri telah mulai mengembangkan pengelolaan produk berkelanjutan dengan mengelompokkan tindakan ke dalam 5 kategori:"
       : "Chandra Asri has started developing a sustainable product management by grouping actions into 5 categories:")
 
+  // Bottom Banner CMS Data (Dedicated page section, not FooterBanner)
+  const isBottomBannerActive =
+    bottomBanner?.status === "active" ||
+    bottomBanner?.status_id === "active" ||
+    bottomBanner?.status_en === "active" ||
+    (bottomBanner &&
+      bottomBanner.status !== "inactive" &&
+      bottomBanner.status_id !== "inactive" &&
+      bottomBanner.status_en !== "inactive")
+
+  const bottomBannerTitle =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.title_en,
+      bottomBanner?.title_id
+    ) ||
+    bottomBanner?.title ||
+    (locale === "id"
+      ? "Mari Membangun Masa Depan, Bersama"
+      : "Let's Build What's Next, Together")
+
+  const bottomBannerDesc =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.description_en,
+      bottomBanner?.description_id
+    ) ||
+    bottomBanner?.description ||
+    (locale === "id"
+      ? "Temukan bagaimana Chandra Asri Group dapat menjadi mitra pertumbuhan Anda dalam membangun bisnis yang lebih tangguh dan berkelanjutan."
+      : "Discover how Chandra Asri Group can be your growth partner in building stronger businesses")
+
+  const bottomBannerBtnLabel =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.button_label_en,
+      bottomBanner?.button_label_id
+    ) ||
+    bottomBanner?.button_label ||
+    (locale === "id" ? "Jelajahi Bisnis Kami" : "Discover Our Business")
+
+  const bottomBannerBtnUrl =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.button_url_en,
+      bottomBanner?.button_url_id
+    ) ||
+    bottomBanner?.button_url ||
+    "/our-business"
+
+  const bottomBannerBg =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.image_desktop_en,
+      bottomBanner?.image_desktop_id
+    ) ||
+    bottomBanner?.image_desktop_id ||
+    "/img/temp/bg-jumbotron.jpg"
+
   return (
     <div className="w-full bg-white">
       {/* 1. Hero Banner */}
-      {banner && (
+      {bannerData && (
         <BannerBlock
-          {...banner}
+          {...bannerData}
           hideLoadingVertical={true}
         />
       )}
@@ -154,18 +234,18 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
               {sectionTitle}
             </h2>
             {sectionSubtitle && (
-              <p className="text-base sm:text-lg text-gray-600">
-                {sectionSubtitle}
-              </p>
+              <div
+                className="text-base sm:text-lg text-gray-600 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: sectionSubtitle }}
+              />
             )}
           </div>
 
-          {/* Grid Layout: Left Tabs | Middle Content | Right Product List */}
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10 items-start">
-            {/* Left Column: Vertical Tabs on desktop, scrollable on mobile */}
+            {/* Left Column: Vertical Category Tabs */}
             <div className="lg:col-span-3">
               {/* Desktop Tabs */}
-              <div className="hidden lg:flex lg:flex-col border-l border-[#E8E8E8]">
+              <div className="hidden lg:flex flex-col border-l-2 border-gray-200">
                 {categories.map((cat, idx) => {
                   const label = cat.sidebarmenu_title || cat.title || `Category ${idx + 1}`
                   const isActive =
@@ -280,6 +360,62 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
                     )}
                   </CardContent>
                 </Card>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 5. Bottom CTA Banner (Managed via CMS, not FooterBanner) */}
+      {isBottomBannerActive && (
+        <section className="container mx-auto px-4 py-12 lg:py-16">
+          <div className="relative overflow-hidden rounded-2xl lg:rounded-3xl bg-[#0B1E3F] px-6 py-12 sm:px-12 sm:py-16 lg:py-20 text-center shadow-xl">
+            {/* Background Image / Overlay */}
+            {bottomBannerBg && (
+              <div className="absolute inset-0 -z-0 pointer-events-none">
+                <Image
+                  src={assetUrl(bottomBannerBg)!}
+                  alt={bottomBannerTitle}
+                  fill
+                  className="object-cover opacity-20 mix-blend-luminosity"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1E3F] via-[#0B1E3F]/85 to-[#0B1E3F]/70" />
+              </div>
+            )}
+
+            <div className="relative z-10 mx-auto max-w-3xl flex flex-col items-center">
+              {/* Logo Chandra Asri White */}
+              <div className="mb-6">
+                <Image
+                  src={logoChandraAsriWhite}
+                  alt="Chandra Asri Group"
+                  width={160}
+                  height={42}
+                  className="h-8 sm:h-9 w-auto object-contain"
+                />
+              </div>
+
+              {/* Heading */}
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white mb-4 leading-tight">
+                {bottomBannerTitle}
+              </h2>
+
+              {/* Subtitle / Description */}
+              {bottomBannerDesc && (
+                <p className="text-sm sm:text-base lg:text-lg text-white/80 max-w-2xl mb-8 leading-relaxed">
+                  {bottomBannerDesc}
+                </p>
+              )}
+
+              {/* Button CTA */}
+              {bottomBannerBtnLabel && (
+                <Link
+                  href={bottomBannerBtnUrl}
+                  className="inline-flex items-center gap-2 rounded-full bg-[#0082CA] px-7 py-3 text-sm sm:text-base font-semibold text-white shadow-md hover:bg-[#0070b0] hover:shadow-lg transition-all duration-200 group"
+                >
+                  <span>{bottomBannerBtnLabel}</span>
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
               )}
             </div>
           </div>
