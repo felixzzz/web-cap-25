@@ -1,0 +1,19 @@
+{
+  "coordinates": {
+    "crude-oil": {
+      "x": 40,
+      "y": 350
+    }
+  },
+  "nodes": {
+    "crude-oil": {
+      "mainFunction": {
+        "en": "Primary feedstock for refining operations (Verified).",
+        "id": "Bahan baku utama untuk operasi pengilangan (Terverifikasi)."
+      }
+    },
+    "ethylene": {
+      "name": "ETHYLENEs"
+    }
+  }
+}

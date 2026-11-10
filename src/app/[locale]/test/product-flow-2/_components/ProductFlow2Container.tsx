@@ -31,21 +31,7 @@ export const ProductFlow2Container: React.FC<ProductFlow2ContainerProps> = ({ lo
 
         {/* Diagram Canvas or Step Pipeline */}
         {viewMode === "diagram" ? (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between text-xs text-slate-500 px-2">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#0082C8] animate-pulse" />
-                {locale === "id"
-                  ? "Geser canvas atau gunakan zoom, lalu klik simpul untuk melihat fungsi utama & definisi"
-                  : "Pan or zoom canvas, and click any node to see definition & main functions"}
-              </span>
-              <span className="hidden sm:inline text-slate-400">
-                {locale === "id"
-                  ? "Arahkan kursor ke simpul untuk menelusuri alur pipa proses"
-                  : "Hover over nodes to trace active process flow"}
-              </span>
-            </div>
-
+          <div>
             <XyflowDiagram
               locale={locale}
               activeZone={activeZone}

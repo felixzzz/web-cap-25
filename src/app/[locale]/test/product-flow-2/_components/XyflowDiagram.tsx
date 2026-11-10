@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo, useState, useEffect } from "react"
+import React, { useMemo, useState, useEffect, useCallback } from "react"
 import {
   ReactFlow,
   Background,
@@ -22,7 +22,7 @@ import { PRODUCT_FLOW_2_DATA, Flow2Zone } from "../_data/productFlow2Data"
 import { FlowProductNode, FlowPlantNode, FlowZoneBarNode, Flow2NodeData } from "./CustomNodes2"
 import { Compass, RotateCcw } from "lucide-react"
 
-interface XyflowDiagramProps {
+export interface XyflowDiagramProps {
   locale: "id" | "en"
   activeZone: Flow2Zone | "all"
   selectedNodeId: string | null
@@ -30,6 +30,39 @@ interface XyflowDiagramProps {
   onHoverNode: (id: string | null) => void
   onSelectNode: (id: string) => void
   isLocked?: boolean
+  showLegend?: boolean
+  customCoordinates?: Record<string, { x: number; y: number }> | null
+  customNodesData?: Record<string, any> | null
+  onCoordinatesChange?: (coords: Record<string, { x: number; y: number }>) => void
+}
+
+export const DEFAULT_FLOW_2_POSITIONS: Record<string, { x: number; y: number }> = {
+  "crude-oil": { x: 40, y: 350 },
+  "natural-gas": { x: 40, y: 610 },
+  "refinery-plant": { x: 230, y: 348 },
+  "gas-separation-unit": { x: 230, y: 608 },
+  "lpg": { x: 440, y: 280 },
+  "naphtha": { x: 440, y: 400 },
+  "condensate": { x: 440, y: 610 },
+  "ethylene-cracker-plant": { x: 650, y: 440 },
+  "ethylene": { x: 860, y: 120 },
+  "propylene": { x: 860, y: 330 },
+  "raw-c4": { x: 860, y: 450 },
+  "pygas": { x: 860, y: 565 },
+  "pfo": { x: 860, y: 675 },
+  "polyethylene-plant": { x: 1140, y: 45 },
+  "styrene-monomer-plant": { x: 1140, y: 235 },
+  "polypropylene-plant": { x: 1140, y: 495 },
+  "butadiene-plant": { x: 1140, y: 775 },
+  "hdpe": { x: 1360, y: 15 },
+  "lldpe": { x: 1360, y: 95 },
+  "styrene-monomer": { x: 1360, y: 205 },
+  "toluene": { x: 1360, y: 280 },
+  "homo-pp": { x: 1360, y: 435 },
+  "random-pp": { x: 1360, y: 515 },
+  "impact-pp": { x: 1360, y: 595 },
+  "butadiene": { x: 1360, y: 740 },
+  "raff-1": { x: 1360, y: 815 },
 }
 
 const nodeTypes = {
@@ -46,9 +79,22 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   onHoverNode,
   onSelectNode,
   isLocked = true,
+  customCoordinates = null,
+  customNodesData = null,
+  onCoordinatesChange,
 }) => {
   const { fitView } = useReactFlow()
   const [showMiniMap, setShowMiniMap] = useState<boolean>(!isLocked)
+
+  const getPosition = useCallback(
+    (id: string) => {
+      if (customCoordinates && customCoordinates[id]) {
+        return customCoordinates[id]
+      }
+      return DEFAULT_FLOW_2_POSITIONS[id] || { x: 0, y: 0 }
+    },
+    [customCoordinates]
+  )
 
   // Auto-fit on window resize and mount
   useEffect(() => {
@@ -65,28 +111,43 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
     }
   }, [fitView])
 
+  const rawNodes = useMemo(() => {
+    const base = PRODUCT_FLOW_2_DATA.nodes
+    if (!customNodesData) return base
+
+    const merged: Record<string, any> = {}
+    Object.keys(base).forEach((key) => {
+      const override = customNodesData[key]
+      merged[key] = {
+        ...base[key],
+        ...(override || {}),
+        name: locale === "id" && override?.nameId ? override.nameId : (override?.name || base[key].name),
+      }
+    })
+    return merged
+  }, [locale, customNodesData])
+
   const activeFocusId = hoveredNodeId || selectedNodeId
-  const activeFocusNode = activeFocusId ? PRODUCT_FLOW_2_DATA.nodes[activeFocusId] : null
+  const activeFocusNode = activeFocusId ? rawNodes[activeFocusId] : null
 
   // Set of connected node IDs for interactive highlighting
   const connectedNodeIds = useMemo(() => {
     if (!activeFocusNode) return new Set<string>()
     const set = new Set<string>([activeFocusNode.id])
-    if (activeFocusNode.inputs) activeFocusNode.inputs.forEach((id) => set.add(id))
-    if (activeFocusNode.outputs) activeFocusNode.outputs.forEach((id) => set.add(id))
+    if (activeFocusNode.inputs) activeFocusNode.inputs.forEach((id: string) => set.add(id))
+    if (activeFocusNode.outputs) activeFocusNode.outputs.forEach((id: string) => set.add(id))
     return set
   }, [activeFocusNode])
 
   // Initial nodes layout matching the user's slide
   const initialNodes: Node[] = useMemo(() => {
-    const rawNodes = PRODUCT_FLOW_2_DATA.nodes
 
     const nList: Node[] = [
       // ---------------- COL 1: FEEDSTOCKS ----------------
       {
         id: "crude-oil",
         type: "productNode",
-        position: { x: 40, y: 350 },
+        position: getPosition("crude-oil"),
         data: {
           ...rawNodes["crude-oil"],
           onSelect: onSelectNode,
@@ -96,7 +157,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "natural-gas",
         type: "productNode",
-        position: { x: 40, y: 610 },
+        position: getPosition("natural-gas"),
         data: {
           ...rawNodes["natural-gas"],
           onSelect: onSelectNode,
@@ -108,7 +169,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "refinery-plant",
         type: "plantNode",
-        position: { x: 230, y: 348 },
+        position: getPosition("refinery-plant"),
         data: {
           ...rawNodes["refinery-plant"],
           onSelect: onSelectNode,
@@ -118,7 +179,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "gas-separation-unit",
         type: "plantNode",
-        position: { x: 230, y: 608 },
+        position: getPosition("gas-separation-unit"),
         data: {
           ...rawNodes["gas-separation-unit"],
           onSelect: onSelectNode,
@@ -130,7 +191,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "lpg",
         type: "productNode",
-        position: { x: 440, y: 280 },
+        position: getPosition("lpg"),
         data: {
           ...rawNodes["lpg"],
           onSelect: onSelectNode,
@@ -140,7 +201,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "naphtha",
         type: "productNode",
-        position: { x: 440, y: 400 },
+        position: getPosition("naphtha"),
         data: {
           ...rawNodes["naphtha"],
           onSelect: onSelectNode,
@@ -150,7 +211,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "condensate",
         type: "productNode",
-        position: { x: 440, y: 610 },
+        position: getPosition("condensate"),
         data: {
           ...rawNodes["condensate"],
           onSelect: onSelectNode,
@@ -162,7 +223,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "ethylene-cracker-plant",
         type: "plantNode",
-        position: { x: 650, y: 440 },
+        position: getPosition("ethylene-cracker-plant"),
         data: {
           ...rawNodes["ethylene-cracker-plant"],
           onSelect: onSelectNode,
@@ -174,7 +235,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "ethylene",
         type: "productNode",
-        position: { x: 860, y: 120 },
+        position: getPosition("ethylene"),
         data: {
           ...rawNodes["ethylene"],
           onSelect: onSelectNode,
@@ -184,7 +245,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "propylene",
         type: "productNode",
-        position: { x: 860, y: 330 },
+        position: getPosition("propylene"),
         data: {
           ...rawNodes["propylene"],
           onSelect: onSelectNode,
@@ -194,7 +255,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "raw-c4",
         type: "productNode",
-        position: { x: 860, y: 450 },
+        position: getPosition("raw-c4"),
         data: {
           ...rawNodes["raw-c4"],
           onSelect: onSelectNode,
@@ -204,7 +265,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "pygas",
         type: "productNode",
-        position: { x: 860, y: 565 },
+        position: getPosition("pygas"),
         data: {
           ...rawNodes["pygas"],
           onSelect: onSelectNode,
@@ -214,7 +275,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "pfo",
         type: "productNode",
-        position: { x: 860, y: 675 },
+        position: getPosition("pfo"),
         data: {
           ...rawNodes["pfo"],
           onSelect: onSelectNode,
@@ -226,7 +287,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "polyethylene-plant",
         type: "plantNode",
-        position: { x: 1140, y: 45 },
+        position: getPosition("polyethylene-plant"),
         data: {
           ...rawNodes["polyethylene-plant"],
           onSelect: onSelectNode,
@@ -236,7 +297,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "styrene-monomer-plant",
         type: "plantNode",
-        position: { x: 1140, y: 235 },
+        position: getPosition("styrene-monomer-plant"),
         data: {
           ...rawNodes["styrene-monomer-plant"],
           onSelect: onSelectNode,
@@ -246,7 +307,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "polypropylene-plant",
         type: "plantNode",
-        position: { x: 1140, y: 495 },
+        position: getPosition("polypropylene-plant"),
         data: {
           ...rawNodes["polypropylene-plant"],
           onSelect: onSelectNode,
@@ -256,7 +317,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "butadiene-plant",
         type: "plantNode",
-        position: { x: 1140, y: 775 },
+        position: getPosition("butadiene-plant"),
         data: {
           ...rawNodes["butadiene-plant"],
           onSelect: onSelectNode,
@@ -268,7 +329,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "hdpe",
         type: "productNode",
-        position: { x: 1360, y: 15 },
+        position: getPosition("hdpe"),
         data: {
           ...rawNodes["hdpe"],
           onSelect: onSelectNode,
@@ -278,7 +339,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "lldpe",
         type: "productNode",
-        position: { x: 1360, y: 95 },
+        position: getPosition("lldpe"),
         data: {
           ...rawNodes["lldpe"],
           onSelect: onSelectNode,
@@ -288,7 +349,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "styrene-monomer",
         type: "productNode",
-        position: { x: 1360, y: 205 },
+        position: getPosition("styrene-monomer"),
         data: {
           ...rawNodes["styrene-monomer"],
           onSelect: onSelectNode,
@@ -298,7 +359,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "toluene",
         type: "productNode",
-        position: { x: 1360, y: 280 },
+        position: getPosition("toluene"),
         data: {
           ...rawNodes["toluene"],
           onSelect: onSelectNode,
@@ -308,7 +369,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "homo-pp",
         type: "productNode",
-        position: { x: 1360, y: 435 },
+        position: getPosition("homo-pp"),
         data: {
           ...rawNodes["homo-pp"],
           onSelect: onSelectNode,
@@ -318,7 +379,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "random-pp",
         type: "productNode",
-        position: { x: 1360, y: 515 },
+        position: getPosition("random-pp"),
         data: {
           ...rawNodes["random-pp"],
           onSelect: onSelectNode,
@@ -328,7 +389,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "impact-pp",
         type: "productNode",
-        position: { x: 1360, y: 595 },
+        position: getPosition("impact-pp"),
         data: {
           ...rawNodes["impact-pp"],
           onSelect: onSelectNode,
@@ -338,7 +399,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "butadiene",
         type: "productNode",
-        position: { x: 1360, y: 740 },
+        position: getPosition("butadiene"),
         data: {
           ...rawNodes["butadiene"],
           onSelect: onSelectNode,
@@ -348,7 +409,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       {
         id: "raff-1",
         type: "productNode",
-        position: { x: 1360, y: 815 },
+        position: getPosition("raff-1"),
         data: {
           ...rawNodes["raff-1"],
           onSelect: onSelectNode,
@@ -382,7 +443,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
     ]
 
     return nList
-  }, [onSelectNode, onHoverNode])
+  }, [onSelectNode, onHoverNode, getPosition, rawNodes])
 
   // Initial Edges matching the slide diagram
   const initialEdges: Edge[] = useMemo(() => {
@@ -461,6 +522,76 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
+  // Sync custom coordinates from props (e.g. from API or reset)
+  useEffect(() => {
+    if (customCoordinates) {
+      setNodes((nds) =>
+        nds.map((n) => {
+          if (n.type === "zoneBar") return n
+          const customPos = customCoordinates[n.id]
+          if (customPos) {
+            return {
+              ...n,
+              position: customPos,
+            }
+          }
+          return n
+        })
+      )
+    }
+  }, [customCoordinates, setNodes])
+
+  // Sync custom node text updates
+  useEffect(() => {
+    if (customNodesData) {
+      setNodes((nds) =>
+        nds.map((n) => {
+          if (n.type === "zoneBar") return n
+          const override = customNodesData[n.id]
+          if (override) {
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                ...override,
+                name:
+                  locale === "id" && override?.nameId
+                    ? override.nameId
+                    : (override?.name || n.data.name),
+              },
+            }
+          }
+          return n
+        })
+      )
+    }
+  }, [customNodesData, locale, setNodes])
+
+  // Handle node drag stop in editor mode
+  const handleNodeDragStop = useCallback(
+    (_: any, node: Node) => {
+      if (isLocked) return
+
+      setNodes((nds) => {
+        const updated = nds.map((n) => (n.id === node.id ? node : n))
+        if (onCoordinatesChange) {
+          const coords: Record<string, { x: number; y: number }> = {}
+          updated.forEach((n) => {
+            if (n.type !== "zoneBar") {
+              coords[n.id] = {
+                x: Math.round(n.position.x),
+                y: Math.round(n.position.y),
+              }
+            }
+          })
+          onCoordinatesChange(coords)
+        }
+        return updated
+      })
+    },
+    [isLocked, setNodes, onCoordinatesChange]
+  )
+
   // Update nodes with highlight / focus / dimming states
   useEffect(() => {
     setNodes((nds) =>
@@ -529,6 +660,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeDragStop={handleNodeDragStop}
         nodeTypes={nodeTypes}
         fitView
         fitViewOptions={{ padding: 0.05, duration: 400 }}
@@ -593,20 +725,6 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
             </button>
           </Panel>
         )}
-
-        {/* Bottom-Left Quick Legend */}
-        <Panel position="bottom-left" className="m-3">
-          <div className="p-2.5 rounded-xl bg-white/95 backdrop-blur-xs border border-slate-200 shadow-sm flex items-center gap-4 text-xs font-medium text-slate-600">
-            <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-md bg-[#0082C8] inline-block border border-[#0070ad]" />
-              <span>{locale === "id" ? "Bahan Baku / Produk" : "Product / Chemical"}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-md bg-white border-2 border-[#0082C8] inline-block" />
-              <span>{locale === "id" ? "Fasilitas Pabrik" : "Plant / Facility"}</span>
-            </div>
-          </div>
-        </Panel>
       </ReactFlow>
     </div>
   )

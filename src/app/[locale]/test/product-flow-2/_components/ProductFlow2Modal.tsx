@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useMemo } from "react"
 import { createPortal } from "react-dom"
 import { PRODUCT_FLOW_2_DATA, Flow2Node } from "../_data/productFlow2Data"
 import { Flow2Icon } from "./Flow2Icons"
@@ -11,6 +11,7 @@ interface ProductFlow2ModalProps {
   locale: "id" | "en"
   onClose: () => void
   onSelectNode: (nodeId: string) => void
+  customNodesData?: Record<string, any> | null
 }
 
 export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
@@ -18,9 +19,29 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
   locale,
   onClose,
   onSelectNode,
+  customNodesData,
 }) => {
   const [mounted, setMounted] = useState(false)
-  const node: Flow2Node | undefined = nodeId ? PRODUCT_FLOW_2_DATA.nodes[nodeId] : undefined
+
+  const node: Flow2Node | undefined = useMemo(() => {
+    if (!nodeId) return undefined
+    const baseNode: Flow2Node | undefined = PRODUCT_FLOW_2_DATA.nodes[nodeId]
+    if (!baseNode) return undefined
+    const customOverride = customNodesData ? customNodesData[nodeId] : null
+
+    return {
+      ...baseNode,
+      ...(customOverride || {}),
+      definition: {
+        ...baseNode.definition,
+        ...(customOverride?.definition || {}),
+      },
+      mainFunction: {
+        ...baseNode.mainFunction,
+        ...(customOverride?.mainFunction || {}),
+      },
+    }
+  }, [nodeId, customNodesData])
 
   useEffect(() => {
     setMounted(true)

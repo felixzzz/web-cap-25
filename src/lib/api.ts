@@ -92,6 +92,19 @@ export async function getPage(page: string) {
   return data
 }
 
+export async function getProductFlowLayout() {
+  try {
+    const res = await API.get("/product-flow/layout")
+    return res.data?.data?.coordinates || null
+  } catch {
+    return null
+  }
+}
+
+export async function saveProductFlowLayout(coordinates: Record<string, { x: number; y: number }>) {
+  return API.post("/product-flow/layout", { coordinates }).then((res) => res.data)
+}
+
 export async function getProducts() {
   const data = await fetchAPI(`products`, "GET")
   return data
