@@ -4,6 +4,7 @@ import { PageIdSetter } from "@/components/providers/query-provider"
 import { getPage } from "@/lib/api"
 import { HttpGeneralResponse } from "@/lib/types"
 import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
+import { notFound } from "next/navigation"
 import { ProCycleContainer } from "./_components/ProCycleContainer"
 import { DEFAULT_PROCYCLE_DATA } from "./_data/procycleData"
 
@@ -64,43 +65,12 @@ export default async function ProCyclePage({
     console.warn("Could not fetch ProCycle from CMS:", err)
   }
 
-  // Fallback to default mock structure if CMS is offline or empty
-  const pageData = cmsData?.meta ? cmsData.meta : {
-    banner: DEFAULT_PROCYCLE_DATA.banner,
-    intro: {
-      description_en: DEFAULT_PROCYCLE_DATA.intro.en,
-      description_id: DEFAULT_PROCYCLE_DATA.intro.id,
-    },
-    our_approach: {
-      title_en: DEFAULT_PROCYCLE_DATA.approach.title_en,
-      title_id: DEFAULT_PROCYCLE_DATA.approach.title_id,
-      description_en: DEFAULT_PROCYCLE_DATA.approach.description_en,
-      description_id: DEFAULT_PROCYCLE_DATA.approach.description_id,
-    },
-    product_datasheet: {
-      title_en: DEFAULT_PROCYCLE_DATA.categoriesSection.section_title_en,
-      title_id: DEFAULT_PROCYCLE_DATA.categoriesSection.section_title_id,
-      subtitle_en: DEFAULT_PROCYCLE_DATA.categoriesSection.section_subtitle_en,
-      subtitle_id: DEFAULT_PROCYCLE_DATA.categoriesSection.section_subtitle_id,
-      datasheet_list_en: DEFAULT_PROCYCLE_DATA.categoriesSection.categories.map((c) => ({
-        status: "active",
-        sidebarmenu_title: c.tab_label_en,
-        title: c.title_en,
-        description: c.description_en,
-        card_title: c.product_list_title_en,
-        products: c.products.map((p) => ({ name: p.name_en, url: p.url })),
-      })),
-      datasheet_list_id: DEFAULT_PROCYCLE_DATA.categoriesSection.categories.map((c) => ({
-        status: "active",
-        sidebarmenu_title: c.tab_label_id,
-        title: c.title_id,
-        description: c.description_id,
-        card_title: c.product_list_title_id,
-        products: c.products.map((p) => ({ name: p.name_id, url: p.url })),
-      })),
-    },
+  // If page doesn't exist or is soft-deleted in CMS, return 404
+  if (!cmsData) {
+    return notFound()
   }
 
+  const pageData = cmsData.meta
   const pageId = cmsData?.id ? cmsData.id.toString() : null
 
   return (
