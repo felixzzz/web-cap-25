@@ -188,16 +188,18 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
     "/img/temp/bg-jumbotron.jpg"
 
   return (
-    <div className="w-full bg-white">
+    <>
       {/* 1. Hero Banner */}
       {bannerData && (
         <BannerBlock
           {...bannerData}
+          className="isolate"
           hideLoadingVertical={true}
         />
       )}
 
-      {/* 2. Intro Statement */}
+      <div className="w-full bg-white">
+        {/* 2. Intro Statement */}
       {introDesc && (
         <section className="container mx-auto px-4 py-8 lg:py-14">
           <div
@@ -421,6 +423,7 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
           </div>
         </section>
       )}
-    </div>
+      </div>
+    </>
   )
 }

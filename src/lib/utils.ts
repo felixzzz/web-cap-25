@@ -16,7 +16,11 @@ export function absoluteUrl(path: string) {
 }
 
 export function assetUrl(path: string | null) {
-  if (!path || (path?.includes("http") && !path?.includes(SITE_URL)))
+  if (
+    !path ||
+    (path?.includes("http") && !path?.includes(SITE_URL)) ||
+    path?.startsWith("/")
+  )
     return path
   // if (path.includes("documents")) return `${API_URL}/${path}`
   if (path?.includes(SITE_URL)) return path?.split(SITE_URL)[1]
