@@ -11,6 +11,7 @@ import "swiper/css/pagination"
 import "swiper/css/navigation"
 import { plusJakartaSans } from "../fonts/fonts"
 import { Footer } from "@/components/global/Footer"
+import { FooterWrapper } from "@/components/global/FooterWrapper"
 import { locales } from "@/config"
 import DownloadStorages from "@/components/global/DownloadStorages"
 import { QueryClientProviderWrapper } from "@/components/providers/query-provider"
@@ -130,7 +131,9 @@ export default async function LocaleLayout({
               {children}
               <Toaster />
             </CursorProvider>
-            <Footer />
+            <FooterWrapper>
+              <Footer />
+            </FooterWrapper>
             <DownloadStorages />
           </QueryClientProviderWrapper>
         </NextIntlClientProvider>
