@@ -196,7 +196,10 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
     null
 
   return (
-    <>
+    <div
+      className="w-full pt-16"
+      style={{ paddingTop: "calc(64px + var(--sticky-banner-height, 0px))" }}
+    >
       {/* 1. Hero Banner */}
       {bannerData && (
         <BannerBlock
@@ -431,6 +434,6 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
           </section>
         )}
       </div>
-    </>
+    </div>
   )
 }
