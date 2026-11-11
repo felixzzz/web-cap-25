@@ -505,7 +505,10 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       target: e.target,
       sourceHandle: "source-right",
       targetHandle: "target-left",
-      type: "straight",
+      type: "smoothstep",
+      pathOptions: {
+        borderRadius: 12,
+      },
       markerEnd: {
         type: MarkerType.ArrowClosed,
         color: "#0082C8",
