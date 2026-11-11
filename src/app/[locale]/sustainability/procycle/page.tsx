@@ -6,6 +6,7 @@ import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
 import { notFound } from "next/navigation"
 import { ProCycleContainer } from "./_components/ProCycleContainer"
 import { DEFAULT_PROCYCLE_DATA } from "./_data/procycleData"
+import { PageIdSetter } from "@/components/providers/query-provider"
 
 export const revalidate = 60
 
@@ -74,7 +75,8 @@ export default async function ProCyclePage({
 
   return (
     <>
-      <Navbar isBackgroundWhite />
+      {cmsData?.id && <PageIdSetter id={cmsData.id.toString()} />}
+      <Navbar />
       <ProCycleContainer data={pageData} />
     </>
   )
