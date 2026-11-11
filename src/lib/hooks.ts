@@ -135,10 +135,15 @@ export function useQueryGovernancePolicy({
 }: DocumentListProp & { page: number; search?: string }) {
   const getDocuments = (page = 1, search?: string) =>
     API.get(
-      "/documents?per_page=9&document_page=governance&section=policy&order=ASC&page=" +
-        page +
-        "&search=" +
-        search
+      `/documents?${urlEncodedString({
+        per_page: 10,
+        document_page: "governance",
+        section: "policy",
+        sort: "published_at",
+        order: "DESC",
+        page,
+        search,
+      })}`
     ).then((res) => res.data.data)
 
   return useQuery({
