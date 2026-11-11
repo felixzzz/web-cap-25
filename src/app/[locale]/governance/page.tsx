@@ -57,7 +57,7 @@ export default async function GovernancePage({
 }) {
   const data: HttpGeneralResponse<GovernanceProps> = await getPage("governance")
   const dataDocumentsPolicy: { data: MetaDocumentItem[] } = await getDocuments(
-    "?per_page=5&document_page=governance&section=policy&order=ASC"
+    "?per_page=5&document_page=governance&section=policy&sort=published_at&order=DESC"
   )
   const dataDocumentsCorporate: { data: MetaDocumentItem[] } =
     await getDocuments(

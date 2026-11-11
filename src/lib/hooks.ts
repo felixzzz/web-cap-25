@@ -139,7 +139,8 @@ export function useQueryGovernancePolicy({
         per_page: 10,
         document_page: "governance",
         section: "policy",
-        order: "ASC",
+        sort: "published_at",
+        order: "DESC",
         page,
         search,
       })}`
