@@ -196,10 +196,7 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
     null
 
   return (
-    <div
-      className="w-full pt-16"
-      style={{ paddingTop: "calc(64px + var(--sticky-banner-height, 0px))" }}
-    >
+    <div className="w-full">
       {/* 1. Hero Banner */}
       {bannerData && (
         <BannerBlock
@@ -212,9 +209,9 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
       <div className="w-full bg-white">
         {/* 2. Intro Statement */}
         {introDesc && (
-          <section className="container mx-auto px-4 py-8 lg:py-14">
+          <section className="container mx-auto px-4 py-9 lg:py-15">
             <div
-              className="prose max-w-4xl text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed font-normal"
+              className="prose max-w-none text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed font-normal"
               dangerouslySetInnerHTML={{ __html: introDesc }}
             />
           </section>
@@ -222,7 +219,7 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
 
         {/* 3. Our Approach Section */}
         {approachDesc && (
-          <section className="container mx-auto px-4 py-10 lg:py-16 border-t border-gray-100">
+          <section className="container mx-auto px-4 py-10 lg:py-16">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-12 items-start">
               <div className="lg:col-span-4">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 leading-tight">
@@ -241,8 +238,8 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
 
         {/* 4. Our Sustainable Product (5 Categories) Section */}
         {categories && categories.length > 0 && (
-          <section className="container mx-auto px-4 py-10 lg:py-16 border-t border-gray-100">
-            <div className="mb-10 max-w-3xl">
+          <section className="container mx-auto px-4 py-10 lg:py-16">
+            <div className="mb-10 max-w-none">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 mb-3">
                 {sectionTitle}
               </h2>
