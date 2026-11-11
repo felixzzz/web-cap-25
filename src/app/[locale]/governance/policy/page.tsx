@@ -6,9 +6,9 @@ import { MetaDocumentItem } from "@/lib/fragment"
 import { getDocuments } from "@/lib/api"
 import { PaginationHandlerResponse } from "@/lib/types"
 import { Suspense } from "react"
+import { urlEncodedString } from "@/lib/utils"
 
 export const revalidate = 60
-
 
 export async function generateMetadata({
   params: { locale },
@@ -20,10 +20,27 @@ export async function generateMetadata({
   }
 }
 
-export default async function GovernancePolicyPage() {
+export default async function GovernancePolicyPage({
+  searchParams,
+}: {
+  searchParams?: {
+    page?: string
+    search?: string
+  }
+}) {
+  const page = searchParams?.page || "1"
+  const search = searchParams?.search || ""
+
   const dataDocumentsPolicy: PaginationHandlerResponse<MetaDocumentItem[]> =
     await getDocuments(
-      "?per_page=5&document_page=governance&page=1&section=policy&order=ASC"
+      `?${urlEncodedString({
+        per_page: 10,
+        document_page: "governance",
+        section: "policy",
+        order: "ASC",
+        page,
+        search,
+      })}`
     )
 
   return (
