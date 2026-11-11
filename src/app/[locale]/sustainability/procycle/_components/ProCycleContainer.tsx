@@ -123,6 +123,21 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
     return categories[0]
   }, [categories, activeTab])
 
+  // Filter active category products to only include non-empty items
+  const productList = useMemo(() => {
+    if (!activeItem?.products || !Array.isArray(activeItem.products)) return []
+    return activeItem.products.filter((prod: any) => {
+      if (!prod) return false
+      if (typeof prod === "string") return prod.trim() !== ""
+      return Boolean(
+        (prod.name && typeof prod.name === "string" && prod.name.trim() !== "") ||
+        (prod.title && typeof prod.title === "string" && prod.title.trim() !== "")
+      )
+    })
+  }, [activeItem])
+
+  const hasProducts = productList.length > 0
+
   // Localized section titles
   const approachTitle =
     getLocalizedContent(locale, approach?.title_en, approach?.title_id) ||
@@ -312,9 +327,9 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
               </div>
 
               {/* Middle Column: Active Category Content */}
-              <div className="lg:col-span-5">
+              <div className={cn("space-y-4", hasProducts ? "lg:col-span-5" : "lg:col-span-9")}>
                 {activeItem && (
-                  <div className="space-y-4">
+                  <>
                     <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
                       {activeItem.title || activeItem.sidebarmenu_title}
                     </h3>
@@ -324,13 +339,13 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
                         dangerouslySetInnerHTML={{ __html: activeItem.description }}
                       />
                     )}
-                  </div>
+                  </>
                 )}
               </div>
 
-              {/* Right Column: Product List Card */}
-              <div className="lg:col-span-4">
-                {activeItem && (
+              {/* Right Column: Product List Card (Hidden when no items) */}
+              {hasProducts && activeItem && (
+                <div className="lg:col-span-4">
                   <Card className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
                     <CardHeader className="bg-[#1A3673] py-3.5 px-5">
                       <h4 className="text-base font-bold text-white tracking-wide">
@@ -339,39 +354,33 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
                       </h4>
                     </CardHeader>
                     <CardContent className="p-0 divide-y divide-gray-100">
-                      {activeItem.products && activeItem.products.length > 0 ? (
-                        activeItem.products.map((prod: any, pIdx: number) => {
-                          const prodName =
-                            typeof prod === "string"
-                              ? prod
-                              : prod.name || prod.title || "Product Item"
-                          const prodUrl =
-                            typeof prod === "object" && prod.url ? prod.url : "#"
+                      {productList.map((prod: any, pIdx: number) => {
+                        const prodName =
+                          typeof prod === "string"
+                            ? prod
+                            : prod.name || prod.title || "Product Item"
+                        const prodUrl =
+                          typeof prod === "object" && prod.url ? prod.url : "#"
 
-                          return (
-                            <Link
-                              key={pIdx}
-                              href={prodUrl}
-                              className="flex items-center justify-between p-4 text-sm font-medium text-gray-800 hover:bg-slate-50 hover:text-primary transition-colors group"
-                            >
-                              <span className="group-hover:translate-x-0.5 transition-transform">
-                                {prodName}
-                              </span>
-                              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
-                            </Link>
-                          )
-                        })
-                      ) : (
-                        <div className="p-4 text-sm text-gray-400 italic">
-                          {locale === "id"
-                            ? "Belum ada produk terdaftar"
-                            : "No products listed yet"}
-                        </div>
-                      )}
+                        return (
+                          <Link
+                            key={pIdx}
+                            href={prodUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between p-4 text-sm font-medium text-gray-800 hover:bg-slate-50 hover:text-primary transition-colors group"
+                          >
+                            <span className="group-hover:translate-x-0.5 transition-transform">
+                              {prodName}
+                            </span>
+                            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
+                          </Link>
+                        )
+                      })}
                     </CardContent>
                   </Card>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </section>
         )}
