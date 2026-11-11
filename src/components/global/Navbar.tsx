@@ -354,9 +354,10 @@ export default function Navbar({ isBackgroundWhite = false, children, disableLan
                   disabled={disableLanguageSwitch}
                 >
                   <Image
-                    className="mr-1 size-4 rounded-full border border-white"
+                    className="mr-1 size-4 rounded-full border border-white object-cover"
                     src={locale === "id" ? icBahasa : icEnglish}
                     alt={locale === "id" ? "Bahasa Indonesia" : "English"}
+                    unoptimized
                   />
                   {locale.toUpperCase()}
                   <ChevronDown className="size-5" />
@@ -510,9 +511,10 @@ function NavbarMobile({
                     disabled={disableLanguageSwitch}
                   >
                     <Image
-                      className="mr-1 size-4 rounded-full border border-white"
+                      className="mr-1 size-4 rounded-full border border-white object-cover"
                       src={locale === "id" ? icBahasa : icEnglish}
                       alt={locale === "id" ? "Bahasa Indonesia" : "English"}
+                      unoptimized
                     />
                     {locale.toUpperCase()}
                     <ChevronDown className="size-5" />
@@ -708,9 +710,10 @@ function NavbarMobile({
                 disabled={disableLanguageSwitch}
               >
                 <Image
-                  className="mr-1 size-4 rounded-full border border-white"
+                  className="mr-1 size-4 rounded-full border border-white object-cover"
                   src={locale === "id" ? icBahasa : icEnglish}
                   alt={locale === "id" ? "Bahasa Indonesia" : "English"}
+                  unoptimized
                 />
                 {locale.toUpperCase()}
                 <ChevronDown className="size-5" />
