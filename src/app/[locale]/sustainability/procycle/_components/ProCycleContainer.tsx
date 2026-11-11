@@ -359,16 +359,30 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
                           typeof prod === "string"
                             ? prod
                             : prod.name || prod.title || "Product Item"
-                        const prodUrl =
-                          typeof prod === "object" && prod.url ? prod.url : "#"
+                        const rawUrl =
+                          typeof prod === "object" && typeof prod.url === "string"
+                            ? prod.url.trim()
+                            : ""
+                        const hasLink = Boolean(rawUrl && rawUrl !== "#")
+
+                        if (!hasLink) {
+                          return (
+                            <div
+                              key={pIdx}
+                              className="flex items-center justify-between p-4 text-sm font-medium text-gray-700"
+                            >
+                              <span>{prodName}</span>
+                            </div>
+                          )
+                        }
 
                         return (
                           <Link
                             key={pIdx}
-                            href={prodUrl}
+                            href={rawUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-between p-4 text-sm font-medium text-gray-800 hover:bg-slate-50 hover:text-primary transition-colors group"
+                            className="flex items-center justify-between p-4 text-sm font-medium text-gray-800 hover:bg-slate-50 hover:text-primary transition-colors group cursor-pointer"
                           >
                             <span className="group-hover:translate-x-0.5 transition-transform">
                               {prodName}
