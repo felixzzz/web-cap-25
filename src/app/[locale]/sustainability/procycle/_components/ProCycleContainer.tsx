@@ -4,9 +4,10 @@ import React, { useState, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useLocale } from "next-intl"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, ArrowUpRight } from "lucide-react"
 import { BannerBlock } from "@/components/block/BannerBlock"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { logoChandraAsriWhite } from "@/data/images"
 import { cn, getLocalizedContent, assetUrl } from "@/lib/utils"
 import { DEFAULT_PROCYCLE_DATA } from "../_data/procycleData"
 
@@ -172,7 +173,7 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
       ? "Chandra Asri telah mulai mengembangkan pengelolaan produk berkelanjutan dengan mengelompokkan tindakan ke dalam 5 kategori:"
       : "Chandra Asri has started developing a sustainable product management by grouping actions into 5 categories:")
 
-  // Bottom Banner CMS Data (Pure Image Banner, no title/description)
+  // Bottom Banner CMS Data (Custom Rich CTA Banner)
   const isBottomBannerActive =
     bottomBanner?.status === "active" ||
     bottomBanner?.status_id === "active" ||
@@ -182,16 +183,61 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
       bottomBanner.status_id !== "inactive" &&
       bottomBanner.status_en !== "inactive")
 
-  const bottomDesktopImg = getSafeLocalizedImage(
-    isEn ? bottomBanner?.image_desktop_en : bottomBanner?.image_desktop_id,
-    isEn ? bottomBanner?.image_desktop_id : bottomBanner?.image_desktop_en
-  )
+  const bottomBannerTitle =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.title_en,
+      bottomBanner?.title_id
+    ) ||
+    bottomBanner?.title ||
+    (locale === "id"
+      ? "Mari Membangun Masa Depan, Bersama"
+      : "Let's Build What's Next, Together")
+
+  const bottomBannerDesc =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.description_en,
+      bottomBanner?.description_id
+    ) ||
+    bottomBanner?.description ||
+    (locale === "id"
+      ? "Temukan bagaimana Chandra Asri Group dapat menjadi mitra pertumbuhan Anda dalam membangun bisnis yang lebih tangguh dan berkelanjutan."
+      : "Discover how Chandra Asri Group can be your growth partner in building stronger businesses")
+
+  const bottomBannerBtnLabel =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.button_label_en,
+      bottomBanner?.button_label_id
+    ) ||
+    bottomBanner?.button_label ||
+    bottomBanner?.cta_label ||
+    (locale === "id" ? "Jelajahi Bisnis Kami" : "Discover Our Business")
+
+  const bottomBannerBtnUrl =
+    getLocalizedContent(
+      locale,
+      bottomBanner?.button_url_en,
+      bottomBanner?.button_url_id
+    ) ||
+    bottomBanner?.button_url ||
+    bottomBanner?.url ||
+    "/our-business"
+
+  const bottomDesktopImg =
+    getSafeLocalizedImage(
+      isEn ? bottomBanner?.image_desktop_en : bottomBanner?.image_desktop_id,
+      isEn ? bottomBanner?.image_desktop_id : bottomBanner?.image_desktop_en
+    ) || "/img/temp/bg-jumbotron.jpg"
 
   const bottomMobileImg =
     getSafeLocalizedImage(
       isEn ? bottomBanner?.image_mobile_en : bottomBanner?.image_mobile_id,
       isEn ? bottomBanner?.image_mobile_id : bottomBanner?.image_mobile_en
-    ) || bottomDesktopImg
+    ) ||
+    bottomDesktopImg ||
+    "/img/temp/bg-jumbotron-mobile.jpg"
 
   const bottomAlt =
     getLocalizedContent(
@@ -200,15 +246,7 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
       bottomBanner?.alt_text_image_desktop_id
     ) ||
     bottomBanner?.alt_text_image_desktop ||
-    "Chandra Asri ProCycle Banner"
-
-  const bottomUrl =
-    getLocalizedContent(locale, bottomBanner?.url_en, bottomBanner?.url_id) ||
-    bottomBanner?.url ||
-    bottomBanner?.button_url_en ||
-    bottomBanner?.button_url_id ||
-    bottomBanner?.button_url ||
-    null
+    bottomBannerTitle
 
   return (
     <div className="w-full">
@@ -399,58 +437,75 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
           </section>
         )}
 
-        {/* 5. Bottom Banner (Image Only from CMS) */}
-        {isBottomBannerActive && bottomDesktopImg && (
-          <section className="container mx-auto px-4 py-8 lg:py-14">
-            {bottomUrl ? (
-              <Link href={bottomUrl} className="block group">
-                <div className="relative w-full overflow-hidden rounded-2xl lg:rounded-3xl shadow-sm hover:shadow-md transition-shadow">
-                  {/* Desktop Banner Image */}
-                  <div className="hidden lg:block relative aspect-[1060/424] w-full">
+        {/* 5. Bottom CTA Banner (Configured via CMS) */}
+        {isBottomBannerActive && (
+          <section className="container mx-auto px-4 py-10 lg:py-16">
+            <div className="relative overflow-hidden rounded-2xl lg:rounded-3xl bg-[#0B1E3F] px-6 py-12 sm:px-12 sm:py-16 lg:py-20 text-center shadow-xl">
+              {/* Background Image / Overlay */}
+              {bottomDesktopImg && (
+                <div className="absolute inset-0 -z-0 pointer-events-none">
+                  <div className="hidden sm:block relative w-full h-full">
                     <Image
                       src={assetUrl(bottomDesktopImg)!}
                       alt={bottomAlt}
                       fill
-                      className="object-cover rounded-2xl lg:rounded-3xl"
+                      className="object-cover opacity-25 mix-blend-luminosity"
                       sizes="(min-width: 1024px) 1200px, 100vw"
                     />
                   </div>
-                  {/* Mobile Banner Image */}
-                  <div className="block lg:hidden relative aspect-[1060/424] w-full">
+                  <div className="block sm:hidden relative w-full h-full">
                     <Image
                       src={assetUrl(bottomMobileImg)!}
                       alt={bottomAlt}
                       fill
-                      className="object-cover rounded-2xl lg:rounded-3xl"
+                      className="object-cover opacity-25 mix-blend-luminosity"
                       sizes="100vw"
                     />
                   </div>
+                  {/* Dark Blue Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1E3F] via-[#0B1E3F]/85 to-[#0B1E3F]/70" />
                 </div>
-              </Link>
-            ) : (
-              <div className="relative w-full overflow-hidden rounded-2xl lg:rounded-3xl shadow-sm">
-                {/* Desktop Banner Image */}
-                <div className="hidden lg:block relative aspect-[1060/424] w-full">
+              )}
+
+              <div className="relative z-10 mx-auto max-w-3xl flex flex-col items-center">
+                {/* Logo Chandra Asri White */}
+                <div className="mb-6 sm:mb-7">
                   <Image
-                    src={assetUrl(bottomDesktopImg)!}
-                    alt={bottomAlt}
-                    fill
-                    className="object-cover rounded-2xl lg:rounded-3xl"
-                    sizes="(min-width: 1024px) 1200px, 100vw"
+                    src={logoChandraAsriWhite}
+                    alt="Chandra Asri Group"
+                    width={180}
+                    height={48}
+                    className="h-8 sm:h-9 w-auto object-contain"
                   />
                 </div>
-                {/* Mobile Banner Image */}
-                <div className="block lg:hidden relative aspect-[1060/424] w-full">
-                  <Image
-                    src={assetUrl(bottomMobileImg)!}
-                    alt={bottomAlt}
-                    fill
-                    className="object-cover rounded-2xl lg:rounded-3xl"
-                    sizes="100vw"
-                  />
-                </div>
+
+                {/* Heading */}
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white mb-4 leading-tight">
+                  {bottomBannerTitle}
+                </h2>
+
+                {/* Subtitle / Description */}
+                {bottomBannerDesc && (
+                  <p className="text-sm sm:text-base lg:text-lg text-white/85 max-w-2xl mb-8 leading-relaxed font-normal">
+                    {bottomBannerDesc}
+                  </p>
+                )}
+
+                {/* Button CTA */}
+                {bottomBannerBtnLabel && bottomBannerBtnUrl && (
+                  <Link
+                    href={bottomBannerBtnUrl}
+                    {...(bottomBannerBtnUrl.startsWith("http") || bottomBannerBtnUrl.startsWith("//")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="inline-flex items-center gap-2 rounded-full bg-[#0082CA] px-8 py-3.5 text-sm sm:text-base font-semibold text-white shadow-md hover:bg-[#0070b0] hover:shadow-lg transition-all duration-200 group"
+                  >
+                    <span>{bottomBannerBtnLabel}</span>
+                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
+                )}
               </div>
-            )}
+            </div>
           </section>
         )}
       </div>

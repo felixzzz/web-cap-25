@@ -48,6 +48,7 @@ export async function GET() {
     data: {
       coordinates: localData.coordinates || {},
       nodes: localData.nodes || {},
+      legend: localData.legend || null,
     },
   })
 }
@@ -55,7 +56,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { coordinates, nodes } = body
+    const { coordinates, nodes, legend } = body
 
     const localData = readLocalFallback()
     if (coordinates && typeof coordinates === "object") {
@@ -64,13 +65,16 @@ export async function POST(req: Request) {
     if (nodes && typeof nodes === "object") {
       localData.nodes = nodes
     }
+    if (legend && Array.isArray(legend)) {
+      localData.legend = legend
+    }
     writeLocalFallback(localData)
 
     try {
       const res = await fetch(`${API_URL}/api/product-flow/layout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ coordinates, nodes }),
+        body: JSON.stringify({ coordinates, nodes, legend }),
       })
 
       if (res.ok) {

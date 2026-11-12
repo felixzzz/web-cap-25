@@ -16,6 +16,31 @@ export const ProductFlow2Container: React.FC<ProductFlow2ContainerProps> = ({ lo
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<"diagram" | "steps">("diagram")
+  const [coordinates, setCoordinates] = useState<Record<string, { x: number; y: number }> | null>(null)
+  const [customNodes, setCustomNodes] = useState<Record<string, any>>({})
+  const [customLegend, setCustomLegend] = useState<any[] | null>(null)
+
+  // Fetch saved layout & customization from CMS
+  React.useEffect(() => {
+    async function loadLayout() {
+      try {
+        const res = await fetch("/api/product-flow/layout", { cache: "no-store" })
+        if (res.ok) {
+          const json = await res.json()
+          if (json?.data?.coordinates && Object.keys(json.data.coordinates).length > 0) {
+            setCoordinates(json.data.coordinates)
+          }
+          if (json?.data?.nodes && Object.keys(json.data.nodes).length > 0) {
+            setCustomNodes(json.data.nodes)
+          }
+          if (json?.data?.legend && Array.isArray(json.data.legend) && json.data.legend.length > 0) {
+            setCustomLegend(json.data.legend)
+          }
+        }
+      } catch {}
+    }
+    loadLayout()
+  }, [])
 
   return (
     <div className="w-full min-h-screen bg-[#F7F8FA] py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
@@ -39,6 +64,10 @@ export const ProductFlow2Container: React.FC<ProductFlow2ContainerProps> = ({ lo
               hoveredNodeId={hoveredNodeId}
               onHoverNode={setHoveredNodeId}
               onSelectNode={setSelectedNodeId}
+              customCoordinates={coordinates}
+              customNodesData={customNodes}
+              customLegendData={customLegend}
+              showLegend={true}
             />
           </div>
         ) : (
@@ -57,6 +86,7 @@ export const ProductFlow2Container: React.FC<ProductFlow2ContainerProps> = ({ lo
         locale={locale}
         onClose={() => setSelectedNodeId(null)}
         onSelectNode={setSelectedNodeId}
+        customNodesData={customNodes}
       />
     </div>
   )

@@ -7,13 +7,58 @@
   },
   "nodes": {
     "crude-oil": {
-      "mainFunction": {
-        "en": "Primary feedstock for refining operations (Verified).",
-        "id": "Bahan baku utama untuk operasi pengilangan (Terverifikasi)."
-      }
+      "colorPreset": "exclude",
+      "iconType": "flask"
     },
-    "ethylene": {
-      "name": "ETHYLENEs"
+    "natural-gas": {
+      "colorPreset": "exclude",
+      "iconType": "flask"
+    },
+    "refinery-plant": {
+      "colorPreset": "exclude",
+      "iconType": "flask"
+    },
+    "gas-separation-unit": {
+      "colorPreset": "exclude",
+      "iconType": "flask"
+    },
+    "lpg": {
+      "colorPreset": "exclude",
+      "iconType": "flask"
+    },
+    "naphtha": {
+      "colorPreset": "exclude",
+      "iconType": "flask"
+    },
+    "condensate": {
+      "colorPreset": "exclude",
+      "iconType": "flask"
     }
-  }
+  },
+  "legend": [
+    {
+      "id": "chandra-asri-product",
+      "labelEn": "Chandra Asri Product",
+      "labelId": "Produk Chandra Asri",
+      "color": "#0082C8",
+      "type": "solid",
+      "borderColor": "#0070ad"
+    },
+    {
+      "id": "chandra-asri-facility",
+      "labelEn": "Chandra Asri Facility",
+      "labelId": "Fasilitas Chandra Asri",
+      "color": "#ffffff",
+      "type": "outline",
+      "borderColor": "#0082C8"
+    },
+    {
+      "id": "exclude-chandra-asri",
+      "labelEn": "Exclude Chandra Asri Owned Ecosystem",
+      "labelId": "Di Luar Ekosistem Chandra Asri",
+      "color": "#1B2B5A",
+      "type": "solid",
+      "borderColor": "#131f42"
+    }
+  ]
 }

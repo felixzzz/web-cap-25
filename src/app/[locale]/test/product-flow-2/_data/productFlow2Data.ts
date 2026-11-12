@@ -6,13 +6,56 @@ export interface LocalizedString {
   en: string
 }
 
+export type FlowNodeColorPreset = "product" | "facility" | "exclude" | "custom"
+
+export interface FlowLegendItem {
+  id: string
+  labelEn: string
+  labelId: string
+  color: string
+  type: "solid" | "outline"
+  borderColor?: string
+}
+
+export const DEFAULT_FLOW_LEGENDS: FlowLegendItem[] = [
+  {
+    id: "chandra-asri-product",
+    labelEn: "Chandra Asri Product",
+    labelId: "Produk Chandra Asri",
+    color: "#0082C8",
+    type: "solid",
+    borderColor: "#0070ad",
+  },
+  {
+    id: "chandra-asri-facility",
+    labelEn: "Chandra Asri Facility",
+    labelId: "Fasilitas Chandra Asri",
+    color: "#ffffff",
+    type: "outline",
+    borderColor: "#0082C8",
+  },
+  {
+    id: "exclude-chandra-asri",
+    labelEn: "Exclude Chandra Asri Owned Ecosystem",
+    labelId: "Di Luar Ekosistem Chandra Asri",
+    color: "#1B2B5A",
+    type: "solid",
+    borderColor: "#131f42",
+  },
+]
+
 export interface Flow2Node {
   id: string
   name: string
   fullName?: string
-  iconType: "flask" | "plant"
+  iconType: string
   category: Flow2Category
   zone: Flow2Zone
+  colorPreset?: FlowNodeColorPreset
+  customBgColor?: string
+  customTextColor?: string
+  customBorderColor?: string
+  customIconUrl?: string
   definition?: LocalizedString
   mainFunction: LocalizedString
   inputs?: string[] // node ids

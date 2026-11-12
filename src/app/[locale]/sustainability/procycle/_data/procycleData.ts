@@ -56,6 +56,14 @@ export interface ProCycleData {
   bottom_banner: {
     status_en: "active" | "inactive"
     status_id: "active" | "inactive"
+    title_en?: string
+    title_id?: string
+    description_en?: string
+    description_id?: string
+    button_label_en?: string
+    button_label_id?: string
+    button_url_en?: string
+    button_url_id?: string
     image_desktop_en: string
     image_desktop_id: string
     image_mobile_en: string
@@ -205,10 +213,18 @@ export const DEFAULT_PROCYCLE_DATA: ProCycleData = {
   bottom_banner: {
     status_en: "active",
     status_id: "active",
-    image_desktop_en: "/img/sustainability/procycle-full-reference.jpg",
-    image_desktop_id: "/img/sustainability/procycle-full-reference.jpg",
-    image_mobile_en: "/img/sustainability/procycle-full-reference.jpg",
-    image_mobile_id: "/img/sustainability/procycle-full-reference.jpg",
+    title_en: "Let's Build What's Next, Together",
+    title_id: "Mari Membangun Masa Depan, Bersama",
+    description_en: "Discover how Chandra Asri Group can be your growth partner in building stronger businesses",
+    description_id: "Temukan bagaimana Chandra Asri Group dapat menjadi mitra pertumbuhan Anda dalam membangun bisnis yang lebih tangguh dan berkelanjutan.",
+    button_label_en: "Discover Our Business",
+    button_label_id: "Jelajahi Bisnis Kami",
+    button_url_en: "/our-business",
+    button_url_id: "/our-business",
+    image_desktop_en: "/img/temp/bg-jumbotron.jpg",
+    image_desktop_id: "/img/temp/bg-jumbotron.jpg",
+    image_mobile_en: "/img/temp/bg-jumbotron-mobile.jpg",
+    image_mobile_id: "/img/temp/bg-jumbotron-mobile.jpg",
     alt_text_image_desktop_en: "Chandra Asri ProCycle",
     alt_text_image_desktop_id: "Chandra Asri ProCycle",
     alt_text_image_mobile_en: "Chandra Asri ProCycle",
