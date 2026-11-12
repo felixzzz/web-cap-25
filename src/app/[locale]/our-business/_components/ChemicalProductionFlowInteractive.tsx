@@ -15,6 +15,7 @@ export const ChemicalProductionFlowInteractive: React.FC<ChemicalProductionFlowI
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null)
   const [coordinates, setCoordinates] = useState<Record<string, { x: number; y: number }> | null>(null)
   const [customNodes, setCustomNodes] = useState<Record<string, any> | null>(null)
+  const [customLegend, setCustomLegend] = useState<any[] | null>(null)
 
   // Fetch coordinates and node texts saved from CMS
   useEffect(() => {
@@ -28,6 +29,9 @@ export const ChemicalProductionFlowInteractive: React.FC<ChemicalProductionFlowI
           }
           if (json?.data?.nodes && Object.keys(json.data.nodes).length > 0) {
             setCustomNodes(json.data.nodes)
+          }
+          if (json?.data?.legend && Array.isArray(json.data.legend) && json.data.legend.length > 0) {
+            setCustomLegend(json.data.legend)
           }
         }
       } catch {
@@ -49,7 +53,9 @@ export const ChemicalProductionFlowInteractive: React.FC<ChemicalProductionFlowI
         onSelectNode={setSelectedNodeId}
         isLocked={true}
         customCoordinates={coordinates}
-        showLegend={false}
+        customNodesData={customNodes}
+        customLegendData={customLegend}
+        showLegend={true}
       />
 
       {/* Node Detail Modal */}

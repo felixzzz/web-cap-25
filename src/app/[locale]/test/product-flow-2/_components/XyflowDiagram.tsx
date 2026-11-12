@@ -18,7 +18,7 @@ import {
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 
-import { PRODUCT_FLOW_2_DATA, Flow2Zone } from "../_data/productFlow2Data"
+import { PRODUCT_FLOW_2_DATA, Flow2Zone, DEFAULT_FLOW_LEGENDS, FlowLegendItem } from "../_data/productFlow2Data"
 import { FlowProductNode, FlowPlantNode, FlowZoneBarNode, Flow2NodeData } from "./CustomNodes2"
 import { Compass, RotateCcw } from "lucide-react"
 
@@ -33,6 +33,7 @@ export interface XyflowDiagramProps {
   showLegend?: boolean
   customCoordinates?: Record<string, { x: number; y: number }> | null
   customNodesData?: Record<string, any> | null
+  customLegendData?: FlowLegendItem[] | null
   onCoordinatesChange?: (coords: Record<string, { x: number; y: number }>) => void
 }
 
@@ -79,12 +80,21 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   onHoverNode,
   onSelectNode,
   isLocked = true,
+  showLegend = true,
   customCoordinates = null,
   customNodesData = null,
+  customLegendData = null,
   onCoordinatesChange,
 }) => {
   const { fitView } = useReactFlow()
   const [showMiniMap, setShowMiniMap] = useState<boolean>(!isLocked)
+
+  const legendItems = useMemo(() => {
+    if (customLegendData && customLegendData.length > 0) {
+      return customLegendData
+    }
+    return DEFAULT_FLOW_LEGENDS
+  }, [customLegendData])
 
   const getPosition = useCallback(
     (id: string) => {
@@ -705,6 +715,30 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
             zoomable
             pannable
           />
+        )}
+
+        {/* Bottom-Left Customizable Legend Panel */}
+        {showLegend && (
+          <Panel position="bottom-left" className="m-3 sm:m-4 z-20">
+            <div className="p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-sm flex flex-col gap-2.5 max-w-xs select-none">
+              {legendItems.map((item) => (
+                <div key={item.id} className="flex items-center gap-3">
+                  <span
+                    style={{
+                      backgroundColor: item.type === "outline" ? "#ffffff" : item.color,
+                      borderColor: item.borderColor || item.color,
+                      borderWidth: item.type === "outline" ? "2px" : "1.5px",
+                      borderStyle: "solid",
+                    }}
+                    className="w-8 h-4 rounded-md inline-block shadow-2xs shrink-0"
+                  />
+                  <span className="text-[11px] sm:text-xs font-semibold text-slate-700 leading-tight">
+                    {locale === "id" ? item.labelId : item.labelEn}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Panel>
         )}
 
         {/* Top-Right Helper Panel (shown if not locked) */}
