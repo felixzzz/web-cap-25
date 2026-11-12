@@ -3,7 +3,7 @@
 import React, { memo } from "react"
 import { Handle, Position, NodeProps } from "@xyflow/react"
 import { Flow2Icon } from "./Flow2Icons"
-import { Flow2Category, Flow2Zone, FlowNodeColorPreset } from "../_data/productFlow2Data"
+import { Flow2Category, Flow2Zone, FlowNodeColorPreset, FlowLegendItem, DEFAULT_FLOW_LEGENDS } from "../_data/productFlow2Data"
 
 export interface Flow2NodeData {
   id: string
@@ -301,3 +301,37 @@ export const FlowZoneBarNode = memo(({ data }: NodeProps) => {
   )
 })
 FlowZoneBarNode.displayName = "FlowZoneBarNode"
+
+export interface FlowLegendNodeData {
+  items?: FlowLegendItem[]
+  locale?: "id" | "en"
+}
+
+/**
+ * Draggable Diagram Legend Node
+ */
+export const FlowLegendNode = memo(({ data }: NodeProps) => {
+  const { items = DEFAULT_FLOW_LEGENDS, locale = "id" } = data as unknown as FlowLegendNodeData
+
+  return (
+    <div className="p-3.5 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md flex flex-col gap-2.5 min-w-[240px] select-none cursor-grab active:cursor-grabbing hover:shadow-lg transition-shadow">
+      {items.map((item) => (
+        <div key={item.id} className="flex items-center gap-3">
+          <span
+            style={{
+              backgroundColor: item.type === "outline" ? "#ffffff" : item.color,
+              borderColor: item.borderColor || item.color,
+              borderWidth: item.type === "outline" ? "2px" : "1.5px",
+              borderStyle: "solid",
+            }}
+            className="w-8 h-4 rounded-md inline-block shadow-2xs shrink-0"
+          />
+          <span className="text-[11px] sm:text-xs font-semibold text-slate-700 leading-tight">
+            {locale === "id" ? item.labelId : item.labelEn}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+})
+FlowLegendNode.displayName = "FlowLegendNode"

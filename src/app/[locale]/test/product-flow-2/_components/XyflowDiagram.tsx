@@ -19,7 +19,7 @@ import {
 import "@xyflow/react/dist/style.css"
 
 import { PRODUCT_FLOW_2_DATA, Flow2Zone, DEFAULT_FLOW_LEGENDS, FlowLegendItem } from "../_data/productFlow2Data"
-import { FlowProductNode, FlowPlantNode, FlowZoneBarNode, Flow2NodeData } from "./CustomNodes2"
+import { FlowProductNode, FlowPlantNode, FlowZoneBarNode, FlowLegendNode, Flow2NodeData } from "./CustomNodes2"
 import { Compass, RotateCcw } from "lucide-react"
 
 export interface XyflowDiagramProps {
@@ -64,12 +64,14 @@ export const DEFAULT_FLOW_2_POSITIONS: Record<string, { x: number; y: number }> 
   "impact-pp": { x: 1360, y: 595 },
   "butadiene": { x: 1360, y: 740 },
   "raff-1": { x: 1360, y: 815 },
+  "legend": { x: 40, y: 740 },
 }
 
 const nodeTypes = {
   productNode: FlowProductNode,
   plantNode: FlowPlantNode,
   zoneBar: FlowZoneBarNode,
+  legendNode: FlowLegendNode,
 }
 
 const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
@@ -450,10 +452,27 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
           width: 440,
         },
       },
+
+      // ---------------- DRAGGABLE LEGEND NODE ----------------
+      ...(showLegend
+        ? [
+            {
+              id: "legend",
+              type: "legendNode",
+              position: getPosition("legend"),
+              draggable: !isLocked,
+              selectable: !isLocked,
+              data: {
+                items: legendItems,
+                locale,
+              },
+            },
+          ]
+        : []),
     ]
 
     return nList
-  }, [onSelectNode, onHoverNode, getPosition, rawNodes])
+  }, [onSelectNode, onHoverNode, getPosition, rawNodes, showLegend, legendItems, locale, isLocked])
 
   // Initial Edges matching the slide diagram
   const initialEdges: Edge[] = useMemo(() => {
@@ -559,7 +578,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
     if (customNodesData) {
       setNodes((nds) =>
         nds.map((n) => {
-          if (n.type === "zoneBar") return n
+          if (n.type === "zoneBar" || n.type === "legendNode") return n
           const override = customNodesData[n.id]
           if (override) {
             return {
@@ -579,6 +598,24 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
       )
     }
   }, [customNodesData, locale, setNodes])
+
+  // Sync legend node data when legendItems or locale change
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((n) => {
+        if (n.id === "legend") {
+          return {
+            ...n,
+            data: {
+              items: legendItems,
+              locale,
+            },
+          }
+        }
+        return n
+      })
+    )
+  }, [legendItems, locale, setNodes])
 
   // Handle node drag stop in editor mode
   const handleNodeDragStop = useCallback(
@@ -609,7 +646,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => {
-        if (node.type === "zoneBar") return node
+        if (node.type === "zoneBar" || node.type === "legendNode") return node
 
         const nodeData = node.data as unknown as Flow2NodeData
         const isFocused = node.id === activeFocusId
@@ -715,30 +752,6 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
             zoomable
             pannable
           />
-        )}
-
-        {/* Bottom-Left Customizable Legend Panel */}
-        {showLegend && (
-          <Panel position="bottom-left" className="m-3 sm:m-4 z-20">
-            <div className="p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-sm flex flex-col gap-2.5 max-w-xs select-none">
-              {legendItems.map((item) => (
-                <div key={item.id} className="flex items-center gap-3">
-                  <span
-                    style={{
-                      backgroundColor: item.type === "outline" ? "#ffffff" : item.color,
-                      borderColor: item.borderColor || item.color,
-                      borderWidth: item.type === "outline" ? "2px" : "1.5px",
-                      borderStyle: "solid",
-                    }}
-                    className="w-8 h-4 rounded-md inline-block shadow-2xs shrink-0"
-                  />
-                  <span className="text-[11px] sm:text-xs font-semibold text-slate-700 leading-tight">
-                    {locale === "id" ? item.labelId : item.labelEn}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </Panel>
         )}
 
         {/* Top-Right Helper Panel (shown if not locked) */}

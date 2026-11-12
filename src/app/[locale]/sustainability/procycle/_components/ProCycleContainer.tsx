@@ -441,7 +441,7 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
         {isBottomBannerActive && (
           <section className="container mx-auto px-4 py-10 lg:py-16">
             <div className="relative overflow-hidden rounded-2xl lg:rounded-3xl bg-[#0B1E3F] px-6 py-12 sm:px-12 sm:py-16 lg:py-20 text-center shadow-xl">
-              {/* Background Image / Overlay */}
+              {/* Background Image (No gradient effect) */}
               {bottomDesktopImg && (
                 <div className="absolute inset-0 -z-0 pointer-events-none">
                   <div className="hidden sm:block relative w-full h-full">
@@ -449,7 +449,7 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
                       src={assetUrl(bottomDesktopImg)!}
                       alt={bottomAlt}
                       fill
-                      className="object-cover opacity-25 mix-blend-luminosity"
+                      className="object-cover opacity-35"
                       sizes="(min-width: 1024px) 1200px, 100vw"
                     />
                   </div>
@@ -458,24 +458,22 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
                       src={assetUrl(bottomMobileImg)!}
                       alt={bottomAlt}
                       fill
-                      className="object-cover opacity-25 mix-blend-luminosity"
+                      className="object-cover opacity-35"
                       sizes="100vw"
                     />
                   </div>
-                  {/* Dark Blue Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1E3F] via-[#0B1E3F]/85 to-[#0B1E3F]/70" />
                 </div>
               )}
 
               <div className="relative z-10 mx-auto max-w-3xl flex flex-col items-center">
-                {/* Logo Chandra Asri White */}
+                {/* Logo Chandra Asri White (+20% size) */}
                 <div className="mb-6 sm:mb-7">
                   <Image
                     src={logoChandraAsriWhite}
                     alt="Chandra Asri Group"
-                    width={180}
-                    height={48}
-                    className="h-8 sm:h-9 w-auto object-contain"
+                    width={216}
+                    height={58}
+                    className="h-10 sm:h-11 w-auto object-contain"
                   />
                 </div>
 
@@ -486,9 +484,10 @@ export function ProCycleContainer({ data }: ProCycleContainerProps) {
 
                 {/* Subtitle / Description */}
                 {bottomBannerDesc && (
-                  <p className="text-sm sm:text-base lg:text-lg text-white/85 max-w-2xl mb-8 leading-relaxed font-normal">
-                    {bottomBannerDesc}
-                  </p>
+                  <div
+                    className="text-xs sm:text-sm lg:text-base text-white/85 max-w-2xl mb-8 leading-relaxed font-normal [&>p]:m-0"
+                    dangerouslySetInnerHTML={{ __html: bottomBannerDesc }}
+                  />
                 )}
 
                 {/* Button CTA */}
