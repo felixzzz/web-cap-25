@@ -42,7 +42,7 @@ export const ChemicalProductionFlowInteractive: React.FC<ChemicalProductionFlowI
   }, [])
 
   return (
-    <div className="w-full pt-4">
+    <div className="w-full pt-1 sm:pt-4">
       {/* Interactive Diagram Canvas (Locked & Auto-fitted to Device) */}
       <XyflowDiagram
         locale={locale}

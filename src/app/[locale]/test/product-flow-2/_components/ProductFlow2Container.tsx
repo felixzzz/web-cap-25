@@ -43,8 +43,8 @@ export const ProductFlow2Container: React.FC<ProductFlow2ContainerProps> = ({ lo
   }, [])
 
   return (
-    <div className="w-full min-h-screen bg-[#F7F8FA] py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-[1580px] mx-auto space-y-8 bg-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm border border-slate-200/80">
+    <div className="w-full min-h-screen bg-[#F7F8FA] py-4 sm:py-8 lg:py-12 px-2 sm:px-6 lg:px-8">
+      <div className="max-w-[1580px] mx-auto space-y-4 sm:space-y-8 bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-6 md:p-8 shadow-sm border border-slate-200/80">
         {/* Header & Controls */}
         <ProductFlow2Header
           locale={locale}

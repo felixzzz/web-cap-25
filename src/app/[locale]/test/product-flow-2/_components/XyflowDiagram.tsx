@@ -20,7 +20,7 @@ import "@xyflow/react/dist/style.css"
 
 import { PRODUCT_FLOW_2_DATA, Flow2Zone, DEFAULT_FLOW_LEGENDS, FlowLegendItem } from "../_data/productFlow2Data"
 import { FlowProductNode, FlowPlantNode, FlowZoneBarNode, FlowLegendNode, Flow2NodeData } from "./CustomNodes2"
-import { Compass, RotateCcw } from "lucide-react"
+import { Compass, RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 
 export interface XyflowDiagramProps {
   locale: "id" | "en"
@@ -88,7 +88,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   customLegendData = null,
   onCoordinatesChange,
 }) => {
-  const { fitView } = useReactFlow()
+  const { fitView, zoomIn, zoomOut } = useReactFlow()
   const [showMiniMap, setShowMiniMap] = useState<boolean>(!isLocked)
 
   const legendItems = useMemo(() => {
@@ -111,11 +111,11 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   // Auto-fit on window resize and mount
   useEffect(() => {
     const handleResize = () => {
-      fitView({ padding: 0.05, duration: 250 })
+      fitView({ padding: 0.02, duration: 250 })
     }
     window.addEventListener("resize", handleResize)
     const timer = setTimeout(() => {
-      fitView({ padding: 0.05, duration: 300 })
+      fitView({ padding: 0.02, duration: 300 })
     }, 150)
     return () => {
       window.removeEventListener("resize", handleResize)
@@ -704,7 +704,7 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
   }, [activeFocusId, setEdges])
 
   return (
-    <div className="relative w-full h-[720px] sm:h-[800px] md:h-[860px] rounded-2xl overflow-hidden bg-white border border-slate-200/90 shadow-inner">
+    <div className="relative w-full h-[420px] sm:h-[580px] md:h-[740px] lg:h-[840px] rounded-2xl overflow-hidden bg-white border border-slate-200/90 shadow-inner">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -713,17 +713,17 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
         onNodeDragStop={handleNodeDragStop}
         nodeTypes={nodeTypes}
         fitView
-        fitViewOptions={{ padding: 0.05, duration: 400 }}
-        minZoom={0.3}
-        maxZoom={1.5}
+        fitViewOptions={{ padding: 0.02, duration: 300 }}
+        minZoom={0.15}
+        maxZoom={2.5}
         nodesDraggable={!isLocked}
         nodesConnectable={false}
         elementsSelectable={true}
-        panOnDrag={!isLocked}
+        panOnDrag={true}
         panOnScroll={false}
         zoomOnScroll={false}
-        zoomOnPinch={false}
-        zoomOnDoubleClick={false}
+        zoomOnPinch={true}
+        zoomOnDoubleClick={true}
         preventScrolling={false}
         attributionPosition="bottom-left"
         proOptions={{ hideAttribution: true }}
@@ -754,27 +754,43 @@ const XyflowCanvas: React.FC<XyflowDiagramProps> = ({
           />
         )}
 
-        {/* Top-Right Helper Panel (shown if not locked) */}
-        {!isLocked && (
-          <Panel position="top-right" className="flex items-center gap-2">
+        {/* Top-Right Helper & Zoom Controls (Always available on mobile & desktop) */}
+        <Panel position="top-right" className="m-2 sm:m-3 flex items-center gap-1.5 z-20">
+          <div className="flex items-center gap-1 p-1 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-xl shadow-xs">
             <button
-              onClick={() => fitView({ padding: 0.05, duration: 400 })}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/95 hover:bg-slate-50 text-xs font-semibold text-[#062C48] border border-slate-200 shadow-xs backdrop-blur-xs transition-colors"
-              title="Reset View"
+              onClick={() => zoomIn({ duration: 300 })}
+              className="p-1.5 sm:px-2 sm:py-1.5 rounded-lg hover:bg-slate-100 text-slate-700 transition-colors flex items-center justify-center cursor-pointer"
+              title={locale === "id" ? "Perbesar (Zoom In)" : "Zoom In"}
+            >
+              <ZoomIn className="w-4 h-4 text-[#0082C8]" />
+            </button>
+            <button
+              onClick={() => zoomOut({ duration: 300 })}
+              className="p-1.5 sm:px-2 sm:py-1.5 rounded-lg hover:bg-slate-100 text-slate-700 transition-colors flex items-center justify-center cursor-pointer"
+              title={locale === "id" ? "Perkecil (Zoom Out)" : "Zoom Out"}
+            >
+              <ZoomOut className="w-4 h-4 text-[#0082C8]" />
+            </button>
+            <button
+              onClick={() => fitView({ padding: 0.02, duration: 300 })}
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg hover:bg-slate-100 text-[#062C48] text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+              title={locale === "id" ? "Pusatkan Tampilan" : "Reset View"}
             >
               <RotateCcw className="w-3.5 h-3.5 text-[#0082C8]" />
-              <span className="hidden sm:inline">{locale === "id" ? "Pusatkan" : "Center View"}</span>
+              <span className="hidden sm:inline">{locale === "id" ? "Pusatkan" : "Reset"}</span>
             </button>
-            <button
-              onClick={() => setShowMiniMap(!showMiniMap)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/95 hover:bg-slate-50 text-xs font-semibold text-[#062C48] border border-slate-200 shadow-xs backdrop-blur-xs transition-colors"
-              title="Toggle MiniMap"
-            >
-              <Compass className="w-3.5 h-3.5 text-[#0082C8]" />
-              <span className="hidden sm:inline">Minimap</span>
-            </button>
-          </Panel>
-        )}
+            {!isLocked && (
+              <button
+                onClick={() => setShowMiniMap(!showMiniMap)}
+                className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg hover:bg-slate-100 text-[#062C48] text-xs font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                title="Toggle MiniMap"
+              >
+                <Compass className="w-3.5 h-3.5 text-[#0082C8]" />
+                <span className="hidden sm:inline">Minimap</span>
+              </button>
+            )}
+          </div>
+        </Panel>
       </ReactFlow>
     </div>
   )

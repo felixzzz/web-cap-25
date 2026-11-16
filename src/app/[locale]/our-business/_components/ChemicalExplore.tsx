@@ -30,9 +30,9 @@ export function ChemicalExplore({
 
   return (
     <>
-      <div className="relative py-16">
+      <div className="relative py-8 sm:py-12 lg:py-16">
         <div className="container relative">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:gap-10 lg:grid-cols-2 mb-4 sm:mb-8">
             <Anim>
               <div>
                 <h3 className="text-balance text-3xl font-bold">
