@@ -32,6 +32,22 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
     return {
       ...baseNode,
       ...(customOverride || {}),
+      inputLabel: {
+        id: customOverride?.inputLabel?.id || baseNode.inputLabel?.id || "Bahan / Input Masuk",
+        en: customOverride?.inputLabel?.en || baseNode.inputLabel?.en || "Input Sources",
+      },
+      inputEmptyText: {
+        id: customOverride?.inputEmptyText?.id || baseNode.inputEmptyText?.id || "Sumber Utama",
+        en: customOverride?.inputEmptyText?.en || baseNode.inputEmptyText?.en || "Primary Raw Feedstock",
+      },
+      outputLabel: {
+        id: customOverride?.outputLabel?.id || baseNode.outputLabel?.id || "Hasil / Produk Turunan",
+        en: customOverride?.outputLabel?.en || baseNode.outputLabel?.en || "Outputs & Derivatives",
+      },
+      outputEmptyText: {
+        id: customOverride?.outputEmptyText?.id || baseNode.outputEmptyText?.id || "Produk Akhir / Pasar",
+        en: customOverride?.outputEmptyText?.en || baseNode.outputEmptyText?.en || "End Product / Regional Market",
+      },
       definition: {
         ...baseNode.definition,
         ...(customOverride?.definition || {}),
@@ -207,75 +223,73 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
           )}
 
           {/* Interactive Pipeline Navigation (Inputs & Outputs) */}
-          {(inputNodes.length > 0 || outputNodes.length > 0) && (
-            <div className="pt-2 border-t border-slate-100 space-y-3">
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                {locale === "id" ? "Koneksi Alur Proses" : "Connected Process Flow"}
-              </h4>
+          <div className="pt-2 border-t border-slate-100 space-y-3">
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              {locale === "id" ? "Koneksi Alur Proses" : "Connected Process Flow"}
+            </h4>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Inputs */}
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide flex items-center gap-1.5 mb-2">
-                    <ArrowLeft className="w-3.5 h-3.5 text-[#0082C8]" />
-                    {locale === "id" ? "Bahan / Input Masuk" : "Input Sources"}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Inputs */}
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide flex items-center gap-1.5 mb-2">
+                  <ArrowLeft className="w-3.5 h-3.5 text-[#0082C8]" />
+                  {node.inputLabel?.[locale] || (locale === "id" ? "Bahan / Input Masuk" : "Input Sources")}
+                </span>
+                {inputNodes.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5">
+                    {inputNodes.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => onSelectNode(item.id)}
+                        className="px-2.5 py-1 rounded-lg bg-white hover:bg-sky-50 text-[11px] font-bold text-[#0082C8] border border-slate-200 hover:border-sky-300 shadow-2xs transition-all flex items-center gap-1 group"
+                      >
+                        <Flow2Icon
+                          type={item.iconType}
+                          className="w-3 h-3 text-[#0082C8]"
+                          color="#0082C8"
+                        />
+                        <span>{item.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-xs text-slate-400 italic">
+                    {node.inputEmptyText?.[locale] || (locale === "id" ? "Sumber Utama" : "Primary Raw Feedstock")}
                   </span>
-                  {inputNodes.length > 0 ? (
-                    <div className="flex flex-wrap gap-1.5">
-                      {inputNodes.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => onSelectNode(item.id)}
-                          className="px-2.5 py-1 rounded-lg bg-white hover:bg-sky-50 text-[11px] font-bold text-[#0082C8] border border-slate-200 hover:border-sky-300 shadow-2xs transition-all flex items-center gap-1 group"
-                        >
-                          <Flow2Icon
-                            type={item.iconType}
-                            className="w-3 h-3 text-[#0082C8]"
-                            color="#0082C8"
-                          />
-                          <span>{item.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="text-xs text-slate-400 italic">
-                      {locale === "id" ? "Sumber Utama" : "Primary Raw Feedstock"}
-                    </span>
-                  )}
-                </div>
+                )}
+              </div>
 
-                {/* Outputs */}
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide flex items-center gap-1.5 mb-2">
-                    <ArrowRight className="w-3.5 h-3.5 text-[#0082C8]" />
-                    {locale === "id" ? "Hasil / Produk Turunan" : "Outputs & Derivatives"}
+              {/* Outputs */}
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide flex items-center gap-1.5 mb-2">
+                  <ArrowRight className="w-3.5 h-3.5 text-[#0082C8]" />
+                  {node.outputLabel?.[locale] || (locale === "id" ? "Hasil / Produk Turunan" : "Outputs & Derivatives")}
+                </span>
+                {outputNodes.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5">
+                    {outputNodes.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => onSelectNode(item.id)}
+                        className="px-2.5 py-1 rounded-lg bg-white hover:bg-sky-50 text-[11px] font-bold text-[#0082C8] border border-slate-200 hover:border-sky-300 shadow-2xs transition-all flex items-center gap-1 group"
+                      >
+                        <Flow2Icon
+                          type={item.iconType}
+                          className="w-3 h-3 text-[#0082C8]"
+                          color="#0082C8"
+                        />
+                        <span>{item.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-xs text-slate-400 italic">
+                    {node.outputEmptyText?.[locale] || (locale === "id" ? "Produk Akhir / Pasar" : "End Product / Regional Market")}
                   </span>
-                  {outputNodes.length > 0 ? (
-                    <div className="flex flex-wrap gap-1.5">
-                      {outputNodes.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => onSelectNode(item.id)}
-                          className="px-2.5 py-1 rounded-lg bg-white hover:bg-sky-50 text-[11px] font-bold text-[#0082C8] border border-slate-200 hover:border-sky-300 shadow-2xs transition-all flex items-center gap-1 group"
-                        >
-                          <Flow2Icon
-                            type={item.iconType}
-                            className="w-3 h-3 text-[#0082C8]"
-                            color="#0082C8"
-                          />
-                          <span>{item.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="text-xs text-slate-400 italic">
-                      {locale === "id" ? "Produk Akhir / Pasar" : "End Product / Regional Market"}
-                    </span>
-                  )}
-                </div>
+                )}
               </div>
             </div>
-          )}
+          </div>
         </div>
 
         {/* Modal Footer */}

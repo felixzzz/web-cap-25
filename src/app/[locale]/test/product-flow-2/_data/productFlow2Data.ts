@@ -56,6 +56,10 @@ export interface Flow2Node {
   customTextColor?: string
   customBorderColor?: string
   customIconUrl?: string
+  inputLabel?: LocalizedString
+  inputEmptyText?: LocalizedString
+  outputLabel?: LocalizedString
+  outputEmptyText?: LocalizedString
   definition?: LocalizedString
   mainFunction: LocalizedString
   inputs?: string[] // node ids
