@@ -1,6 +1,6 @@
 "use client"
 import { MetaContentLeftRight } from "@/lib/fragment"
-import { assetUrl, cn, getLocalizedContent, isContentActive } from "@/lib/utils"
+import { assetUrl, cn, getLocalizedContent, isContentActive, resolveCtaUrl } from "@/lib/utils"
 import { useLocale } from "next-intl"
 import Image, { StaticImageData } from "next/image"
 import React from "react"
@@ -138,7 +138,7 @@ export function ContentLeftRightBlock({
                 reverse={item.image_position == "right"}
               >
                 {item.cta_label && item.cta_url && (
-                  <Link href={`${item.cta_url}`} className="inline-block py-4">
+                  <Link href={resolveCtaUrl(locale, item.cta_url)} className="inline-block py-4">
                     <Button>{item.cta_label}</Button>
                   </Link>
                 )}

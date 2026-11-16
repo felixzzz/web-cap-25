@@ -2,6 +2,7 @@
 import {
   assetUrl,
   cn,
+  formatOurBusinessUrl,
   getLocalizedContent,
   isContentActive,
   scrollToElement,
@@ -175,7 +176,7 @@ function BusinessItem({
         <CardBusinessHeader
           img={`${assetUrl(logo)}`}
           background={`${assetUrl(image)}`}
-          href={`/${locale}/our-business/${cta_url}`}
+          href={formatOurBusinessUrl(locale, cta_url)}
           label={cta_label}
           id={`${title}`}
           callbackInView={(id) => {

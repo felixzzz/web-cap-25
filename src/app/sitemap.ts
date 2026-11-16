@@ -5,7 +5,7 @@ import { SITE_URL } from "@/data/data";
 import { getPage, getPostList } from "@/lib/api";
 import { PostNews, ProductChemical } from "@/lib/fragment";
 import { BusinessSolutionsProp, DynamicProps, HttpGeneralResponse, PaginationHandlerResponse } from "@/lib/types";
-import { getLocalizedContent } from "@/lib/utils";
+import { formatOurBusinessUrl, getLocalizedContent } from "@/lib/utils";
 
 export const revalidate = 60;
 
@@ -99,7 +99,7 @@ async function generateSitemapBusinessLineAndUnit(locale: string): Promise<
   const content_left_right = getLocalizedContent(locale, data?.meta?.content_left_right?.list_en, data.meta.content_left_right?.list_id)
   return content_left_right?.flatMap((item) => [
     {
-      url: `${SITE_URL}/${locale}/our-business/${item.cta_url}`,
+      url: `${SITE_URL}${formatOurBusinessUrl(locale, item.cta_url)}`,
       lastModified: now,
     },
   ]);

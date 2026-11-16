@@ -39,6 +39,10 @@ export async function generateMetadata({
 }: {
   params: { business_line: string; business_unit: string; locale: "en" | "id" }
 }) {
+  if (business_line.toLowerCase() === "id" || business_line.toLowerCase() === "en") {
+    return notFound()
+  }
+
   const data: HttpGeneralResponse<BusinessSolutionsProp> =
     await getPage(business_unit)
   if (!data) {
@@ -72,7 +76,11 @@ export default async function BusinessUnitProducts({
 }: {
   params: { business_line: string; business_unit: string; locale: "en" | "id" }
 }) {
-  const { business_unit, locale } = params
+  const { business_line, business_unit, locale } = params
+  if (business_line.toLowerCase() === "id" || business_line.toLowerCase() === "en") {
+    return notFound()
+  }
+
   const data: HttpGeneralResponse<BusinessSolutionsProp> =
     await getPage(business_unit)
   const news: PaginationHandlerResponse<Post[]> = await getPostList(

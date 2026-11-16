@@ -170,3 +170,70 @@ export const getLocalizedDescription = (
 ): string => {
   return stripHtml(getLocalizedContent(locale, enContent, idContent))
 }
+
+/**
+ * Normalizes and sanitizes /our-business/ subpath URLs.
+ * Strips rogue leading/nested locale prefixes (e.g. "id/energy", "id/solusi-infrastruktur", "our-business/id/energy")
+ * to guarantee that internal links never duplicate language segments.
+ */
+export function formatOurBusinessUrl(locale: string, cta_url?: string | null): string {
+  if (!cta_url) return `/${locale}/our-business`
+
+  const trimmed = cta_url.trim()
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("#")) {
+    return trimmed
+  }
+
+  let clean = trimmed.replace(/^\/+/, "")
+  clean = clean.replace(/^(?:id|en)\//i, "")
+  clean = clean.replace(/^our-business\//i, "")
+  clean = clean.replace(/^(?:id|en)\//i, "")
+
+  return clean ? `/${locale}/our-business/${clean}` : `/${locale}/our-business`
+}
+
+/**
+ * Resolves CTA URLs safely, ensuring relative paths don't inherit wrong subfolders
+ * and fixing any misplaced locale tokens.
+ */
+export function resolveCtaUrl(locale: string, cta_url?: string | null): string {
+  if (!cta_url) return `/${locale}`
+
+  const trimmed = cta_url.trim()
+  if (/^(?:https?:\/\/|mailto:|tel:|#)/i.test(trimmed)) {
+    return trimmed
+  }
+
+  // If already starts with a slash
+  if (trimmed.startsWith("/")) {
+    if (/^\/(?:id|en)(\/|$)/i.test(trimmed)) {
+      return trimmed.replace(
+        /^\/(id|en)\/our-business(?:\/(?:id|en))+(\/.*)?$/i,
+        (_match, p1, p2) => `/${p1.toLowerCase()}/our-business${p2 || ""}`
+      )
+    }
+    return `/${locale}${trimmed}`
+  }
+
+  // Relative link resolution
+  let clean = trimmed
+  if (/^(?:id|en)\/our-business\//i.test(clean)) {
+    clean = clean.replace(/^(?:id|en)\//i, "")
+  } else if (/^(?:id|en)\//i.test(clean)) {
+    clean = clean.replace(/^(?:id|en)\//i, "")
+    if (/^(?:energy|water|logistik|ports|solusi-infrastruktur|chemical-solutions)/i.test(clean)) {
+      return `/${locale}/our-business/${clean}`
+    }
+  }
+
+  if (clean.startsWith("our-business/")) {
+    return `/${locale}/${clean}`
+  }
+
+  if (/^(?:energy|water|logistik|ports|solusi-infrastruktur|chemical-solutions)/i.test(clean)) {
+    return `/${locale}/our-business/${clean}`
+  }
+
+  return `/${locale}/${clean}`
+}
+
