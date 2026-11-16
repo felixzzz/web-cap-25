@@ -138,6 +138,22 @@ export default function ProductFlowEditorPage({
       customBorderColor: custom.customBorderColor || "",
       name: custom.name !== undefined ? custom.name : baseNode.name,
       nameId: custom.nameId !== undefined ? custom.nameId : (baseNode.fullName || baseNode.name),
+      inputLabel: {
+        en: custom.inputLabel?.en !== undefined ? custom.inputLabel.en : (baseNode.inputLabel?.en || ""),
+        id: custom.inputLabel?.id !== undefined ? custom.inputLabel.id : (baseNode.inputLabel?.id || ""),
+      },
+      inputEmptyText: {
+        en: custom.inputEmptyText?.en !== undefined ? custom.inputEmptyText.en : (baseNode.inputEmptyText?.en || ""),
+        id: custom.inputEmptyText?.id !== undefined ? custom.inputEmptyText.id : (baseNode.inputEmptyText?.id || ""),
+      },
+      outputLabel: {
+        en: custom.outputLabel?.en !== undefined ? custom.outputLabel.en : (baseNode.outputLabel?.en || ""),
+        id: custom.outputLabel?.id !== undefined ? custom.outputLabel.id : (baseNode.outputLabel?.id || ""),
+      },
+      outputEmptyText: {
+        en: custom.outputEmptyText?.en !== undefined ? custom.outputEmptyText.en : (baseNode.outputEmptyText?.en || ""),
+        id: custom.outputEmptyText?.id !== undefined ? custom.outputEmptyText.id : (baseNode.outputEmptyText?.id || ""),
+      },
       definition: {
         en: custom.definition?.en !== undefined ? custom.definition.en : (baseNode.definition?.en || ""),
         id: custom.definition?.id !== undefined ? custom.definition.id : (baseNode.definition?.id || ""),
@@ -161,6 +177,22 @@ export default function ProductFlowEditorPage({
         updated.name = value
       } else if (path === "nameId") {
         updated.nameId = value
+      } else if (path === "inputLabel.en") {
+        updated.inputLabel = { ...(updated.inputLabel || {}), en: value }
+      } else if (path === "inputLabel.id") {
+        updated.inputLabel = { ...(updated.inputLabel || {}), id: value }
+      } else if (path === "inputEmptyText.en") {
+        updated.inputEmptyText = { ...(updated.inputEmptyText || {}), en: value }
+      } else if (path === "inputEmptyText.id") {
+        updated.inputEmptyText = { ...(updated.inputEmptyText || {}), id: value }
+      } else if (path === "outputLabel.en") {
+        updated.outputLabel = { ...(updated.outputLabel || {}), en: value }
+      } else if (path === "outputLabel.id") {
+        updated.outputLabel = { ...(updated.outputLabel || {}), id: value }
+      } else if (path === "outputEmptyText.en") {
+        updated.outputEmptyText = { ...(updated.outputEmptyText || {}), en: value }
+      } else if (path === "outputEmptyText.id") {
+        updated.outputEmptyText = { ...(updated.outputEmptyText || {}), id: value }
       } else if (path === "definition.en") {
         updated.definition = { ...(updated.definition || {}), en: value }
       } else if (path === "definition.id") {
@@ -577,6 +609,70 @@ export default function ProductFlowEditorPage({
                             placeholder="Masukkan definisi lengkap produk..."
                           />
                         </div>
+
+                        {/* Indonesian Pipeline Custom Labels & Empty States */}
+                        <div className="pt-3 mt-3 border-t border-slate-200">
+                          <label className="block text-xs font-bold text-slate-700 mb-1">
+                            Label & Teks Koneksi Modal (ID)
+                          </label>
+                          <p className="text-[11px] text-slate-500 mb-2.5">
+                            Kustomisasi judul bagian input/output dan teks ketika simpul tidak memiliki input/output di popup modal.
+                          </p>
+
+                          <div className="space-y-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                            <div>
+                              <span className="block text-[11px] font-semibold text-slate-600 mb-1">
+                                Judul Bagian Input Masuk
+                              </span>
+                              <input
+                                type="text"
+                                value={activeNodeDetails.inputLabel.id}
+                                onChange={(e) => handleUpdateNodeField("inputLabel.id", e.target.value)}
+                                className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium"
+                                placeholder="Bawaan: Bahan / Input Masuk"
+                              />
+                            </div>
+
+                            <div>
+                              <span className="block text-[11px] font-semibold text-slate-600 mb-1">
+                                Teks Jika Tidak Ada Input
+                              </span>
+                              <input
+                                type="text"
+                                value={activeNodeDetails.inputEmptyText.id}
+                                onChange={(e) => handleUpdateNodeField("inputEmptyText.id", e.target.value)}
+                                className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium"
+                                placeholder="Bawaan: Sumber Utama"
+                              />
+                            </div>
+
+                            <div>
+                              <span className="block text-[11px] font-semibold text-slate-600 mb-1">
+                                Judul Bagian Output & Turunan
+                              </span>
+                              <input
+                                type="text"
+                                value={activeNodeDetails.outputLabel.id}
+                                onChange={(e) => handleUpdateNodeField("outputLabel.id", e.target.value)}
+                                className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium"
+                                placeholder="Bawaan: Hasil / Produk Turunan"
+                              />
+                            </div>
+
+                            <div>
+                              <span className="block text-[11px] font-semibold text-slate-600 mb-1">
+                                Teks Jika Tidak Ada Output
+                              </span>
+                              <input
+                                type="text"
+                                value={activeNodeDetails.outputEmptyText.id}
+                                onChange={(e) => handleUpdateNodeField("outputEmptyText.id", e.target.value)}
+                                className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium"
+                                placeholder="Bawaan: Produk Akhir / Pasar"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </>
                     ) : (
                       <>
@@ -620,6 +716,70 @@ export default function ProductFlowEditorPage({
                             className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium leading-relaxed"
                             placeholder="Enter comprehensive definition..."
                           />
+                        </div>
+
+                        {/* English Pipeline Custom Labels & Empty States */}
+                        <div className="pt-3 mt-3 border-t border-slate-200">
+                          <label className="block text-xs font-bold text-slate-700 mb-1">
+                            Modal Pipeline Labels & Fallback (EN)
+                          </label>
+                          <p className="text-[11px] text-slate-500 mb-2.5">
+                            Customize input/output section titles and fallback text when this node has no inputs or outputs in the popup modal.
+                          </p>
+
+                          <div className="space-y-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                            <div>
+                              <span className="block text-[11px] font-semibold text-slate-600 mb-1">
+                                Input Sources Label
+                              </span>
+                              <input
+                                type="text"
+                                value={activeNodeDetails.inputLabel.en}
+                                onChange={(e) => handleUpdateNodeField("inputLabel.en", e.target.value)}
+                                className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium"
+                                placeholder="Default: Input Sources"
+                              />
+                            </div>
+
+                            <div>
+                              <span className="block text-[11px] font-semibold text-slate-600 mb-1">
+                                Text when No Inputs
+                              </span>
+                              <input
+                                type="text"
+                                value={activeNodeDetails.inputEmptyText.en}
+                                onChange={(e) => handleUpdateNodeField("inputEmptyText.en", e.target.value)}
+                                className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium"
+                                placeholder="Default: Primary Raw Feedstock"
+                              />
+                            </div>
+
+                            <div>
+                              <span className="block text-[11px] font-semibold text-slate-600 mb-1">
+                                Outputs & Derivatives Label
+                              </span>
+                              <input
+                                type="text"
+                                value={activeNodeDetails.outputLabel.en}
+                                onChange={(e) => handleUpdateNodeField("outputLabel.en", e.target.value)}
+                                className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium"
+                                placeholder="Default: Outputs & Derivatives"
+                              />
+                            </div>
+
+                            <div>
+                              <span className="block text-[11px] font-semibold text-slate-600 mb-1">
+                                Text when No Outputs
+                              </span>
+                              <input
+                                type="text"
+                                value={activeNodeDetails.outputEmptyText.en}
+                                onChange={(e) => handleUpdateNodeField("outputEmptyText.en", e.target.value)}
+                                className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#0082C8] font-medium"
+                                placeholder="Default: End Product / Regional Market"
+                              />
+                            </div>
+                          </div>
                         </div>
                       </>
                     )}
