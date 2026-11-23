@@ -4,7 +4,7 @@ import { PRODUCT_FLOW_2_DATA, Flow2Node } from "./data/productFlowData"
 interface ProductFlowSemanticFallbackProps {
   locale: "id" | "en"
   className?: string
-  defaultOpen?: boolean
+  visuallyHidden?: boolean
 }
 
 interface ProcessSection {
@@ -80,7 +80,7 @@ const PROCESS_SECTIONS: ProcessSection[] = [
 export const ProductFlowSemanticFallback: React.FC<ProductFlowSemanticFallbackProps> = ({
   locale,
   className = "",
-  defaultOpen = false,
+  visuallyHidden = true,
 }) => {
   const nodes = PRODUCT_FLOW_2_DATA.nodes
   const isId = locale === "id"
@@ -125,10 +125,10 @@ export const ProductFlowSemanticFallback: React.FC<ProductFlowSemanticFallbackPr
     <section
       aria-label={
         isId
-          ? "Rincian Alur Produksi & Produk Petrokimia (Tampilan Teks Semantik)"
-          : "Production Flow & Product Catalog (Semantic Text View)"
+          ? "Rincian Alur Produksi & Produk Petrokimia (Teks Semantik)"
+          : "Production Flow & Product Catalog (Semantic Text)"
       }
-      className={`w-full mt-6 ${className}`}
+      className={visuallyHidden ? `sr-only ${className}` : `w-full mt-6 ${className}`}
     >
       {/* Schema.org Structured Data */}
       <script
@@ -136,118 +136,80 @@ export const ProductFlowSemanticFallback: React.FC<ProductFlowSemanticFallbackPr
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaItemList) }}
       />
 
-      {/* Accessible & SEO-friendly Accordion via native HTML <details> */}
-      <details
-        open={defaultOpen}
-        className="group rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-xs transition-all duration-300"
-      >
-        <summary className="flex cursor-pointer items-center justify-between text-left font-semibold text-[#062C48] hover:text-[#0082C8] focus:outline-hidden">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-100 text-xs text-[#0082C8]">
-              📋
-            </span>
-            <span className="text-sm sm:text-base">
-              {isId
-                ? "Daftar Rinci Alur Proses, Bahan Baku & Produk (Teks / Aksesibilitas)"
-                : "Detailed Process Flow, Feedstocks & Products Directory (Text / Accessibility)"}
-            </span>
-          </div>
-          <span className="text-xs text-slate-500 group-open:rotate-180 transition-transform">
-            ▼
-          </span>
-        </summary>
-
-        <div className="mt-5 space-y-6 border-t border-slate-100 pt-5 text-sm text-slate-700">
-          <p className="text-xs text-slate-500 leading-relaxed">
+      {/* Semantic Content Tree: Fully readable by Search Engines & Screen Readers */}
+      <div className={visuallyHidden ? "sr-only" : "space-y-6"}>
+        <header>
+          <h2 className="text-xl font-bold text-[#062C48]">
+            {isId
+              ? "Katalog & Alur Proses Produk Kimia Chandra Asri"
+              : "Chandra Asri Petrochemical Process Flow & Products Catalog"}
+          </h2>
+          <p className="mt-1 text-sm text-slate-600">
             {isId
               ? PRODUCT_FLOW_2_DATA.meta.description.id
               : PRODUCT_FLOW_2_DATA.meta.description.en}
           </p>
+        </header>
 
-          {PROCESS_SECTIONS.map((sec) => (
-            <div key={sec.id} className="rounded-xl border border-slate-100 bg-slate-50/70 p-4">
-              <h4 className="text-base font-bold text-[#062C48]">
-                {sec.title[locale]}
-              </h4>
-              <p className="mt-0.5 text-xs text-slate-600 mb-3">
-                {sec.description[locale]}
-              </p>
+        {PROCESS_SECTIONS.map((sec) => (
+          <div key={sec.id} className="border-t border-slate-200 pt-4">
+            <h3 className="text-lg font-bold text-[#062C48]">
+              {sec.title[locale]}
+            </h3>
+            <p className="text-xs text-slate-500 mb-3">{sec.description[locale]}</p>
 
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {sec.nodeIds.map((nodeId) => {
-                  const node = nodes[nodeId]
-                  if (!node) return null
+            <ul className="space-y-3">
+              {sec.nodeIds.map((nodeId) => {
+                const node = nodes[nodeId]
+                if (!node) return null
 
-                  const inputNodes = (node.inputs || [])
-                    .map((id) => nodes[id]?.name || id)
-                    .join(", ")
-                  const outputNodes = (node.outputs || [])
-                    .map((id) => nodes[id]?.name || id)
-                    .join(", ")
+                const inputNodes = (node.inputs || [])
+                  .map((id) => nodes[id]?.name || id)
+                  .join(", ")
+                const outputNodes = (node.outputs || [])
+                  .map((id) => nodes[id]?.name || id)
+                  .join(", ")
 
-                  return (
-                    <article
-                      key={node.id}
-                      className="flex flex-col justify-between rounded-lg border border-slate-200/80 bg-white p-3.5 shadow-2xs"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <h5 className="font-bold text-xs uppercase tracking-wide text-[#0082C8]">
-                            {node.name}
-                          </h5>
-                          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
-                            {getCategoryLabel(node.category)}
-                          </span>
-                        </div>
-
-                        {node.fullName && (
-                          <p className="text-xs font-semibold text-slate-900 mb-2">
-                            {node.fullName}
-                          </p>
-                        )}
-
-                        {node.definition?.[locale] && (
-                          <p className="text-xs text-slate-600 line-clamp-3 mb-2 leading-relaxed">
-                            {node.definition[locale]}
-                          </p>
-                        )}
-
-                        {node.mainFunction?.[locale] && (
-                          <div className="text-[11px] text-slate-500 mb-2">
-                            <strong className="text-slate-700">
-                              {isId ? "Fungsi Utama: " : "Main Function: "}
-                            </strong>
-                            {node.mainFunction[locale]}
-                          </div>
-                        )}
-                      </div>
-
-                      <footer className="mt-2 border-t border-slate-100 pt-2 text-[10px] text-slate-500 space-y-1">
-                        {inputNodes && (
-                          <div>
-                            <span className="font-semibold text-slate-700">
-                              {isId ? "Sumber Input: " : "Inputs: "}
-                            </span>
-                            {inputNodes}
-                          </div>
-                        )}
-                        {outputNodes && (
-                          <div>
-                            <span className="font-semibold text-slate-700">
-                              {isId ? "Hasil Turunan: " : "Outputs: "}
-                            </span>
-                            {outputNodes}
-                          </div>
-                        )}
-                      </footer>
-                    </article>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </details>
+                return (
+                  <li key={node.id} className="border-b border-slate-100 pb-2">
+                    <h4 className="font-bold text-sm text-[#0082C8]">
+                      {node.fullName || node.name}
+                    </h4>
+                    <p className="text-xs text-slate-600">
+                      <strong>{isId ? "Kategori: " : "Category: "}</strong>
+                      {getCategoryLabel(node.category)}
+                    </p>
+                    {node.definition?.[locale] && (
+                      <p className="text-xs text-slate-700 mt-1">
+                        <strong>{isId ? "Definisi: " : "Definition: "}</strong>
+                        {node.definition[locale]}
+                      </p>
+                    )}
+                    {node.mainFunction?.[locale] && (
+                      <p className="text-xs text-slate-600 mt-0.5">
+                        <strong>{isId ? "Fungsi Utama: " : "Main Function: "}</strong>
+                        {node.mainFunction[locale]}
+                      </p>
+                    )}
+                    {inputNodes && (
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        <strong>{isId ? "Bahan Input: " : "Inputs: "}</strong>
+                        {inputNodes}
+                      </p>
+                    )}
+                    {outputNodes && (
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        <strong>{isId ? "Hasil Turunan: " : "Outputs: "}</strong>
+                        {outputNodes}
+                      </p>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
     </section>
   )
 }
