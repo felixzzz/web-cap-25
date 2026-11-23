@@ -1,6 +1,7 @@
 export * from "./XyflowDiagram"
 export * from "./ProductFlowModal"
 export * from "./ProductFlowMobileView"
+export * from "./ProductFlowSemanticFallback"
 export * from "./CustomNodes"
 export * from "./FlowIcons"
 export * from "./data/productFlowData"

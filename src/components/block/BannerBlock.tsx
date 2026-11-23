@@ -6,6 +6,7 @@ import { useLocale } from "next-intl"
 
 type BannerBlockProps = {
   hideLoadingVertical?: boolean
+  priority?: boolean
 }
 
 export function BannerBlock({
@@ -24,6 +25,7 @@ export function BannerBlock({
   className,
   children,
   hideLoadingVertical,
+  priority = true,
   alt_text_image_desktop_en,
   alt_text_image_desktop_id,
   alt_text_image_mobile_en,
@@ -54,6 +56,7 @@ export function BannerBlock({
   return (
     <>
       <Jumbotron
+        priority={priority}
         bg={assetUrl(getLocalizedImage(locale, image_desktop_en, image_desktop_id))}
         bgMobile={assetUrl(
           getLocalizedImage(locale, image_mobile_en, image_mobile_id)
