@@ -4,20 +4,16 @@ import React, { useState, useEffect, useCallback, useMemo } from "react"
 import {
   XyflowDiagram,
   DEFAULT_FLOW_2_POSITIONS,
-} from "../../test/product-flow-2/_components/XyflowDiagram"
-import { ProductFlow2Modal } from "../../test/product-flow-2/_components/ProductFlow2Modal"
-import {
+  ProductFlow2Modal,
   Flow2Zone,
   PRODUCT_FLOW_2_DATA,
   Flow2Node,
   DEFAULT_FLOW_LEGENDS,
   FlowLegendItem,
   FlowNodeColorPreset,
-} from "../../test/product-flow-2/_data/productFlow2Data"
-import {
   AVAILABLE_FLOW_ICONS,
   Flow2Icon,
-} from "../../test/product-flow-2/_components/Flow2Icons"
+} from "@/components/product-flow"
 import {
   Save,
   RotateCcw,

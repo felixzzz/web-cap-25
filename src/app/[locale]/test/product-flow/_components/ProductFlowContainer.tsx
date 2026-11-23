@@ -82,15 +82,6 @@ export const ProductFlowContainer: React.FC<ProductFlowContainerProps> = ({ loca
               </p>
             </div>
           </div>
-
-          <Link
-            href={`/${locale}/test/product-flow-2`}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-xs font-semibold text-[#0082C8] border border-sky-300 hover:border-[#0082C8] shadow-xs transition-all group"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[#0082C8]" />
-            <span>{locale === "id" ? "Buka Pendekatan 2 (XYFlow Engine)" : "Try Approach 2 (XYFlow Engine)"}</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
         </div>
         {/* Header & Controls */}
         <ProductFlowHeader

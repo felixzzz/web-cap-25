@@ -2,8 +2,8 @@
 
 import React, { memo } from "react"
 import { Handle, Position, NodeProps } from "@xyflow/react"
-import { Flow2Icon } from "./Flow2Icons"
-import { Flow2Category, Flow2Zone, FlowNodeColorPreset, FlowLegendItem, DEFAULT_FLOW_LEGENDS } from "../_data/productFlow2Data"
+import { Flow2Icon } from "./FlowIcons"
+import { Flow2Category, Flow2Zone, FlowNodeColorPreset, FlowLegendItem, DEFAULT_FLOW_LEGENDS } from "./data/productFlowData"
 
 export interface Flow2NodeData {
   id: string

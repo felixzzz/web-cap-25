@@ -6,7 +6,7 @@ import path from "path"
 // Fallback persistence file on disk for local development
 const LOCAL_STORAGE_PATH = path.join(
   process.cwd(),
-  "src/app/[locale]/test/product-flow-2/_data/customFlowStorage.json"
+  "src/components/product-flow/data/customFlowStorage.json"
 )
 
 function readLocalFallback() {
