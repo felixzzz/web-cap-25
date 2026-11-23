@@ -1,8 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { XyflowDiagram } from "../../test/product-flow-2/_components/XyflowDiagram"
-import { ProductFlow2Modal } from "../../test/product-flow-2/_components/ProductFlow2Modal"
+import { XyflowDiagram, ProductFlowModal } from "@/components/product-flow"
 
 interface ChemicalProductionFlowInteractiveProps {
   locale: "id" | "en"
@@ -59,7 +58,7 @@ export const ChemicalProductionFlowInteractive: React.FC<ChemicalProductionFlowI
       />
 
       {/* Node Detail Modal */}
-      <ProductFlow2Modal
+      <ProductFlowModal
         nodeId={selectedNodeId}
         locale={locale}
         onClose={() => setSelectedNodeId(null)}

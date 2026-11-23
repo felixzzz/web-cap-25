@@ -18,8 +18,8 @@ import {
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 
-import { PRODUCT_FLOW_2_DATA, Flow2Zone, DEFAULT_FLOW_LEGENDS, FlowLegendItem } from "../_data/productFlow2Data"
-import { FlowProductNode, FlowPlantNode, FlowZoneBarNode, FlowLegendNode, Flow2NodeData } from "./CustomNodes2"
+import { PRODUCT_FLOW_2_DATA, Flow2Zone, DEFAULT_FLOW_LEGENDS, FlowLegendItem } from "./data/productFlowData"
+import { FlowProductNode, FlowPlantNode, FlowZoneBarNode, FlowLegendNode, Flow2NodeData } from "./CustomNodes"
 import { Compass, RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 
 export interface XyflowDiagramProps {

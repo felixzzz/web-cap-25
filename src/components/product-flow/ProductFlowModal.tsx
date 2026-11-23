@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState, useMemo } from "react"
 import { createPortal } from "react-dom"
-import { PRODUCT_FLOW_2_DATA, Flow2Node } from "../_data/productFlow2Data"
-import { Flow2Icon } from "./Flow2Icons"
+import { PRODUCT_FLOW_2_DATA, Flow2Node } from "./data/productFlowData"
+import { Flow2Icon } from "./FlowIcons"
 import { X, ArrowRight, ArrowLeft, BookOpen, Target, Sparkles, Building2, Beaker } from "lucide-react"
 
 interface ProductFlow2ModalProps {
@@ -313,3 +313,5 @@ export const ProductFlow2Modal: React.FC<ProductFlow2ModalProps> = ({
 
   return createPortal(modalContent, document.body)
 }
+
+export const ProductFlowModal = ProductFlow2Modal

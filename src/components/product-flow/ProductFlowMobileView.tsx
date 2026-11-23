@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
-import { PRODUCT_FLOW_2_DATA, Flow2Node, Flow2Zone } from "../_data/productFlow2Data"
-import { Flow2Icon } from "./Flow2Icons"
+import { PRODUCT_FLOW_2_DATA, Flow2Node, Flow2Zone } from "./data/productFlowData"
+import { Flow2Icon } from "./FlowIcons"
 import { ChevronRight, ArrowRight, BookOpen, Target, Sparkles, Building2, Beaker } from "lucide-react"
 
 interface ProductFlow2MobileViewProps {
