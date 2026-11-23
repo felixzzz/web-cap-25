@@ -5,6 +5,7 @@ import { assetUrl, getLocalizedContent, isContentActive } from "@/lib/utils"
 import { useLocale } from "next-intl"
 import Image from "next/image"
 import { ChemicalProductionFlowInteractive } from "./ChemicalProductionFlowInteractive"
+import { ProductFlowSemanticFallback } from "@/components/product-flow"
 
 export function ChemicalExplore({
   big_image_en,
@@ -86,6 +87,9 @@ export function ChemicalExplore({
 
               {/* Interactive Product Flow Diagram (Production Flow 2) */}
               <ChemicalProductionFlowInteractive locale={locale as "id" | "en"} />
+
+              {/* Server-Side Rendered Semantic Fallback for SEO & Screen Readers */}
+              <ProductFlowSemanticFallback locale={locale as "id" | "en"} />
             </div>
           </Anim>
         </div>

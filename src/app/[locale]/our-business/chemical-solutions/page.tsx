@@ -13,7 +13,8 @@ import { BannerBlock } from "@/components/block/BannerBlock"
 import { IntroBlock } from "@/components/block/IntroBlock"
 import { OurBusinessDocumentBlock } from "@/components/block/our-business/DocumentBlock"
 import { MetaProduct } from "@/lib/fragment"
-import { getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
+import { getLocalizedContent, getLocalizedDescription, assetUrl } from "@/lib/utils"
+import { SITE_URL } from "@/lib/constant"
 import { Metadata } from "next"
 import JsonLdRenderer from "@/components/global/JsonLdRenderer"
 
@@ -29,18 +30,27 @@ export async function generateMetadata({
   }
 }): Promise<Metadata> {
   const data = await getPage("petrochemical-solution-overview")
+  const bannerImg =
+    data?.meta?.banner?.image_desktop_id ||
+    data?.meta?.banner?.image_desktop_en
+  const ogImageUrl = bannerImg
+    ? assetUrl(bannerImg)
+    : `${SITE_URL}/icons/richlink.jpg`
+
   return {
     openGraph: {
       title: getLocalizedContent(
-      locale,
-      data?.meta?.seo_meta?.meta_title_en,
-      data?.meta?.seo_meta?.meta_title_id
-    ),
+        locale,
+        data?.meta?.seo_meta?.meta_title_en,
+        data?.meta?.seo_meta?.meta_title_id
+      ),
       description: getLocalizedDescription(
-      locale,
-      data?.meta?.seo_meta?.meta_desc_en,
-      data?.meta?.seo_meta?.meta_desc_id
-    ),
+        locale,
+        data?.meta?.seo_meta?.meta_desc_en,
+        data?.meta?.seo_meta?.meta_desc_id
+      ),
+      url: `${SITE_URL}/${locale}/our-business/chemical-solutions`,
+      images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
     },
     alternates: getAlternates(locale, "/our-business/chemical-solutions"),
     title: getSeoTitle(locale, data),

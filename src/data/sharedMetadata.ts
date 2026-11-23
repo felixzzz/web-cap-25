@@ -34,7 +34,7 @@ export const sharedMetadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: `${title}`,
-    creator: "Antikode",
+    creator: "@ChandraasriID",
     images: `${SITE_URL}/icons/richlink.jpg`,
   },
   description: `${description}`,
