@@ -8,7 +8,15 @@ import { CustomBreadcrumb } from "@/components/global/CustomBreadcrumb"
 import { SITE_URL } from "@/lib/constant"
 import { PostNews } from "@/lib/fragment"
 import { BannerResponse } from "@/lib/types"
-import { assetUrl, cn, dateFormater, getLocalizedContent } from "@/lib/utils"
+import {
+  assetUrl,
+  cn,
+  dateFormater,
+  formatArticleDate,
+  getLocalizedContent,
+  shouldShowModifiedDate,
+  toIsoStringSafe,
+} from "@/lib/utils"
 import { useLocale, useTranslations } from "next-intl"
 import Image from "next/image"
 import { toast } from "@/components/ui/use-toast"
@@ -184,8 +192,29 @@ export default function NewsDetailContent({
               <div className="hidden lg:block" />
             ) : null}
             {data?.published_at && (
-              <p className="mb-1 text-xs font-semibold tracking-[0.8px] text-gray lg:text-md">
-                {dateFormater(data?.published_at)}
+              <p className="mb-1 text-xs font-semibold tracking-[0.8px] text-neutral-600 lg:text-md">
+                <time
+                  dateTime={
+                    toIsoStringSafe(data.published_at) || data.published_at
+                  }
+                >
+                  {formatArticleDate(data.published_at, locale)}
+                </time>
+                {shouldShowModifiedDate(data.published_at, data.updated_at) && (
+                  <span>
+                    {" · "}
+                    {locale === "id"
+                      ? "Terakhir diperbarui: "
+                      : "Last updated: "}
+                    <time
+                      dateTime={
+                        toIsoStringSafe(data.updated_at) || data.updated_at
+                      }
+                    >
+                      {formatArticleDate(data.updated_at, locale)}
+                    </time>
+                  </span>
+                )}
               </p>
             )}
             <h1 className="text-xl font-bold lg:text-4xl">

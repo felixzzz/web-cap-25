@@ -54,6 +54,56 @@ export function dateFormater(date: string, formatDate: string = "dd-MM-yyyy") {
   return "-"
 }
 
+export function getWibDateString(dateStr?: string): string {
+  if (!dateStr) return ""
+  const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return ""
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Jakarta",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d)
+}
+
+export function shouldShowModifiedDate(
+  publishedAt?: string,
+  updatedAt?: string
+): boolean {
+  if (!publishedAt || !updatedAt) return false
+  const p = new Date(publishedAt)
+  const u = new Date(updatedAt)
+  if (isNaN(p.getTime()) || isNaN(u.getTime())) return false
+  if (u.getTime() < p.getTime()) return false // FR-7: dateModified cannot be earlier than datePublished
+
+  const pubWib = getWibDateString(publishedAt)
+  const updWib = getWibDateString(updatedAt)
+  return updWib > pubWib
+}
+
+export function formatArticleDate(
+  dateStr?: string,
+  locale: string = "id"
+): string {
+  if (!dateStr) return "-"
+  const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return "-"
+
+  return new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
+    timeZone: "Asia/Jakarta",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(d)
+}
+
+export function toIsoStringSafe(dateStr?: string): string | undefined {
+  if (!dateStr) return undefined
+  const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return undefined
+  return d.toISOString()
+}
+
 export async function adjustSearchParams(
   searchParams: ReadonlyURLSearchParams,
   router: AppRouterInstance,

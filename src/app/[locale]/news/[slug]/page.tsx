@@ -7,7 +7,12 @@ import { PostNews } from "@/lib/fragment"
 import { getActiveBanners, getDetailPost, getPage, getPostList } from "@/lib/api"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
-import { dateFormatter, getLocalizedContent, getLocalizedDescription } from "@/lib/utils"
+import {
+  dateFormatter,
+  getLocalizedContent,
+  getLocalizedDescription,
+  toIsoStringSafe,
+} from "@/lib/utils"
 import { SITE_URL } from "@/lib/constant"
 import { PageIdSetter } from "@/components/providers/query-provider"
 
@@ -75,13 +80,15 @@ export async function generateMetadata({
       data?.meta?.seo_meta?.meta_desc_id
     ),
       images: [data?.image],
-      publishedTime: data?.published_at,
+      publishedTime:
+        toIsoStringSafe(data?.published_at) || data?.published_at,
+      modifiedTime: toIsoStringSafe(data?.updated_at) || data?.updated_at,
     },
     other: {
       "article:modified_time":
-        data?.updated_at && dateFormatter(data?.updated_at, "yyyy-MM-dd"),
+        toIsoStringSafe(data?.updated_at) || data?.updated_at || "",
       "article:published_time":
-        data?.published_at && dateFormatter(data?.published_at, "yyyy-MM-dd"),
+        toIsoStringSafe(data?.published_at) || data?.published_at || "",
     },
   }
 }
@@ -99,6 +106,8 @@ export default async function NewsDetailPage({
     console.error("Failed to fetch news page data:", error)
   }
 
+  const pageTitle = getLocalizedContent(locale, data?.title_en, data?.title)
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -106,7 +115,8 @@ export default async function NewsDetailPage({
       "@type": "WebPage",
       "@id": `${SITE_URL}/${locale}/news/${slug}`,
     },
-    headline: data?.title,
+    headline: pageTitle,
+    inLanguage: locale,
     image: data?.image,
     author: {
       "@type": "Organization",
@@ -121,8 +131,9 @@ export default async function NewsDetailPage({
         url: `${SITE_URL}/img/brand/logo-chandra-asri.png`,
       },
     },
-    datePublished: data?.published_at,
-    dateModified: data?.updated_at,
+    datePublished:
+      toIsoStringSafe(data?.published_at) || data?.published_at,
+    dateModified: toIsoStringSafe(data?.updated_at) || data?.updated_at,
   }
 
   const relatedArticles: PaginationHandlerResponse<PostNews[]> =
